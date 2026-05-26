@@ -18,18 +18,7 @@
 package server
 
 import (
-	"context"
-	"fmt"
-	"net"
-	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/grace"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/apache/servicecomb-service-center/server/metrics"
-	rs "github.com/apache/servicecomb-service-center/server/rest"
-	"github.com/apache/servicecomb-service-center/server/service/registry"
 	"github.com/go-chassis/foundation/gopool"
 )
 
@@ -53,113 +42,26 @@ type APIServer struct {
 	goroutine *gopool.Pool
 }
 
-func (s *APIServer) Err() <-chan error {
-	return s.err
-}
+func (s *APIServer) Err() <-chan error { _ = "STUB: not implemented"; return nil }
 
-func (s *APIServer) graceDone() {
-	grace.Before(s.MarkForked)
-	grace.After(s.Stop)
-	if err := grace.Done(); err != nil {
-		log.Error("sc reload failed", err)
-	}
-}
+func (s *APIServer) graceDone() { _ = "STUB: not implemented"; return }
 
-func (s *APIServer) MarkForked() {
-	s.forked = true
-}
+func (s *APIServer) MarkForked() { _ = "STUB: not implemented"; return }
 
-func (s *APIServer) SetHostPort(ip, port string) {
-	if len(ip) == 0 {
-		return
-	}
-	s.HostPort = net.JoinHostPort(ip, port)
-}
+func (s *APIServer) SetHostPort(ip, port string) { _ = "STUB: not implemented"; return }
 
-func (s *APIServer) serve() (err error) {
-	s.HTTPServer, err = rs.NewServer(s.HostPort)
-	if err != nil {
-		return
-	}
-	log.Info(fmt.Sprintf("listen address: rest://%s", s.HTTPServer.Listener.Addr().String()))
+func (s *APIServer) serve() (err error) { _ = "STUB: not implemented"; return nil }
 
-	s.goroutine.Do(func(_ context.Context) {
-		err := s.HTTPServer.Serve()
-		if s.isClose {
-			return
-		}
-		log.Error(fmt.Sprintf("error to serve %s", s.HostPort), err)
-		s.err <- err
-	})
-	return
-}
+func (s *APIServer) Start() { _ = "STUB: not implemented"; return }
 
-func (s *APIServer) Start() {
-	if !s.isClose {
-		return
-	}
-	s.isClose = false
+// 自注册
 
-	err := s.serve()
-	if err != nil {
-		log.Error("error to serve: ", err)
-		s.err <- err
-		return
-	}
+func (s *APIServer) Stop() { _ = "STUB: not implemented"; return }
 
-	s.graceDone()
+func (s *APIServer) selfRegister() { _ = "STUB: not implemented"; return }
 
-	defer log.Info("api server is ready")
+// report the metrics
 
-	if !config.GetRegistry().SelfRegister {
-		log.Warn("self register disabled")
-		return
-	}
+func (s *APIServer) selfUnregister() { _ = "STUB: not implemented"; return }
 
-	// 自注册
-	s.selfRegister()
-}
-
-func (s *APIServer) Stop() {
-	if s.isClose {
-		return
-	}
-	s.isClose = true
-
-	if !s.forked && config.GetRegistry().SelfRegister {
-		s.selfUnregister()
-	}
-
-	if s.HTTPServer != nil {
-		s.HTTPServer.Shutdown()
-	}
-
-	close(s.err)
-
-	s.goroutine.Close(true)
-
-	log.Info("api sc stopped")
-}
-
-func (s *APIServer) selfRegister() {
-	err := registry.SelfRegister(context.Background())
-	if err != nil {
-		log.Error("register error: ", err)
-		s.err <- err
-		return
-	}
-	// report the metrics
-	metrics.ReportScInstance()
-}
-
-func (s *APIServer) selfUnregister() {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	if err := registry.SelfUnregister(ctx); err != nil {
-		log.Error("stop registry engine failed", err)
-	}
-}
-
-func GetAPIServer() *APIServer {
-	return apiServer
-}
+func GetAPIServer() *APIServer { _ = "STUB: not implemented"; return nil }

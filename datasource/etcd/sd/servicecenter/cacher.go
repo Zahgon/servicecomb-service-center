@@ -25,18 +25,14 @@ type Cacher struct {
 	*kvstore.CommonCacher
 }
 
-func (c *Cacher) Ready() <-chan struct{} {
-	return closedCh
-}
+func (c *Cacher) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 func NewServiceCenterCacher(cfg *kvstore.Options, cache kvstore.Cache) *Cacher {
-	return &Cacher{
-		CommonCacher: kvstore.NewCommonCacher(cfg, cache),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func BuildCacher(t kvstore.Type, cfg *kvstore.Options, cache kvstore.Cache) kvstore.Cacher {
-	cr := NewServiceCenterCacher(cfg, cache)
-	GetOrCreateSyncer().AddCacher(t, cr)
-	return cr
+	_ = "STUB: not implemented"
+	return *new(kvstore.Cacher)
 }

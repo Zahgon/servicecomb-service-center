@@ -21,13 +21,13 @@ import (
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 )
 
-func Service() state.State         { return state.Get(TypeService) }
-func Instance() state.State        { return state.Get(TypeInstance) }
-func Lease() state.State           { return state.Get(TypeLease) }
-func ServiceIndex() state.State    { return state.Get(TypeServiceIndex) }
-func ServiceAlias() state.State    { return state.Get(TypeServiceAlias) }
-func ServiceTag() state.State      { return state.Get(TypeServiceTag) }
-func DependencyRule() state.State  { return state.Get(TypeDependencyRule) }
-func DependencyQueue() state.State { return state.Get(TypeDependencyQueue) }
-func Domain() state.State          { return state.Get(TypeDomain) }
-func Project() state.State         { return state.Get(TypeProject) }
+func Service() state.State         { _ = "STUB: not implemented"; return *new(state.State) }
+func Instance() state.State        { _ = "STUB: not implemented"; return *new(state.State) }
+func Lease() state.State           { _ = "STUB: not implemented"; return *new(state.State) }
+func ServiceIndex() state.State    { _ = "STUB: not implemented"; return *new(state.State) }
+func ServiceAlias() state.State    { _ = "STUB: not implemented"; return *new(state.State) }
+func ServiceTag() state.State      { _ = "STUB: not implemented"; return *new(state.State) }
+func DependencyRule() state.State  { _ = "STUB: not implemented"; return *new(state.State) }
+func DependencyQueue() state.State { _ = "STUB: not implemented"; return *new(state.State) }
+func Domain() state.State          { _ = "STUB: not implemented"; return *new(state.State) }
+func Project() state.State         { _ = "STUB: not implemented"; return *new(state.State) }

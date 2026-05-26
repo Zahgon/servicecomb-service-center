@@ -17,85 +17,18 @@
 
 package mongo
 
-import (
-	dmongo "github.com/go-chassis/cari/db/mongo"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+func ensureDB() { _ = "STUB: not implemented"; return }
 
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/util"
-)
+func ensureService() { _ = "STUB: not implemented"; return }
 
-func ensureDB() {
-	ensureService()
-	ensureInstance()
-	ensureSchema()
-	ensureDep()
-	ensureAccount()
-	ensureAccountLock()
-	ensureSyncLock()
-}
+func ensureInstance() { _ = "STUB: not implemented"; return }
 
-func ensureService() {
-	serviceIDIndex := util.BuildIndexDoc(
-		model.ColumnDomain,
-		model.ColumnProject,
-		util.ConnectWithDot([]string{model.ColumnService, model.ColumnServiceID}))
-	serviceIDIndex.Options = options.Index().SetUnique(true)
+func ensureSchema() { _ = "STUB: not implemented"; return }
 
-	serviceIndex := util.BuildIndexDoc(
-		util.ConnectWithDot([]string{model.ColumnService, model.ColumnAppID}),
-		util.ConnectWithDot([]string{model.ColumnService, model.ColumnServiceName}),
-		util.ConnectWithDot([]string{model.ColumnService, model.ColumnEnv}),
-		util.ConnectWithDot([]string{model.ColumnService, model.ColumnVersion}),
-		model.ColumnDomain,
-		model.ColumnProject)
-	serviceIndex.Options = options.Index().SetUnique(true)
+func ensureDep() { _ = "STUB: not implemented"; return }
 
-	var serviceIndexes []mongo.IndexModel
-	serviceIndexes = append(serviceIndexes, serviceIDIndex, serviceIndex)
+func ensureAccount() { _ = "STUB: not implemented"; return }
 
-	dmongo.EnsureCollection(model.CollectionService, nil, serviceIndexes)
-}
+func ensureAccountLock() { _ = "STUB: not implemented"; return }
 
-func ensureInstance() {
-	instanceIndex := util.BuildIndexDoc(model.ColumnRefreshTime)
-	instanceIndex.Options = options.Index().SetExpireAfterSeconds(defaultExpireTime)
-
-	instanceServiceIndex := util.BuildIndexDoc(util.ConnectWithDot([]string{model.ColumnInstance, model.ColumnServiceID}))
-
-	var instanceIndexes []mongo.IndexModel
-	instanceIndexes = append(instanceIndexes, instanceIndex, instanceServiceIndex)
-
-	dmongo.EnsureCollection(model.CollectionInstance, nil, instanceIndexes)
-}
-
-func ensureSchema() {
-	dmongo.EnsureCollection(model.CollectionSchema, nil, []mongo.IndexModel{util.BuildIndexDoc(
-		model.ColumnDomain,
-		model.ColumnProject,
-		model.ColumnServiceID)})
-}
-
-func ensureDep() {
-	dmongo.EnsureCollection(model.CollectionDep, nil, []mongo.IndexModel{util.BuildIndexDoc(
-		model.ColumnDomain,
-		model.ColumnProject,
-		model.ColumnServiceKey)})
-}
-
-func ensureAccount() {
-	dmongo.EnsureCollection(model.CollectionAccount, nil, []mongo.IndexModel{util.BuildIndexDoc(
-		model.ColumnName),
-	})
-}
-
-func ensureAccountLock() {
-	dmongo.EnsureCollection(model.CollectionAccountLock, nil, []mongo.IndexModel{
-		util.BuildIndexDoc(model.ColumnAccountLockKey)})
-}
-
-func ensureSyncLock() {
-	dmongo.EnsureCollection(model.CollectionSync, nil, []mongo.IndexModel{
-		util.BuildIndexDoc(model.ColumnKey)})
-}
+func ensureSyncLock() { _ = "STUB: not implemented"; return }

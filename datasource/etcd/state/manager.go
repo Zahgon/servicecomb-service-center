@@ -17,10 +17,6 @@
 
 package state
 
-import (
-	"fmt"
-)
-
 var (
 	repoPlugins   = make(map[string]newRepoFunc)
 	manager       *Manager
@@ -30,51 +26,17 @@ var (
 type newRepoFunc func(opts Config) Repository
 
 // Install load plugins configuration into plugins
-func Install(pluginImplName string, newFunc newRepoFunc) {
-	repoPlugins[pluginImplName] = newFunc
-}
+func Install(pluginImplName string, newFunc newRepoFunc) { _ = "STUB: not implemented"; return }
 
-func Init(opts Config) error {
-	opts.Init()
-
-	configuration = opts
-
-	inst, err := NewRepository(opts)
-	if err != nil {
-		return err
-	}
-	opts.Logger.Info(fmt.Sprintf("state plugin [%s] enabled", opts.Kind))
-
-	manager = &Manager{
-		Repository: inst,
-	}
-	manager.Initialize()
-	manager.Run()
-	<-manager.Ready()
-	return nil
-}
+func Init(opts Config) error { _ = "STUB: not implemented"; return nil }
 
 func NewRepository(opts Config) (Repository, error) {
-	if opts.Kind == "" {
-		return nil, fmt.Errorf("plugin implement name is nil")
-	}
-
-	f, ok := repoPlugins[opts.Kind]
-	if !ok {
-		return nil, fmt.Errorf("plugin implement not supported [%s]", opts.Kind)
-	}
-	inst := f(opts)
-	return inst, nil
+	_ = "STUB: not implemented"
+	return *new(Repository), nil
 }
 
-func Instance() *Manager {
-	return manager
-}
+func Instance() *Manager { _ = "STUB: not implemented"; return nil }
 
-func Revision() int64 {
-	return manager.Rev
-}
+func Revision() int64 { _ = "STUB: not implemented"; return 0 }
 
-func Configuration() Config {
-	return configuration
-}
+func Configuration() Config { _ = "STUB: not implemented"; return *new(Config) }

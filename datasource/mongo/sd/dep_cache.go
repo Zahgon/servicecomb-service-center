@@ -18,14 +18,7 @@
 package sd
 
 import (
-	"reflect"
-	"strings"
-
 	cmap "github.com/orcaman/concurrent-map"
-	"go.mongodb.org/mongo-driver/bson"
-
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/datasource/sdcommon"
 )
 
 type depStore struct {
@@ -43,128 +36,40 @@ func init() {
 	DepIndexCols.AddIndexFunc(depVersionIndex)
 }
 
-func newDepStore() *MongoCacher {
-	options := DefaultOptions().SetTable(dep)
-	cache := &depStore{
-		dirty:         false,
-		concurrentMap: cmap.New(),
-		indexSets:     NewIndexCache(),
-	}
-	depUnmarshal := func(doc bson.Raw) (resource sdcommon.Resource) {
-		docID := MongoDocument{}
-		err := bson.Unmarshal(doc, &docID)
-		if err != nil {
-			return
-		}
-		dep := model.DependencyRule{}
-		err = bson.Unmarshal(doc, &dep)
-		if err != nil {
-			return
-		}
-		resource.Value = dep
-		resource.Key = docID.ID.Hex()
-		return
-	}
-	return NewMongoCacher(options, cache, depUnmarshal)
-}
+func newDepStore() *MongoCacher { _ = "STUB: not implemented"; return nil }
 
-func (s *depStore) Name() string {
-	return dep
-}
+func (s *depStore) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (s *depStore) Size() int {
-	return s.concurrentMap.Count()
-}
+func (s *depStore) Size() int { _ = "STUB: not implemented"; return 0 }
 
-func (s *depStore) Get(key string) interface{} {
-	if v, exist := s.concurrentMap.Get(key); exist {
-		return v
-	}
-	return nil
-}
+func (s *depStore) Get(key string) interface{} { _ = "STUB: not implemented"; return nil }
 
 func (s *depStore) ForEach(iter func(k string, v interface{}) (next bool)) {
-	for k, v := range s.concurrentMap.Items() {
-		if !iter(k, v) {
-			break
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func (s *depStore) GetValue(index string) []interface{} {
-	docs := s.indexSets.Get(index)
-	res := make([]interface{}, 0, len(docs))
-	for _, id := range docs {
-		if doc, exist := s.concurrentMap.Get(id); exist {
-			res = append(res, doc)
-		}
-	}
-	return res
-}
+func (s *depStore) GetValue(index string) []interface{} { _ = "STUB: not implemented"; return nil }
 
-func (s *depStore) Dirty() bool {
-	return s.dirty
-}
+func (s *depStore) Dirty() bool { _ = "STUB: not implemented"; return false }
 
-func (s *depStore) MarkDirty() {
-	s.dirty = true
-}
+func (s *depStore) MarkDirty() { _ = "STUB: not implemented"; return }
 
-func (s *depStore) Clear() {
-	s.dirty = false
-	s.concurrentMap.Clear()
-	s.indexSets.Clear()
-}
+func (s *depStore) Clear() { _ = "STUB: not implemented"; return }
 
-func (s *depStore) ProcessUpdate(event MongoEvent) {
-	dep, ok := event.Value.(model.DependencyRule)
-	if !ok {
-		return
-	}
-	if dep.ServiceKey == nil {
-		return
-	}
-	// set the document data.
-	s.concurrentMap.Set(event.DocumentID, event.Value)
-	for _, index := range DepIndexCols.GetIndexes(dep) {
-		// set the index sets.
-		s.indexSets.Put(index, event.DocumentID)
-	}
-}
+func (s *depStore) ProcessUpdate(event MongoEvent) { _ = "STUB: not implemented"; return }
 
-func (s *depStore) ProcessDelete(event MongoEvent) {
-	depData, ok := s.concurrentMap.Get(event.DocumentID)
-	if !ok {
-		return
-	}
-	dep := depData.(model.DependencyRule)
-	if dep.ServiceKey == nil {
-		return
-	}
-	s.concurrentMap.Remove(event.DocumentID)
-	for _, index := range DepIndexCols.GetIndexes(dep) {
-		s.indexSets.Delete(index, event.DocumentID)
-	}
-}
+// set the document data.
+
+// set the index sets.
+
+func (s *depStore) ProcessDelete(event MongoEvent) { _ = "STUB: not implemented"; return }
 
 func (s *depStore) isValueNotUpdated(value interface{}, newValue interface{}) bool {
-	newDep, ok := newValue.(model.DependencyRule)
-	if !ok {
-		return true
-	}
-	oldDep, ok := value.(model.DependencyRule)
-	if !ok {
-		return true
-	}
-	return reflect.DeepEqual(newDep, oldDep)
+	_ = "STUB: not implemented"
+	return false
 }
 
-func depIndex(data interface{}) string {
-	dep := data.(model.DependencyRule)
-	return strings.Join([]string{dep.Type, dep.ServiceKey.AppId, dep.ServiceKey.ServiceName, dep.ServiceKey.Version}, "/")
-}
+func depIndex(data interface{}) string { _ = "STUB: not implemented"; return "" }
 
-func depVersionIndex(data interface{}) string {
-	dep := data.(model.DependencyRule)
-	return strings.Join([]string{dep.Type, dep.ServiceKey.AppId, dep.ServiceKey.ServiceName}, "/")
-}
+func depVersionIndex(data interface{}) string { _ = "STUB: not implemented"; return "" }

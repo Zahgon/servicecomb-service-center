@@ -18,14 +18,11 @@
 package alarm
 
 import (
-	"fmt"
 	"sync"
 
 	nf "github.com/apache/servicecomb-service-center/pkg/event"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/alarm/model"
-	"github.com/apache/servicecomb-service-center/server/event"
 )
 
 var (
@@ -39,62 +36,16 @@ type Service struct {
 }
 
 func (ac *Service) Raise(id model.ID, fields ...model.Field) error {
-	ae := &model.AlarmEvent{
-		Event:  nf.NewEvent(ALARM, Subject, ""),
-		Status: Activated,
-		ID:     id,
-		Fields: util.NewJSONObject(),
-	}
-	for _, f := range fields {
-		ae.Fields[f.Key] = f.Value
-	}
-	return event.Center().Fire(ae)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (ac *Service) Clear(id model.ID) error {
-	ae := &model.AlarmEvent{
-		Event:  nf.NewEvent(ALARM, Subject, ""),
-		Status: Cleared,
-		ID:     id,
-	}
-	return event.Center().Fire(ae)
-}
+func (ac *Service) Clear(id model.ID) error { _ = "STUB: not implemented"; return nil }
 
-func (ac *Service) ListAll() (ls []*model.AlarmEvent) {
-	ac.alarms.ForEach(func(item util.MapItem) (next bool) {
-		ls = append(ls, item.Value.(*model.AlarmEvent))
-		return true
-	})
-	return
-}
+func (ac *Service) ListAll() (ls []*model.AlarmEvent) { _ = "STUB: not implemented"; return nil }
 
-func (ac *Service) ClearAll() {
-	ac.alarms = util.ConcurrentMap{}
-}
+func (ac *Service) ClearAll() { _ = "STUB: not implemented"; return }
 
-func (ac *Service) OnMessage(evt nf.Event) {
-	alarm := evt.(*model.AlarmEvent)
-	switch alarm.Status {
-	case Cleared:
-		if itf, ok := ac.alarms.Get(alarm.ID); ok {
-			if exist := itf.(*model.AlarmEvent); exist.Status != Cleared {
-				exist.Status = Cleared
-				alarm = exist
-			}
-		}
-	default:
-		ac.alarms.Put(alarm.ID, alarm)
-	}
-	log.Debug(fmt.Sprintf("alarm[%s] %s, %v", alarm.ID, alarm.Status, alarm.Fields))
-}
+func (ac *Service) OnMessage(evt nf.Event) { _ = "STUB: not implemented"; return }
 
-func NewAlarmService() *Service {
-	c := &Service{
-		Subscriber: nf.NewSubscriber(ALARM, Subject, Group),
-	}
-	err := event.Center().AddSubscriber(c)
-	if err != nil {
-		log.Error("", err)
-	}
-	return c
-}
+func NewAlarmService() *Service { _ = "STUB: not implemented"; return nil }

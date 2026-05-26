@@ -20,22 +20,14 @@ package quota
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/plugin/quota"
 )
 
 const TypeSchema quota.ResourceType = "SCHEMA"
 
-func SchemaQuota() int64 {
-	return quota.GetQuota(context.Background(), TypeSchema)
-}
+func SchemaQuota() int64 { _ = "STUB: not implemented"; return 0 }
 
 func ApplySchema(ctx context.Context, serviceID string, size int64) error {
-	return quota.Apply(ctx, &quota.Request{
-		QuotaType: TypeSchema,
-		Domain:    util.ParseDomain(ctx),
-		Project:   util.ParseProject(ctx),
-		ServiceID: serviceID,
-		QuotaSize: size,
-	})
+	_ = "STUB: not implemented"
+	return nil
 }

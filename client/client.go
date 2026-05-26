@@ -22,13 +22,7 @@ import (
 	"net/http"
 )
 
-func NewSCClient(cfg Config) (*Client, error) {
-	client, err := NewLBClient(cfg.Endpoints, cfg.Merge())
-	if err != nil {
-		return nil, err
-	}
-	return &Client{LBClient: client, Cfg: cfg}, nil
-}
+func NewSCClient(cfg Config) (*Client, error) { _ = "STUB: not implemented"; return nil, nil }
 
 type Client struct {
 	*LBClient
@@ -36,10 +30,8 @@ type Client struct {
 }
 
 func (c *Client) CommonHeaders(_ context.Context) http.Header {
-	var headers = make(http.Header)
-	// TODO overwrote by context values
-	if len(c.Cfg.Token) > 0 {
-		headers.Set("X-Auth-Token", c.Cfg.Token)
-	}
-	return headers
+	_ = "STUB: not implemented"
+	return *new(http.Header)
 }
+
+// TODO overwrote by context values

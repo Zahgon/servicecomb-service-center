@@ -29,6 +29,4 @@ var (
 	ErrInvalidParam         = errors.New("invalid param")
 )
 
-func NewError(errInfo string, errMsg string) error {
-	return errors.New(errInfo + errMsg)
-}
+func NewError(errInfo string, errMsg string) error { _ = "STUB: not implemented"; return nil }

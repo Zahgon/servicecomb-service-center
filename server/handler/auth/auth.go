@@ -18,19 +18,8 @@
 package auth
 
 import (
-	"fmt"
-	"net/http"
-
-	"github.com/go-chassis/cari/discovery"
-	"github.com/go-chassis/cari/pkg/errsvc"
-	"github.com/go-chassis/cari/rbac"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/plugin/auth"
-	"github.com/apache/servicecomb-service-center/server/response"
 )
 
 const CtxResourceLabels util.CtxKey = "_resource_labels"
@@ -38,45 +27,10 @@ const CtxResourceLabels util.CtxKey = "_resource_labels"
 type Handler struct {
 }
 
-func (h *Handler) Handle(i *chain.Invocation) {
-	r := i.Context().Value(rest.CtxRequest).(*http.Request)
+func (h *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	if err := auth.Identify(r); err != nil {
-		log.Error(fmt.Sprintf("authenticate request failed, %s %s", r.Method, r.RequestURI), err)
-		if e, ok := err.(*errsvc.Error); ok {
-			i.Fail(e)
-			return
-		}
-		i.Fail(discovery.NewError(rbac.ErrUnauthorized, err.Error()))
-		return
-	}
+// obj set empty string if CtxResponseObject not exist
 
-	i.Next(chain.WithFunc(func(ret chain.Result) {
-		if !ret.OK {
-			return
-		}
-		apiPath, obj := i.Context().Value(rest.CtxMatchPattern).(string),
-			i.Context().Value(rest.CtxResponseObject)
-		// obj set empty string if CtxResponseObject not exist
-		if _, ok := obj.(string); ok || obj == nil {
-			return
-		}
+// all allowed
 
-		labels, ok := i.Context().Value(CtxResourceLabels).([]map[string]string)
-		if !ok {
-			return
-		}
-		if len(labels) == 0 {
-			// all allowed
-			return
-		}
-		obj = response.Filter(apiPath, obj, labels)
-
-		w := i.Context().Value(rest.CtxResponse).(http.ResponseWriter)
-		rest.WriteResponse(w, r, nil, obj)
-	}))
-}
-
-func RegisterHandlers() {
-	chain.RegisterHandler(rest.ServerChainName, &Handler{})
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

@@ -17,13 +17,6 @@
 
 package version
 
-import (
-	"fmt"
-	"runtime"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 var (
 	// VERSION no need to modify
 	// please use:
@@ -41,25 +34,11 @@ type Set struct {
 	Arch      string `json:"arch"`
 }
 
-func (vs *Set) Print() {
-	fmt.Printf("Version: %s\n", vs.Version)
-	fmt.Printf("Build tag: %s\n", vs.BuildTag)
-	fmt.Printf("Go version: %s\n", vs.GoVersion)
-	fmt.Printf("OS/Arch: %s/%s\n", vs.OS, vs.Arch)
-}
+func (vs *Set) Print() { _ = "STUB: not implemented"; return }
 
-func (vs *Set) Log() {
-	log.Info(fmt.Sprintf("Version: %s", vs.Version))
-	log.Info(fmt.Sprintf("Build tag: %s", vs.BuildTag))
-	log.Info(fmt.Sprintf("Go version: %s", vs.GoVersion))
-	log.Info(fmt.Sprintf("OS/Arch: %s/%s", vs.OS, vs.Arch))
-}
+func (vs *Set) Log() { _ = "STUB: not implemented"; return }
 
-func (vs *Set) LoadRuntimeInfo() {
-	vs.GoVersion = runtime.Version()
-	vs.OS = runtime.GOOS
-	vs.Arch = runtime.GOARCH
-}
+func (vs *Set) LoadRuntimeInfo() { _ = "STUB: not implemented"; return }
 
 var versionSet Set
 
@@ -69,6 +48,4 @@ func init() {
 	versionSet.LoadRuntimeInfo()
 }
 
-func Ver() *Set {
-	return &versionSet
-}
+func Ver() *Set { _ = "STUB: not implemented"; return nil }

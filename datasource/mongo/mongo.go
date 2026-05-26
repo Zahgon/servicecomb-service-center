@@ -18,17 +18,7 @@
 package mongo
 
 import (
-	"fmt"
-
-	"github.com/go-chassis/cari/db"
-	dconfig "github.com/go-chassis/cari/db/config"
-
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/heartbeat"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/sd"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/apache/servicecomb-service-center/server/plugin/security/tlsconf"
 )
 
 const defaultExpireTime = 300
@@ -48,119 +38,62 @@ type DataSource struct {
 }
 
 func (ds *DataSource) SystemManager() datasource.SystemManager {
-	return ds.sysManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SystemManager)
 }
 
 func (ds *DataSource) DependencyManager() datasource.DependencyManager {
-	return ds.depManager
+	_ = "STUB: not implemented"
+	return *new(datasource.DependencyManager)
 }
 
 func (ds *DataSource) MetadataManager() datasource.MetadataManager {
-	return ds.metadataManager
+	_ = "STUB: not implemented"
+	return *new(datasource.MetadataManager)
 }
 
 func (ds *DataSource) SCManager() datasource.SCManager {
-	return ds.scManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SCManager)
 }
 
 func (ds *DataSource) MetricsManager() datasource.MetricsManager {
-	return ds.metricsManager
+	_ = "STUB: not implemented"
+	return *new(datasource.MetricsManager)
 }
 
 func (ds *DataSource) SyncManager() datasource.SyncManager {
-	return ds.syncManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SyncManager)
 }
 
 func NewDataSource(opts datasource.Options) (datasource.DataSource, error) {
+	_ = "STUB: not implemented"
 	// TODO: construct a reasonable DataSource instance
-	inst := &DataSource{}
-	// TODO: deal with exception
-	if err := inst.initialize(); err != nil {
-		return nil, err
-	}
-	inst.scManager = &SCManager{}
-	inst.depManager = &DepManager{}
-	inst.sysManager = &SysManager{}
-	inst.metadataManager = &MetadataManager{
-		InstanceTTL: opts.InstanceTTL,
-	}
-	inst.metricsManager = &MetricsManager{}
-	inst.syncManager = &SyncManager{}
-	return inst, nil
+	return *new(datasource.DataSource), nil
 }
+
+// TODO: deal with exception
 
 func (ds *DataSource) initialize() error {
-	var err error
+	_ = "STUB: not implemented"
+
 	// init heartbeat plugins
-	err = ds.initPlugins()
-	if err != nil {
-		return err
-	}
-	// init mongo client
-	err = ds.initClient()
-	if err != nil {
-		return err
-	}
-	// create db index and validator
-	ensureDB()
-
-	// if fast register enabled, init fast register service
-	initFastRegister()
-
-	// init cache
-	ds.initStore()
 	return nil
 }
 
-func (ds *DataSource) initPlugins() error {
-	kind := config.GetString("heartbeat.kind", "cache")
-	err := heartbeat.Init(heartbeat.Options{PluginImplName: heartbeat.ImplName(kind)})
-	if err != nil {
-		log.Fatal("heartbeat init failed", err)
-		return err
-	}
-	return nil
-}
+// init mongo client
 
-func (ds *DataSource) initClient() error {
-	cfg := dconfig.Config{Kind: "mongo"}
-	cfg.URI = config.GetString("registry.mongo.cluster.uri", "mongodb://localhost:27017",
-		config.WithStandby("manager_cluster"))
-	cfg.SSLEnabled = config.GetBool("ssl.enable", false)
-	cfg.Logger = log.Logger
-	if cfg.SSLEnabled {
-		tlsConfig, err := tlsconf.ClientConfig()
-		if err != nil {
-			log.Fatal("get datasource tlsConfig failed", err)
-			return err
-		}
-		cfg.TLSConfig = tlsConfig
-	}
-	poolSize := config.GetInt("registry.mongo.cluster.poolSize", defaultPoolSize)
-	if poolSize <= 0 {
-		log.Warn(fmt.Sprintf("mongo cluster poolSize[%d] is too small, set to default size", poolSize))
-		poolSize = defaultPoolSize
-	}
-	cfg.PoolSize = poolSize
-	return db.Init(&cfg)
-}
+// create db index and validator
 
-func (ds *DataSource) initStore() {
-	if !config.GetRegistry().EnableCache {
-		log.Debug("cache is disabled")
-		return
-	}
-	sd.Store().Run()
-	<-sd.Store().Ready()
-}
+// if fast register enabled, init fast register service
 
-func initFastRegister() {
-	fastRegConfig := FastRegConfiguration()
+// init cache
 
-	if fastRegConfig.QueueSize > 0 {
-		fastRegisterService := NewFastRegisterInstanceService()
-		SetFastRegisterInstanceService(fastRegisterService)
+func (ds *DataSource) initPlugins() error { _ = "STUB: not implemented"; return nil }
 
-		NewRegisterTimeTask().Start()
-	}
-}
+func (ds *DataSource) initClient() error { _ = "STUB: not implemented"; return nil }
+
+func (ds *DataSource) initStore() { _ = "STUB: not implemented"; return }
+
+func initFastRegister() { _ = "STUB: not implemented"; return }

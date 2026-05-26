@@ -18,11 +18,7 @@
 package pzipkin
 
 import (
-	"strconv"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/openzipkin/zipkin-go-opentracing/thrift/gen-go/zipkincore"
-	"github.com/openzipkin/zipkin-go-opentracing/types"
 )
 
 type Span struct {
@@ -60,48 +56,6 @@ type Endpoint struct {
 	Ipv6        []byte `thrift:"ipv6,4" db:"ipv6" json:"ipv6,omitempty"`
 }
 
-func (s *Span) FromZipkinSpan(span *zipkincore.Span) {
-	traceID := new(types.TraceID)
-	traceID.Low = uint64(span.TraceID)
-	if span.TraceIDHigh != nil {
-		traceID.High = uint64(*(span.TraceIDHigh))
-	}
-	s.TraceID = traceID.ToHex()
-	s.Duration = span.Duration
+func (s *Span) FromZipkinSpan(span *zipkincore.Span) { _ = "STUB: not implemented"; return }
 
-	s.ID = strconv.FormatUint(uint64(span.ID), 16)
-	if span.ParentID != nil {
-		s.ParentID = strconv.FormatUint(uint64(*(span.ParentID)), 16)
-	}
-
-	s.Name = span.Name
-	s.Timestamp = span.Timestamp
-
-	for _, a := range span.Annotations {
-		s.Annotations = append(s.Annotations, &Annotation{
-			Timestamp: a.Timestamp,
-			Value:     a.Value,
-			Host: &Endpoint{
-				Ipv4:        util.InetNtoa(uint32(a.Host.Ipv4)),
-				Port:        a.Host.Port,
-				ServiceName: a.Host.ServiceName,
-				Ipv6:        a.Host.Ipv6,
-			},
-		})
-	}
-
-	for _, ba := range span.BinaryAnnotations {
-		if zipkincore.SERVER_ADDR == ba.Key {
-			continue
-		}
-		s.BinaryAnnotations = append(s.BinaryAnnotations, &BinaryAnnotation{
-			Key:   ba.Key,
-			Value: string(ba.Value),
-		})
-	}
-}
-
-func FromZipkinSpan(span *zipkincore.Span) (s Span) {
-	s.FromZipkinSpan(span)
-	return
-}
+func FromZipkinSpan(span *zipkincore.Span) (s Span) { _ = "STUB: not implemented"; return *new(Span) }

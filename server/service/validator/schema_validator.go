@@ -21,7 +21,6 @@ import (
 	"regexp"
 
 	"github.com/apache/servicecomb-service-center/pkg/validate"
-	quotasvc "github.com/apache/servicecomb-service-center/server/service/quota"
 	pb "github.com/go-chassis/cari/discovery"
 )
 
@@ -36,69 +35,32 @@ var (
 	schemaSummaryRegex, _     = regexp.Compile(`^[a-zA-Z0-9]*$`)
 )
 
-func GetSchemaReqValidator() *validate.Validator {
-	return getSchemaReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("SchemaId", &validate.Rule{Min: 1, Max: 160, Regexp: schemaIDUnlimitedRegex})
-	})
-}
+func GetSchemaReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func ModifySchemasReqValidator() *validate.Validator {
-	return modifySchemasReqValidator.Init(func(v *validate.Validator) {
-		max := int(quotasvc.SchemaQuota())
+func ModifySchemasReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-		var subSchemaValidator validate.Validator
-		subSchemaValidator.AddRule("SchemaId", GetSchemaReqValidator().GetRule("SchemaId"))
-		subSchemaValidator.AddRule("Summary", &validate.Rule{Min: 1, Max: 128, Regexp: schemaSummaryRegex})
-		subSchemaValidator.AddRule("Schema", &validate.Rule{Min: 1})
+func ModifySchemaReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("Schemas", &validate.Rule{Min: 1, Max: max})
-		v.AddSub("Schemas", &subSchemaValidator)
-	})
-}
+// forward compatibility: allow empty
 
-func ModifySchemaReqValidator() *validate.Validator {
-	return modifySchemaReqValidator.Init(func(v *validate.Validator) {
-		v.AddRules(ModifySchemasReqValidator().GetSub("Schemas").GetRules())
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		// forward compatibility: allow empty
-		v.AddRule("Summary", &validate.Rule{Max: 128, Regexp: schemaSummaryRegex})
-	})
-}
+func ValidateGetSchema(request *pb.GetSchemaRequest) error { _ = "STUB: not implemented"; return nil }
 
-func ValidateGetSchema(request *pb.GetSchemaRequest) error {
-	err := baseCheck(request)
-	if err != nil {
-		return err
-	}
-	return GetSchemaReqValidator().Validate(request)
-}
 func ValidateListSchema(request *pb.GetAllSchemaRequest) error {
-	err := baseCheck(request)
-	if err != nil {
-		return err
-	}
-	return GetSchemaReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidatePutSchema(request *pb.ModifySchemaRequest) error {
-	err := baseCheck(request)
-	if err != nil {
-		return err
-	}
-	return ModifySchemaReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidatePutSchemas(request *pb.ModifySchemasRequest) error {
-	err := baseCheck(request)
-	if err != nil {
-		return err
-	}
-	return ModifySchemasReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateDeleteSchema(request *pb.DeleteSchemaRequest) error {
-	err := baseCheck(request)
-	if err != nil {
-		return err
-	}
-	return GetSchemaReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }

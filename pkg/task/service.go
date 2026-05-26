@@ -28,11 +28,6 @@ func init() {
 	service = NewTaskService()
 }
 
-func GetService() Service {
-	once.Do(service.Run)
-	return service
-}
+func GetService() Service { _ = "STUB: not implemented"; return *new(Service) }
 
-func RegisterService(svc Service) {
-	service = svc
-}
+func RegisterService(svc Service) { _ = "STUB: not implemented"; return }

@@ -19,34 +19,13 @@ package dao
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/go-chassis/cari/db/mongo"
-
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/util"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
-func AddDomain(ctx context.Context, domain string) error {
-	d := model.Domain{
-		Domain: domain,
-	}
-	result, err := mongo.GetClient().GetDB().Collection(model.CollectionDomain).InsertOne(ctx, d)
-	if err == nil {
-		log.Info(fmt.Sprintf("insert domain to mongodb success %s", result.InsertedID))
-	}
-	return err
-}
+func AddDomain(ctx context.Context, domain string) error { _ = "STUB: not implemented"; return nil }
 
 func ExistDomain(ctx context.Context, filter interface{}) (bool, error) {
-	result := mongo.GetClient().GetDB().Collection(model.CollectionDomain).FindOne(ctx, filter)
-	if result.Err() != nil {
-		return false, nil
-	}
-	return true, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func CountDomain(ctx context.Context) (int64, error) {
-	return mongo.GetClient().GetDB().Collection(model.CollectionDomain).CountDocuments(ctx, util.NewFilter())
-}
+func CountDomain(ctx context.Context) (int64, error) { _ = "STUB: not implemented"; return 0, nil }

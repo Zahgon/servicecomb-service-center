@@ -17,14 +17,8 @@
 
 package admin
 
-import (
-	roa "github.com/apache/servicecomb-service-center/pkg/rest"
-)
-
 func init() {
 	registerREST()
 }
 
-func registerREST() {
-	roa.RegisterServant(&ControllerV4{})
-}
+func registerREST() { _ = "STUB: not implemented"; return }

@@ -18,13 +18,11 @@
 package etcd
 
 import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/parser"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 
 	"github.com/apache/servicecomb-service-center/datasource/sdcommon"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 const (
@@ -38,27 +36,11 @@ func init() {
 }
 
 func FromEtcdKeyValue(dist *kvstore.KeyValue, src *mvccpb.KeyValue, parser parser.Parser) (err error) {
-	dist.ClusterName = state.Configuration().ClusterName
-	dist.Key = src.Key
-	dist.Version = src.Version
-	dist.CreateRevision = src.CreateRevision
-	dist.ModRevision = src.ModRevision
-	if parser == nil {
-		return
-	}
-	dist.Value, err = parser.Unmarshal(src.Value)
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func ParseResourceToEtcdKeyValue(dist *kvstore.KeyValue, src *sdcommon.Resource, parser parser.Parser) (err error) {
-	dist.ClusterName = state.Configuration().ClusterName
-	dist.Key = util.StringToBytesWithNoCopy(src.Key)
-	dist.Version = src.Version
-	dist.CreateRevision = src.CreateRevision
-	dist.ModRevision = src.ModRevision
-	if parser == nil {
-		return
-	}
-	dist.Value, err = parser.Unmarshal(src.Value.([]byte))
-	return
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -17,12 +17,6 @@
 
 package metrics
 
-import (
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 var reporters = make(map[string]Reporter)
 
 // Reporter is the interface to implement handler to process metrics after calculate
@@ -30,13 +24,6 @@ type Reporter interface {
 	Report()
 }
 
-func RegisterReporter(name string, r Reporter) {
-	reporters[name] = r
-	log.Info(fmt.Sprintf("register metrics reporter '%s'", name))
-}
+func RegisterReporter(name string, r Reporter) { _ = "STUB: not implemented"; return }
 
-func Report() {
-	for _, r := range reporters {
-		r.Report()
-	}
-}
+func Report() { _ = "STUB: not implemented"; return }

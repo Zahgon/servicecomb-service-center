@@ -18,7 +18,6 @@
 package cluster
 
 import (
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/writer"
 )
 
@@ -31,41 +30,24 @@ type Record struct {
 	Endpoints []string
 }
 
-func (s *Record) EndpointsString() string {
-	return util.StringJoin(s.Endpoints, "\n")
-}
+func (s *Record) EndpointsString() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) PrintBody(_ string) []string {
-	return []string{s.Name, s.EndpointsString()}
-}
+func (s *Record) PrintBody(_ string) []string { _ = "STUB: not implemented"; return nil }
 
 type ClustersPrinter struct {
 	Records map[string]*Record
 	flags   []interface{}
 }
 
-func (sp *ClustersPrinter) SetOutputFormat(f string, all bool) {
-	sp.Flags(f, all)
-}
+func (sp *ClustersPrinter) SetOutputFormat(f string, all bool) { _ = "STUB: not implemented"; return }
 
 func (sp *ClustersPrinter) Flags(flags ...interface{}) []interface{} {
-	if len(flags) > 0 {
-		sp.flags = flags
-	}
-	return sp.flags
-}
-
-func (sp *ClustersPrinter) PrintBody() (slice [][]string) {
-	for _, s := range sp.Records {
-		slice = append(slice, s.PrintBody(sp.flags[0].(string)))
-	}
-	return
-}
-
-func (sp *ClustersPrinter) PrintTitle() []string {
-	return clusterTableHeader
-}
-
-func (sp *ClustersPrinter) Sorter() *writer.RecordsSorter {
+	_ = "STUB: not implemented"
 	return nil
 }
+
+func (sp *ClustersPrinter) PrintBody() (slice [][]string) { _ = "STUB: not implemented"; return nil }
+
+func (sp *ClustersPrinter) PrintTitle() []string { _ = "STUB: not implemented"; return nil }
+
+func (sp *ClustersPrinter) Sorter() *writer.RecordsSorter { _ = "STUB: not implemented"; return nil }

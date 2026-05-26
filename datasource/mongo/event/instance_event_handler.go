@@ -18,20 +18,9 @@
 package event
 
 import (
-	"context"
-	"fmt"
-	"time"
-
 	"github.com/go-chassis/cari/discovery"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/mongo"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
 	"github.com/apache/servicecomb-service-center/datasource/mongo/sd"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	simple "github.com/apache/servicecomb-service-center/pkg/time"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/event"
 )
 
 // InstanceEventHandler is the handler to handle events
@@ -39,61 +28,13 @@ import (
 type InstanceEventHandler struct {
 }
 
-func (h InstanceEventHandler) Type() string {
-	return model.CollectionInstance
-}
+func (h InstanceEventHandler) Type() string { _ = "STUB: not implemented"; return "" }
 
-func (h InstanceEventHandler) OnEvent(evt sd.MongoEvent) {
-	action := evt.Type
-	instance, ok := evt.Value.(model.Instance)
-	if !ok {
-		log.Error("failed to assert instance", datasource.ErrAssertFail)
-		return
-	}
-	providerID := instance.Instance.ServiceId
-	providerInstanceID := instance.Instance.InstanceId
-	domainProject := instance.Domain + "/" + instance.Project
-	ctx := util.SetDomainProject(context.Background(), instance.Domain, instance.Project)
+func (h InstanceEventHandler) OnEvent(evt sd.MongoEvent) { _ = "STUB: not implemented"; return }
 
-	res, err := mongo.GetServiceByID(ctx, providerID)
-	if err != nil {
-		log.Error(fmt.Sprintf("caught [%s] instance[%s/%s] event, endpoints %v, get provider's file failed from db\n",
-			action, providerID, providerInstanceID, instance.Instance.Endpoints), err)
-	}
-	if res == nil {
-		return
-	}
-	microService := res.Service
-	if action == discovery.EVT_INIT {
-		return
-	}
-	consumerIDs, err := mongo.GetConsumerIDs(ctx, microService)
-	if err != nil {
-		log.Error(fmt.Sprintf("get service[%s][%s/%s/%s/%s]'s consumerIDs failed",
-			providerID, microService.Environment, microService.AppId, microService.ServiceName, microService.Version), err)
-		return
-	}
-	PublishInstanceEvent(evt, discovery.MicroServiceToKey(domainProject, microService), consumerIDs)
-}
-
-func NewInstanceEventHandler() *InstanceEventHandler {
-	return &InstanceEventHandler{}
-}
+func NewInstanceEventHandler() *InstanceEventHandler { _ = "STUB: not implemented"; return nil }
 
 func PublishInstanceEvent(evt sd.MongoEvent, serviceKey *discovery.MicroServiceKey, subscribers []string) {
-	if len(subscribers) == 0 {
-		return
-	}
-	response := &discovery.WatchInstanceResponse{
-		Action:   string(evt.Type),
-		Key:      serviceKey,
-		Instance: evt.Value.(model.Instance).Instance,
-	}
-	for _, consumerID := range subscribers {
-		evt := event.NewInstanceEvent(consumerID, -1, simple.FromTime(time.Now()), response)
-		err := event.Center().Fire(evt)
-		if err != nil {
-			log.Error(fmt.Sprintf("publish event[%v] into channel failed", evt), err)
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }

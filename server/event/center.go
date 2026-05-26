@@ -30,6 +30,4 @@ func init() {
 // Center handle diff types of events
 // event type can be 'ALARM'(biz alarms), 'RESOURCE'(resource changes, like INSTANCE) or
 // inner type 'NOTIFY'(subscriber health check)
-func Center() *event.BusService {
-	return busService
-}
+func Center() *event.BusService { _ = "STUB: not implemented"; return nil }

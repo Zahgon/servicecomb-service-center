@@ -20,7 +20,6 @@ package rest
 import (
 	"net"
 	"os"
-	"syscall"
 )
 
 type TCPListener struct {
@@ -31,54 +30,15 @@ type TCPListener struct {
 }
 
 func NewTCPListener(l net.Listener, srv *Server) (el *TCPListener) {
-	el = &TCPListener{
-		Listener: l,
-		stopCh:   make(chan error),
-		server:   srv,
-	}
-	go func() {
-		<-el.stopCh
-		el.stopCh <- el.Listener.Close()
-	}()
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (rl *TCPListener) Accept() (c net.Conn, err error) {
-	tc, err := rl.Listener.(*net.TCPListener).AcceptTCP()
-	if err != nil {
-		return
-	}
-
-	if rl.server.KeepaliveTimeout > 0 {
-		if err := tc.SetKeepAlive(true); err != nil {
-			return nil, err
-		}
-		err = tc.SetKeepAlivePeriod(rl.server.KeepaliveTimeout)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	c = restConn{
-		Conn:   tc,
-		server: rl.server,
-	}
-
-	rl.server.AcceptOne()
-	return
+	_ = "STUB: not implemented"
+	return *new(net.Conn), nil
 }
 
-func (rl *TCPListener) Close() error {
-	if rl.closed {
-		return syscall.EINVAL
-	}
-	rl.closed = true
-	rl.stopCh <- nil
-	return <-rl.stopCh
-}
+func (rl *TCPListener) Close() error { _ = "STUB: not implemented"; return nil }
 
-func (rl *TCPListener) File() *os.File {
-	tl := rl.Listener.(*net.TCPListener)
-	fl, _ := tl.File()
-	return fl
-}
+func (rl *TCPListener) File() *os.File { _ = "STUB: not implemented"; return nil }

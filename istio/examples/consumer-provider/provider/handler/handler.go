@@ -18,38 +18,13 @@
 package handler
 
 import (
-	"fmt"
-	"math"
-	"net/http"
-	"strconv"
-
 	_ "github.com/go-chassis/go-chassis/v2/bootstrap"
 	rf "github.com/go-chassis/go-chassis/v2/server/restful"
 )
 
 type Greating struct{}
 
-//URLPatterns helps to respond for corresponding API calls
-func (r *Greating) URLPatterns() []rf.Route {
-	return []rf.Route{
-		{Method: http.MethodGet, Path: "/sqrt", ResourceFunc: r.Sqrt,
-			Returns: []*rf.Returns{{Code: 200}}},
-	}
-}
+// URLPatterns helps to respond for corresponding API calls
+func (r *Greating) URLPatterns() []rf.Route { _ = "STUB: not implemented"; return nil }
 
-func (r *Greating) Sqrt(ctx *rf.Context) {
-	xstr := ctx.ReadQueryParameter("x")
-	x, err := strconv.Atoi(xstr)
-	if err != nil {
-		return
-	}
-	if x < 1 {
-		ctx.Write([]byte(fmt.Sprintf("Square root of %d is %f", x, math.Sqrt(float64(x)))))
-		return
-	}
-	var sum float64
-	for i := 0; i < x; i++ {
-		sum += math.Sqrt(float64(i))
-	}
-	ctx.Write([]byte(fmt.Sprintf("Sum of square root from 1 to %d is %f", x, sum)))
-}
+func (r *Greating) Sqrt(ctx *rf.Context) { _ = "STUB: not implemented"; return }

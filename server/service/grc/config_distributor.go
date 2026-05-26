@@ -22,8 +22,6 @@ import (
 	"errors"
 
 	model "github.com/apache/servicecomb-service-center/pkg/gov"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/config"
 )
 
@@ -57,85 +55,41 @@ type ConfigDistributor interface {
 
 // InstallDistributor install a plugin to distribute and persist config
 func InstallDistributor(t string, newDistributors NewDistributors) {
-	distributorPlugins[t] = newDistributors
+	_ = "STUB: not implemented"
+	return
 }
 
 // Init create distributors according to gov config.
 // it may creates multiple distributors and distribute policy one by one,
 // the policy config loaded from grc.json file.
-func Init() error {
-	if config.GetGov() == nil {
-		return ErrNoConfig
-	}
-
-	for name, opts := range config.GetGov().DistMap {
-		opts.Name = name
-		f, ok := distributorPlugins[name]
-		if !ok {
-			log.Warn("unsupported plugin " + opts.Type)
-			continue
-		}
-		cd, err := f(opts)
-		if err != nil {
-			log.Error("can not init config distributor", err)
-			return err
-		}
-		distributors[name+"::"+opts.Type] = cd
-	}
-
-	if config.GetGov().MatchGroup != nil {
-		RegisterPolicySchema(KindMatchGroup, config.GetGov().MatchGroup.ValidationSpec)
-	}
-
-	if config.GetGov().Policies != nil {
-		var names []string
-		for kind, policy := range config.GetGov().Policies {
-			RegisterPolicySchema(kind, policy.ValidationSpec)
-			names = append(names, util.ToSnake(kind))
-		}
-		PolicyNames = names
-	}
-	return nil
-}
+func Init() error { _ = "STUB: not implemented"; return nil }
 
 func Create(ctx context.Context, kind, project string, spec *model.Policy) ([]byte, error) {
-	for _, cd := range distributors {
-		return cd.Create(ctx, kind, project, spec)
-	}
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func List(ctx context.Context, kind, project, app, env string) ([]byte, error) {
-	for _, cd := range distributors {
-		return cd.List(ctx, kind, project, app, env)
-	}
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func Display(ctx context.Context, project, app, env string) ([]byte, error) {
-	for _, cd := range distributors {
-		return cd.Display(ctx, project, app, env)
-	}
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func Get(ctx context.Context, kind, id, project string) ([]byte, error) {
-	for _, cd := range distributors {
-		return cd.Get(ctx, kind, id, project)
-	}
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func Delete(ctx context.Context, kind, id, project string) error {
-	for _, cd := range distributors {
-		return cd.Delete(ctx, kind, id, project)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func Update(ctx context.Context, kind, id, project string, p *model.Policy) error {
-	for _, cd := range distributors {
-		return cd.Update(ctx, kind, id, project, p)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

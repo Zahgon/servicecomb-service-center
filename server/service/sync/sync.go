@@ -20,9 +20,6 @@ package sync
 import (
 	"context"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/config"
 )
 
 var (
@@ -30,19 +27,9 @@ var (
 	once   sync.Once
 )
 
-func Enable() bool {
-	once.Do(func() {
-		if config.GetBool("sync.enableOnStart", false) {
-			enable = true
-		}
-	})
-	return enable
-}
+func Enable() bool { _ = "STUB: not implemented"; return false }
 
 func SetContext(ctx context.Context) context.Context {
-	var val string
-	if Enable() {
-		val = "1"
-	}
-	return util.SetContext(ctx, util.CtxEnableSync, val)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }

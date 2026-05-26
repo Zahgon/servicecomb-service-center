@@ -18,7 +18,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -77,31 +76,10 @@ func init() {
 		"the maximum time allowed for the request.")
 }
 
-func RootCmd() *cobra.Command {
-	return rootCmd
-}
+func RootCmd() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-func StopAndExit(code int, args ...interface{}) {
-	if len(args) == 0 {
-		os.Exit(code)
-	}
+func StopAndExit(code int, args ...interface{}) { _ = "STUB: not implemented"; return }
 
-	if code == ExitSuccess {
-		fmt.Fprintln(os.Stdout, args...)
-	} else {
-		fmt.Fprintln(os.Stderr, args...)
-	}
-	os.Exit(code)
-}
+func Run() { _ = "STUB: not implemented"; return }
 
-func Run() {
-	RootCmd().SetUsageFunc(UsageFunc)
-	// Show usage in help command
-	RootCmd().SetHelpTemplate(`{{.UsageString}}`)
-
-	err := RootCmd().Execute()
-	if err != nil {
-		StopAndExit(ExitError, err)
-	}
-	StopAndExit(ExitSuccess)
-}
+// Show usage in help command

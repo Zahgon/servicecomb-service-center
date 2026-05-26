@@ -20,13 +20,8 @@ package sd
 
 import (
 	"context"
-	"fmt"
-	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/goutil"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/config"
 	"github.com/go-chassis/foundation/gopool"
 )
 
@@ -43,89 +38,27 @@ type TypeStore struct {
 	isClose   bool
 }
 
-func (s *TypeStore) Initialize() {
-	s.ready = make(chan struct{})
-	s.goroutine = goutil.New()
-}
+func (s *TypeStore) Initialize() { _ = "STUB: not implemented"; return }
 
-func (s *TypeStore) Run() {
-	s.goroutine.Do(s.store)
-	s.goroutine.Do(s.autoClearCache)
-}
+func (s *TypeStore) Run() { _ = "STUB: not implemented"; return }
 
 func (s *TypeStore) store(ctx context.Context) {
+	_ = "STUB: not implemented"
 	// new all types
-	for t := range CacherRegister {
-		select {
-		case <-ctx.Done():
-			return
-		case <-s.getOrCreateCache(t).Ready():
-		}
-	}
-	util.SafeCloseChan(s.ready)
-	log.Debug("all caches are ready")
+	return
 }
 
-func (s *TypeStore) autoClearCache(ctx context.Context) {
-	ttl := config.GetRegistry().CacheTTL
+func (s *TypeStore) autoClearCache(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	if ttl == 0 {
-		return
-	}
+func (s *TypeStore) getOrCreateCache(t string) *MongoCacher { _ = "STUB: not implemented"; return nil }
 
-	log.Info(fmt.Sprintf("start auto clear cache in %v", ttl))
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-time.After(ttl):
-			for t := range CacherRegister {
-				cache := s.getOrCreateCache(t).Cache()
-				cache.MarkDirty()
-			}
-			log.Warn("caches are marked dirty!")
-		}
-	}
-}
+func (s *TypeStore) Stop() { _ = "STUB: not implemented"; return }
 
-func (s *TypeStore) getOrCreateCache(t string) *MongoCacher {
-	cache, ok := s.caches.Get(t)
-	if ok {
-		return cache.(*MongoCacher)
-	}
-	f, ok := CacherRegister[t]
-	if !ok {
-		log.Fatal(fmt.Sprintf("unexpected type store "+t), nil)
-	}
-	cacher := f()
-	cacher.Run()
+func (s *TypeStore) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-	s.caches.Put(t, cacher)
-	return cacher
-}
+func (s *TypeStore) TypeCacher(id string) *MongoCacher { _ = "STUB: not implemented"; return nil }
+func (s *TypeStore) Service() *MongoCacher             { _ = "STUB: not implemented"; return nil }
+func (s *TypeStore) Instance() *MongoCacher            { _ = "STUB: not implemented"; return nil }
+func (s *TypeStore) Dep() *MongoCacher                 { _ = "STUB: not implemented"; return nil }
 
-func (s *TypeStore) Stop() {
-	if s.isClose {
-		return
-	}
-	s.isClose = true
-
-	s.goroutine.Close(true)
-
-	util.SafeCloseChan(s.ready)
-
-	log.Debug("store daemon stopped")
-}
-
-func (s *TypeStore) Ready() <-chan struct{} {
-	return s.ready
-}
-
-func (s *TypeStore) TypeCacher(id string) *MongoCacher { return s.getOrCreateCache(id) }
-func (s *TypeStore) Service() *MongoCacher             { return s.TypeCacher(service) }
-func (s *TypeStore) Instance() *MongoCacher            { return s.TypeCacher(instance) }
-func (s *TypeStore) Dep() *MongoCacher                 { return s.TypeCacher(dep) }
-
-func Store() *TypeStore {
-	return store
-}
+func Store() *TypeStore { _ = "STUB: not implemented"; return nil }

@@ -19,17 +19,9 @@ package buildin
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 
-	"github.com/go-chassis/cari/discovery"
-	rbacmodel "github.com/go-chassis/cari/rbac"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
 	"github.com/apache/servicecomb-service-center/server/plugin/auth"
-	"github.com/apache/servicecomb-service-center/server/service/rbac"
 )
 
 const (
@@ -84,229 +76,62 @@ func init() {
 }
 
 func ByServiceID(r *http.Request) (*auth.ResourceScope, error) {
-	return fromQueryKey(r, ":serviceId")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func fromQueryKey(r *http.Request, queryKey string) (*auth.ResourceScope, error) {
-	ctx := r.Context()
-	apiPath, ok := ctx.Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		return nil, ErrCtxMatchPatternNotFound
-	}
-	serviceID := r.URL.Query().Get(queryKey)
-	labels, err := serviceIDToLabels(ctx, serviceID)
-	if err != nil {
-		return nil, err
-	}
-	return &auth.ResourceScope{
-		Type:   rbacmodel.GetResource(apiPath),
-		Labels: labels,
-		Verb:   rbac.MethodToVerbs[r.Method],
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func serviceIDToLabels(ctx context.Context, serviceID string) ([]map[string]string, error) {
-	service, err := datasource.GetMetadataManager().GetService(ctx, &discovery.GetServiceRequest{ServiceId: serviceID})
-	if err != nil {
-		return nil, err
-	}
-	return []map[string]string{{
-		LabelEnvironment: service.Environment,
-		LabelAppID:       service.AppId,
-		LabelServiceName: service.ServiceName,
-	}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ByServiceKey(r *http.Request) (*auth.ResourceScope, error) {
-	query := r.URL.Query()
-
-	if _, ok := query["serviceId"]; ok {
-		return fromQueryKey(r, "serviceId")
-	}
-
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		return nil, ErrCtxMatchPatternNotFound
-	}
-
-	env, err := fromServiceKeyEnv(r, query.Get(QueryEnv))
-	if err != nil {
-		return nil, err
-	}
-
-	return &auth.ResourceScope{
-		Type: rbacmodel.GetResource(apiPath),
-		Labels: []map[string]string{{
-			LabelEnvironment: env,
-			LabelAppID:       query.Get(LabelAppID),
-			LabelServiceName: query.Get(LabelServiceName),
-		}},
-		Verb: rbac.MethodToVerbs[r.Method],
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func fromServiceKeyEnv(r *http.Request, queryEnv string) (string, error) {
-	env := queryEnv
-	if len(env) > 0 {
-		return env, nil
-	}
-	consumerID := r.Header.Get(HeaderConsumerID)
-	if len(consumerID) != 0 {
-		service, err := datasource.GetMetadataManager().GetService(r.Context(), &discovery.GetServiceRequest{ServiceId: consumerID})
-		if err != nil {
-			return "", err
-		}
-		env = service.Environment
-	}
-	return env, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func ByRequestBody(r *http.Request) (*auth.ResourceScope, error) {
-	if r.Method == http.MethodGet {
-		// get or list by query string
-		return ApplyAll(r)
-	}
-	return fromRequestBody(r)
+	_ = "STUB: not implemented"
+	return nil, nil
+
+	// get or list by query string
 }
+
 func fromRequestBody(r *http.Request) (*auth.ResourceScope, error) {
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		return nil, ErrCtxMatchPatternNotFound
-	}
-
-	var (
-		labels []map[string]string
-		err    error
-	)
-	if r.Method == http.MethodDelete {
-		// batch delete
-		labels, err = deleteServicesToLabels(r)
-	} else {
-		// create service
-		labels, err = createServiceToLabels(r)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	return &auth.ResourceScope{
-		Type:   rbacmodel.GetResource(apiPath),
-		Labels: labels,
-		Verb:   rbac.MethodToVerbs[r.Method],
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// batch delete
+
+// create service
+
 func createServiceToLabels(r *http.Request) ([]map[string]string, error) {
-	message, err := rest.ReadBody(r)
-	if err != nil {
-		return nil, err
-	}
-
-	request := &discovery.CreateServiceRequest{}
-	err = json.Unmarshal(message, request)
-	if err != nil {
-		return nil, err
-	}
-
-	service := request.Service
-	if service == nil {
-		return nil, fmt.Errorf("invalid CreateServiceRequest")
-	}
-
-	return []map[string]string{{
-		LabelEnvironment: service.Environment,
-		LabelAppID:       service.AppId,
-		LabelServiceName: service.ServiceName,
-	}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func deleteServicesToLabels(r *http.Request) ([]map[string]string, error) {
-	message, err := rest.ReadBody(r)
-	if err != nil {
-		return nil, err
-	}
-
-	request := &discovery.DelServicesRequest{}
-
-	err = json.Unmarshal(message, request)
-	if err != nil {
-		return nil, err
-	}
-
-	ctx := r.Context()
-	var labels []map[string]string
-	for _, serviceID := range request.ServiceIds {
-		ls, err := serviceIDToLabels(ctx, serviceID)
-		if err != nil {
-			return nil, err
-		}
-		labels = append(labels, ls...)
-	}
-	return labels, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ByDiscoveryRequestBody(r *http.Request) (*auth.ResourceScope, error) {
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		return nil, ErrCtxMatchPatternNotFound
-	}
-
-	message, err := rest.ReadBody(r)
-	if err != nil {
-		return nil, err
-	}
-
-	request := &discovery.BatchFindInstancesRequest{}
-
-	err = json.Unmarshal(message, request)
-	if err != nil {
-		return nil, err
-	}
-
-	ctx := r.Context()
-	var labels []map[string]string
-	for _, it := range request.Instances {
-		ls, err := serviceIDToLabels(ctx, it.Instance.ServiceId)
-		if err != nil {
-			return nil, err
-		}
-		labels = append(labels, ls...)
-	}
-
-	return &auth.ResourceScope{
-		Type:   rbacmodel.GetResource(apiPath),
-		Labels: labels,
-		Verb:   "get",
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ByHeartbeatRequestBody(r *http.Request) (*auth.ResourceScope, error) {
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		return nil, ErrCtxMatchPatternNotFound
-	}
-
-	message, err := rest.ReadBody(r)
-	if err != nil {
-		return nil, err
-	}
-
-	request := &discovery.HeartbeatSetRequest{}
-
-	err = json.Unmarshal(message, request)
-	if err != nil {
-		return nil, err
-	}
-
-	ctx := r.Context()
-	var labels []map[string]string
-	for _, instance := range request.Instances {
-		ls, err := serviceIDToLabels(ctx, instance.ServiceId)
-		if err != nil {
-			return nil, err
-		}
-		labels = append(labels, ls...)
-	}
-
-	return &auth.ResourceScope{
-		Type:   rbacmodel.GetResource(apiPath),
-		Labels: labels,
-		Verb:   "update",
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -22,7 +22,6 @@ import (
 
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -39,38 +38,17 @@ type AdaptorsIndexer struct {
 // But at the cost of that, AdaptorsIndexer doesn't guarantee the correctness
 // of the search results.
 func (i *AdaptorsIndexer) Search(ctx context.Context, opts ...etcdadpt.OpOption) (*kvstore.Response, error) {
-	var (
-		response kvstore.Response
-		exists   = make(map[string]struct{})
-	)
-	for _, a := range i.Adaptors {
-		resp, err := a.Search(ctx, opts...)
-		if err != nil {
-			continue
-		}
-		for _, kv := range resp.Kvs {
-			key := util.BytesToStringWithNoCopy(kv.Key)
-			if _, ok := exists[key]; !ok {
-				exists[key] = struct{}{}
-				response.Kvs = append(response.Kvs, kv)
-			}
-		}
-		response.Count += resp.Count
-	}
-	return &response, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Creditable implements kvstore.Indexer#Creditable.
 // AdaptorsIndexer's search result's are not creditable as it ignores the
 // errors. In other words, AdaptorsIndexer makes the best efforts to search
 // data, but it does not ensure the correctness.
-func (i *AdaptorsIndexer) Creditable() bool {
-	return false
-}
+func (i *AdaptorsIndexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
-func NewAdaptorsIndexer(as []state.State) *AdaptorsIndexer {
-	return &AdaptorsIndexer{Adaptors: as}
-}
+func NewAdaptorsIndexer(as []state.State) *AdaptorsIndexer { _ = "STUB: not implemented"; return nil }
 
 // AggregatorIndexer implements kvstore.Indexer.
 // AggregatorIndexer consists of multi Indexers and it decides which Indexer to
@@ -86,46 +64,13 @@ type AggregatorIndexer struct {
 
 // Search implements kvstore.Indexer#Search.
 func (i *AggregatorIndexer) Search(ctx context.Context, opts ...etcdadpt.OpOption) (resp *kvstore.Response, err error) {
-	op := etcdadpt.OpGet(opts...)
-
-	indexer := i.LocalIndexer
-	if op.Global {
-		// request with global param then do not use local indexer
-		indexer = i.AdaptorsIndexer
-	}
-
-	if op.NoCache() || !op.Global {
-		return indexer.Search(ctx, opts...)
-	}
-
-	resp, err = i.CacheIndexer.Search(ctx, opts...)
-	if err != nil {
-		return
-	}
-
-	if resp.Count > 0 || op.CacheOnly() {
-		return resp, nil
-	}
-
-	return indexer.Search(ctx, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// request with global param then do not use local indexer
 
 // Creditable implements kvstore.Indexer#Creditable.
-func (i *AggregatorIndexer) Creditable() bool {
-	return i.AdaptorsIndexer.Creditable() &&
-		i.LocalIndexer.Creditable() &&
-		i.CacheIndexer.Creditable()
-}
+func (i *AggregatorIndexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
-func NewAggregatorIndexer(as *Aggregator) *AggregatorIndexer {
-	indexer := NewAdaptorsIndexer(as.Adaptors)
-	ai := &AggregatorIndexer{
-		CacheIndexer:    kvstore.NewCacheIndexer(as.Cache()),
-		AdaptorsIndexer: indexer,
-		LocalIndexer:    indexer,
-	}
-	if registryIndex >= 0 {
-		ai.LocalIndexer = as.Adaptors[registryIndex]
-	}
-	return ai
-}
+func NewAggregatorIndexer(as *Aggregator) *AggregatorIndexer { _ = "STUB: not implemented"; return nil }

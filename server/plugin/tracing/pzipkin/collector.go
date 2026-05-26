@@ -18,14 +18,6 @@
 package pzipkin
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
-	"strconv"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/metrics"
-	"github.com/apache/servicecomb-service-center/server/config"
 	"github.com/opentracing/opentracing-go"
 	zipkin "github.com/openzipkin/zipkin-go-opentracing"
 )
@@ -39,72 +31,17 @@ const (
 	serviceName         = "service-center"
 )
 
-func initTracer() {
-	collector, err := newCollector()
-	if err != nil {
-		log.Error("new tracing collector failed, use the noop tracer", err)
-		return
-	}
-	ipPort := metrics.InstanceName()
-	recorder := zipkin.NewRecorder(collector, false, ipPort, serviceName)
-	tracer, err := zipkin.NewTracer(recorder,
-		zipkin.TraceID128Bit(true),
-		zipkin.WithSampler(zipkin.NewCountingSampler(GetSamplerRate())))
-	if err != nil {
-		log.Error("new tracer failed", err)
-		return
-	}
-	opentracing.SetGlobalTracer(tracer)
-}
+func initTracer() { _ = "STUB: not implemented"; return }
 
 func newCollector() (collector zipkin.Collector, err error) {
-	ct := config.GetString("tracing.zipkin.collector.type", "", config.WithENV(collectorType))
-	switch ct {
-	case "server":
-		sa := GetServerEndpoint()
-		collector, err = zipkin.NewHTTPCollector(sa + "/api/v1/spans")
-		if err != nil {
-			return
-		}
-	case "file":
-		fp := GetFilePath(serviceName + ".trace")
-		collector, err = NewFileCollector(fp)
-		if err != nil {
-			return
-		}
-	default:
-		err = fmt.Errorf("unknown tracing collector type '%s'", ct)
-	}
-	return
+	_ = "STUB: not implemented"
+	return *new(zipkin.Collector), nil
 }
 
-func ZipkinTracer() opentracing.Tracer {
-	once.Do(initTracer)
-	return opentracing.GlobalTracer()
-}
+func ZipkinTracer() opentracing.Tracer { _ = "STUB: not implemented"; return *new(opentracing.Tracer) }
 
-func GetFilePath(defName string) string {
-	path := config.GetString("tracing.zipkin.collector.path", "", config.WithENV(fileCollectorPath))
-	if len(path) == 0 {
-		wd, _ := os.Getwd()
-		return filepath.Join(wd, defName)
-	}
-	return path
-}
+func GetFilePath(defName string) string { _ = "STUB: not implemented"; return "" }
 
-func GetServerEndpoint() string {
-	sa := config.GetString("tracing.zipkin.collector.endpoint", "", config.WithENV(serverCollectorAddr))
-	if len(sa) == 0 {
-		sa = "http://127.0.0.1:9411"
-	}
-	return sa
-}
+func GetServerEndpoint() string { _ = "STUB: not implemented"; return "" }
 
-func GetSamplerRate() float64 {
-	strRate := config.GetString("tracing.zipkin.sampler.rate", "", config.WithENV(samplerRate))
-	rate, err := strconv.ParseFloat(strRate, 64)
-	if rate <= 0 || err != nil {
-		return defaultSamplerRate
-	}
-	return rate
-}
+func GetSamplerRate() float64 { _ = "STUB: not implemented"; return 0 }

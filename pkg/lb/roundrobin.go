@@ -17,33 +17,11 @@
 
 package lb
 
-import "sync/atomic"
-
 type RoundRobinLB struct {
 	Endpoints []string
 	index     int32
 }
 
-func (lb *RoundRobinLB) Next() string {
-	l := len(lb.Endpoints)
-	if l == 0 {
-		return ""
-	}
-	c := atomic.LoadInt32(&lb.index)
-	if c >= int32(l)-1 {
-		atomic.StoreInt32(&lb.index, 0)
-		return lb.Endpoints[0]
-	} else if atomic.CompareAndSwapInt32(&lb.index, c, c+1) {
-		return lb.Endpoints[c+1]
-	}
-	return lb.Endpoints[atomic.LoadInt32(&lb.index)]
-}
+func (lb *RoundRobinLB) Next() string { _ = "STUB: not implemented"; return "" }
 
-func NewRoundRobinLB(endpoints []string) *RoundRobinLB {
-	lb := &RoundRobinLB{
-		Endpoints: make([]string, len(endpoints)),
-		index:     -1,
-	}
-	copy(lb.Endpoints, endpoints)
-	return lb
-}
+func NewRoundRobinLB(endpoints []string) *RoundRobinLB { _ = "STUB: not implemented"; return nil }

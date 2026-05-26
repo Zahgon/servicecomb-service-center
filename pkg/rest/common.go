@@ -18,8 +18,6 @@
 package rest
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
@@ -51,39 +49,17 @@ const (
 	DefaultConnPoolPerHostSize = 5
 )
 
-func isValidMethod(method string) bool {
-	switch method {
-	case http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete:
-		return true
-	default:
-		return false
-	}
-}
+func isValidMethod(method string) bool { _ = "STUB: not implemented"; return false }
 
 func match(s string, f func(c byte) bool, exclude byte, i int) (matched string, next byte, j int) {
-	j = i
-	for j < len(s) && f(s[j]) && s[j] != exclude {
-		j++
-	}
-
-	if j < len(s) {
-		next = s[j]
-	}
-	return s[i:j], next, j
+	_ = "STUB: not implemented"
+	return "", 0, 0
 }
 
-func matchParticipial(c byte) bool {
-	return c != '/'
-}
+func matchParticipial(c byte) bool { _ = "STUB: not implemented"; return false }
 
-func isAlpha(ch byte) bool {
-	return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch == '_'
-}
+func isAlpha(ch byte) bool { _ = "STUB: not implemented"; return false }
 
-func isDigit(ch byte) bool {
-	return '0' <= ch && ch <= '9'
-}
+func isDigit(ch byte) bool { _ = "STUB: not implemented"; return false }
 
-func isAlnum(ch byte) bool {
-	return isAlpha(ch) || isDigit(ch)
-}
+func isAlnum(ch byte) bool { _ = "STUB: not implemented"; return false }

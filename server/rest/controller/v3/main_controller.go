@@ -42,13 +42,9 @@ type MainService struct {
 	v4.MainService
 }
 
-func (s *MainService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/version", Func: s.GetVersion},
-		{Method: http.MethodGet, Path: "/health", Func: s.ClusterHealth},
-	}
-}
+func (s *MainService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
 
 func (s *MainService) GetVersion(w http.ResponseWriter, r *http.Request) {
-	rest.WriteResponse(w, r, nil, versionJSONCache)
+	_ = "STUB: not implemented"
+	return
 }

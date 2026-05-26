@@ -18,7 +18,6 @@
 package kvstore
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/parser"
@@ -35,64 +34,28 @@ type Options struct {
 	Parser       parser.Parser
 }
 
-func (opts *Options) String() string {
-	return fmt.Sprintf("{key: %s, timeout: %s, period: %s}",
-		opts.Key, opts.Timeout, opts.Period)
-}
+func (opts *Options) String() string { _ = "STUB: not implemented"; return "" }
 
-func (opts *Options) WithPrefix(key string) *Options {
-	opts.Key = key
-	return opts
-}
+func (opts *Options) WithPrefix(key string) *Options { _ = "STUB: not implemented"; return nil }
 
-func (opts *Options) WithInitSize(size int) *Options {
-	opts.InitSize = size
-	return opts
-}
+func (opts *Options) WithInitSize(size int) *Options { _ = "STUB: not implemented"; return nil }
 
-func (opts *Options) WithTimeout(ot time.Duration) *Options {
-	opts.Timeout = ot
-	return opts
-}
+func (opts *Options) WithTimeout(ot time.Duration) *Options { _ = "STUB: not implemented"; return nil }
 
-func (opts *Options) WithPeriod(ot time.Duration) *Options {
-	opts.Period = ot
-	return opts
-}
+func (opts *Options) WithPeriod(ot time.Duration) *Options { _ = "STUB: not implemented"; return nil }
 
 func (opts *Options) WithDeferHandler(h DeferHandler) *Options {
-	opts.DeferHandler = h
-	return opts
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (opts *Options) WithEventFunc(f EventFunc) *Options {
-	opts.OnEvent = f
-	return opts
-}
+func (opts *Options) WithEventFunc(f EventFunc) *Options { _ = "STUB: not implemented"; return nil }
 
-func (opts *Options) AppendEventFunc(f EventFunc) *Options {
-	if prev := opts.OnEvent; prev != nil {
-		next := f
-		f = func(evt Event) {
-			prev(evt)
-			next(evt)
-		}
-	}
-	opts.OnEvent = f
-	return opts
-}
+func (opts *Options) AppendEventFunc(f EventFunc) *Options { _ = "STUB: not implemented"; return nil }
 
 func (opts *Options) WithParser(parser parser.Parser) *Options {
-	opts.Parser = parser
-	return opts
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func NewOptions() *Options {
-	return &Options{
-		Key:      "/",
-		Timeout:  DefaultTimeout,
-		Period:   time.Second,
-		InitSize: DefaultCacheInitSize,
-		Parser:   parser.BytesParser,
-	}
-}
+func NewOptions() *Options { _ = "STUB: not implemented"; return nil }

@@ -19,8 +19,6 @@ package schema
 
 import (
 	"context"
-	"crypto/md5"
-	"fmt"
 
 	"github.com/go-chassis/cari/discovery"
 )
@@ -85,6 +83,4 @@ type DAO interface {
 	DeleteNoRefContents(ctx context.Context) (int, error)
 }
 
-func Hash(schemaID, content string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(schemaID+": "+content)))
-}
+func Hash(schemaID, content string) string { _ = "STUB: not implemented"; return "" }

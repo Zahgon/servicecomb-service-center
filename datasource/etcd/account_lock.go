@@ -19,90 +19,33 @@ package etcd
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
 	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/little-cui/etcdadpt"
 )
 
 func (al *RbacDAO) UpsertLock(ctx context.Context, lock *rbac.Lock) error {
-	value, err := json.Marshal(lock)
-	if err != nil {
-		log.Error("account lock is invalid", err)
-		return err
-	}
-	key := lock.Key
-	etcdKey := path.GenerateAccountLockKey(key)
-	err = etcdadpt.PutBytes(ctx, etcdKey, value)
-	if err != nil {
-		log.Error("can not save account lock", err)
-		return err
-	}
-	log.Info(fmt.Sprintf("%s is locked, release at %d", key, lock.ReleaseAt))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (al *RbacDAO) GetLock(ctx context.Context, key string) (*rbac.Lock, error) {
-	kv, err := etcdadpt.Get(ctx, path.GenerateAccountLockKey(key))
-	if err != nil {
-		return nil, err
-	}
-	if kv == nil {
-		return nil, rbac.ErrAccountLockNotExist
-	}
-	lock := &rbac.Lock{}
-	err = json.Unmarshal(kv.Value, lock)
-	if err != nil {
-		log.Error(fmt.Sprintf("key %s format invalid", key), err)
-		return nil, err
-	}
-	return lock, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (al *RbacDAO) ListLock(ctx context.Context) ([]*rbac.Lock, int64, error) {
-	kvs, n, err := etcdadpt.List(ctx, path.GenerateAccountLockKey(""))
-	if err != nil {
-		return nil, 0, err
-	}
-	locks := make([]*rbac.Lock, 0, n)
-	for _, v := range kvs {
-		lock := &rbac.Lock{}
-		err = json.Unmarshal(v.Value, lock)
-		if err != nil {
-			log.Error("account lock info format invalid:", err)
-			continue //do not fail if some account is invalid
-		}
-		locks = append(locks, lock)
-	}
-	return locks, n, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
+//do not fail if some account is invalid
+
 func (al *RbacDAO) DeleteLock(ctx context.Context, key string) error {
-	_, err := etcdadpt.Delete(ctx, path.GenerateAccountLockKey(key))
-	if err != nil {
-		log.Error(fmt.Sprintf("remove lock %s failed", key), err)
-		return rbac.ErrCannotReleaseLock
-	}
-	log.Info(fmt.Sprintf("%s is released", key))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (al *RbacDAO) DeleteLockList(ctx context.Context, keys []string) error {
-	var opts []etcdadpt.OpOptions
-	for _, key := range keys {
-		opts = append(opts, etcdadpt.OpDel(etcdadpt.WithStrKey(path.GenerateAccountLockKey(key))))
-	}
-	if len(opts) == 0 {
-		return nil
-	}
-	err := etcdadpt.Txn(ctx, opts)
-	if err != nil {
-		log.Error(fmt.Sprintf("remove locks %v failed", keys), err)
-		return rbac.ErrCannotReleaseLock
-	}
-	log.Info(fmt.Sprintf("%v are released", keys))
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -26,23 +26,8 @@ type Pool struct {
 	pool sync.Pool
 }
 
-func (p *Pool) Get() *bytes.Buffer {
-	return p.pool.Get().(*bytes.Buffer)
-}
+func (p *Pool) Get() *bytes.Buffer { _ = "STUB: not implemented"; return nil }
 
-func (p *Pool) Put(buf *bytes.Buffer) {
-	buf.Reset()
-	p.pool.Put(buf)
-}
+func (p *Pool) Put(buf *bytes.Buffer) { _ = "STUB: not implemented"; return }
 
-func NewPool(s int) *Pool {
-	return &Pool{
-		pool: sync.Pool{
-			New: func() interface{} {
-				b := bytes.NewBuffer(make([]byte, s))
-				b.Reset()
-				return b
-			},
-		},
-	}
-}
+func NewPool(s int) *Pool { _ = "STUB: not implemented"; return nil }

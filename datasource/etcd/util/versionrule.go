@@ -18,53 +18,24 @@
 package util
 
 import (
-	"sort"
-	"strings"
-
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/pkg/validate"
 )
 
 type VersionRule func(sorted []string, kvs []*kvstore.KeyValue, start, end string) []string
 
 func Sort(kvs []*kvstore.KeyValue, cmp func(start, end string) bool) {
-	sorter := newSorter(kvs, cmp, true)
-	sort.Sort(sorter)
+	_ = "STUB: not implemented"
+	return
 }
 
 func newSorter(kvs []*kvstore.KeyValue, cmp func(start string, end string) bool, ref bool) *serviceKeySorter {
-	tmp := kvs
-	if !ref {
-		tmp = make([]*kvstore.KeyValue, len(kvs))
-	}
-	sorter := &serviceKeySorter{
-		sortArr: make([]string, len(kvs)),
-		kvs:     tmp,
-		cmp:     cmp,
-	}
-	for i, kv := range kvs {
-		key := util.BytesToStringWithNoCopy(kv.Key)
-		ver := key[strings.LastIndex(key, "/")+1:]
-		sorter.sortArr[i] = ver
-		sorter.kvs[i] = kv
-	}
-	return sorter
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vr VersionRule) Match(kvs []*kvstore.KeyValue, ops ...string) []string {
-	sorter := newSorter(kvs, Larger, false)
-	sort.Sort(sorter)
-
-	args := [2]string{}
-	switch {
-	case len(ops) > 1:
-		args[1] = ops[1]
-		fallthrough
-	case len(ops) > 0:
-		args[0] = ops[0]
-	}
-	return vr(sorter.sortArr, sorter.kvs, args[0], args[1])
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type serviceKeySorter struct {
@@ -73,132 +44,48 @@ type serviceKeySorter struct {
 	cmp     func(i, j string) bool
 }
 
-func (sks *serviceKeySorter) Len() int {
-	return len(sks.sortArr)
-}
+func (sks *serviceKeySorter) Len() int { _ = "STUB: not implemented"; return 0 }
 
-func (sks *serviceKeySorter) Swap(i, j int) {
-	sks.sortArr[i], sks.sortArr[j] = sks.sortArr[j], sks.sortArr[i]
-	sks.kvs[i], sks.kvs[j] = sks.kvs[j], sks.kvs[i]
-}
+func (sks *serviceKeySorter) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
-func (sks *serviceKeySorter) Less(i, j int) bool {
-	return sks.cmp(sks.sortArr[i], sks.sortArr[j])
-}
+func (sks *serviceKeySorter) Less(i, j int) bool { _ = "STUB: not implemented"; return false }
 
-func Larger(start, end string) bool {
-	s, _ := validate.VersionToInt64(start)
-	e, _ := validate.VersionToInt64(end)
-	return s > e
-}
+func Larger(start, end string) bool { _ = "STUB: not implemented"; return false }
 
-func LessEqual(start, end string) bool {
-	return !Larger(start, end)
-}
+func LessEqual(start, end string) bool { _ = "STUB: not implemented"; return false }
 
 // Latest return latest version kv
 func Latest(sorted []string, kvs []*kvstore.KeyValue, _, _ string) []string {
-	if len(sorted) == 0 {
-		return []string{}
-	}
-	return []string{kvs[0].Value.(string)}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Range return start <= version < end
 func Range(sorted []string, kvs []*kvstore.KeyValue, start, end string) []string {
-	total := len(sorted)
-	if total == 0 {
-		return []string{}
-	}
-
-	result := make([]string, 0, total)
-	firstFound := false
-
-	if Larger(start, end) {
-		start, end = end, start
-	}
-
-	eldest, latest := sorted[total-1], sorted[0]
-	if Larger(start, latest) || LessEqual(end, eldest) {
-		return []string{}
-	}
-
-	for i, k := range sorted {
-		if !firstFound {
-			if LessEqual(end, k) {
-				continue
-			}
-			firstFound = true
-		} else if Larger(start, k) {
-			break
-		}
-		// end >= k >= start
-		result = append(result, kvs[i].Value.(string))
-	}
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// end >= k >= start
 
 // AtLess return version >= start
 func AtLess(sorted []string, kvs []*kvstore.KeyValue, start, _ string) []string {
-	total := len(sorted)
-	if total == 0 {
-		return []string{}
-	}
-
-	result := make([]string, 0, total)
-	if Larger(start, sorted[0]) {
-		return []string{}
-	}
-
-	for i, k := range sorted {
-		if Larger(start, k) {
-			return result[:i]
-		}
-		result = append(result, kvs[i].Value.(string))
-	}
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func ParseVersionRule(versionRule string) func(kvs []*kvstore.KeyValue) []string {
-	if len(versionRule) == 0 {
-		return nil
-	}
-
-	rangeIdx := strings.Index(versionRule, "-")
-	switch {
-	case versionRule == "latest":
-		return func(kvs []*kvstore.KeyValue) []string {
-			return VersionRule(Latest).Match(kvs)
-		}
-	case versionRule[len(versionRule)-1:] == "+":
-		// 取最低版本及高版本集合
-		start := versionRule[:len(versionRule)-1]
-		return func(kvs []*kvstore.KeyValue) []string {
-			return VersionRule(AtLess).Match(kvs, start)
-		}
-	case rangeIdx > 0:
-		// 取版本范围集合
-		start := versionRule[:rangeIdx]
-		end := versionRule[rangeIdx+1:]
-		return func(kvs []*kvstore.KeyValue) []string {
-			return VersionRule(Range).Match(kvs, start, end)
-		}
-	default:
-		// 精确匹配
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func VersionMatchRule(version string, versionRule string) bool {
-	match := ParseVersionRule(versionRule)
-	if match == nil {
-		return version == versionRule
-	}
+// 取最低版本及高版本集合
 
-	return len(match([]*kvstore.KeyValue{
-		{
-			Key:   util.StringToBytesWithNoCopy("/" + version),
-			Value: "",
-		},
-	})) > 0
+// 取版本范围集合
+
+// 精确匹配
+
+func VersionMatchRule(version string, versionRule string) bool {
+	_ = "STUB: not implemented"
+	return false
 }

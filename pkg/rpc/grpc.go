@@ -27,12 +27,6 @@ func init() {
 	registerFuncs = make([]RegisterServiceFunc, 0, 5)
 }
 
-func RegisterService(f RegisterServiceFunc) {
-	registerFuncs = append(registerFuncs, f)
-}
+func RegisterService(f RegisterServiceFunc) { _ = "STUB: not implemented"; return }
 
-func RegisterGRpcServer(s *grpc.Server) {
-	for _, f := range registerFuncs {
-		f(s)
-	}
-}
+func RegisterGRpcServer(s *grpc.Server) { _ = "STUB: not implemented"; return }

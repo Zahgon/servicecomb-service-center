@@ -18,12 +18,7 @@
 package writer
 
 import (
-	"os"
-	"sort"
-	"strconv"
 	"time"
-
-	"github.com/olekukonko/tablewriter"
 )
 
 const Day = time.Hour * 24
@@ -35,45 +30,10 @@ type Printer interface {
 	Sorter() *RecordsSorter
 }
 
-func TimeFormat(delta time.Duration) string {
-	switch {
-	case delta < time.Minute:
-		return strconv.FormatFloat(delta.Seconds(), 'f', 0, 64) + "s"
-	case delta < time.Hour:
-		return strconv.FormatFloat(delta.Minutes(), 'f', 0, 64) + "m"
-	case delta < Day:
-		return strconv.FormatFloat(delta.Hours(), 'f', 0, 64) + "h"
-	default:
-		return strconv.FormatFloat(float64(delta/Day), 'f', 0, 64) + "d"
-	}
-}
+func TimeFormat(delta time.Duration) string { _ = "STUB: not implemented"; return "" }
 
-func Reshape(maxWidth int, line []string) []string {
-	for i, col := range line {
-		if len(col)-maxWidth > 3 {
-			line[i] = col[:maxWidth] + "..."
-		}
-	}
-	return line
-}
+func Reshape(maxWidth int, line []string) []string { _ = "STUB: not implemented"; return nil }
 
-func MakeTable(tableName []string, tableContent [][]string) {
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader(tableName)
-	table.SetBorder(false)
-	for _, v := range tableContent {
-		table.Append(v)
-	}
-	table.Render()
-}
+func MakeTable(tableName []string, tableContent [][]string) { _ = "STUB: not implemented"; return }
 
-func PrintTable(p Printer) {
-	body := p.PrintBody()
-	sorter := p.Sorter()
-	if sorter == nil {
-		sorter = NewRecordsSorter(nil)
-	}
-	sorter.Records = body
-	sort.Sort(sorter)
-	MakeTable(p.PrintTitle(), body)
-}
+func PrintTable(p Printer) { _ = "STUB: not implemented"; return }

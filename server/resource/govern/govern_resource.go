@@ -20,13 +20,8 @@ package govern
 import (
 	"net/http"
 	"net/url"
-	"strings"
 
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	governsvc "github.com/apache/servicecomb-service-center/server/service/govern"
-	pb "github.com/go-chassis/cari/discovery"
-	"github.com/go-chassis/foundation/stringutil"
 )
 
 // Service 治理相关接口服务
@@ -35,102 +30,36 @@ type Resource struct {
 }
 
 // URLPatterns 路由
-func (res *Resource) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/v4/:project/govern/microservices/:serviceId", Func: res.GetService},
-		{Method: http.MethodGet, Path: "/v4/:project/govern/relations", Func: res.Draw},
-		{Method: http.MethodGet, Path: "/v4/:project/govern/microservices", Func: res.ListService},
-		{Method: http.MethodGet, Path: "/v4/:project/govern/apps", Func: res.ListApp},
-		{Method: http.MethodGet, Path: "/v4/:project/govern/statistics", Func: res.GetOverview},
-	}
-}
+func (res *Resource) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
 
 // Draw 获取依赖连接图详细依赖关系
 func (res *Resource) Draw(w http.ResponseWriter, r *http.Request) {
-	graph, err := governsvc.Draw(r.Context(), util.StringTRUE(r.URL.Query().Get("withShared")))
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, graph)
+	_ = "STUB: not implemented"
+	return
 }
 
 // GetService 查询服务详细信息
 func (res *Resource) GetService(w http.ResponseWriter, r *http.Request) {
-	serviceID := r.URL.Query().Get(":serviceId")
-	request := &pb.GetServiceRequest{
-		ServiceId: serviceID,
-	}
-	ctx := r.Context()
-	serviceDetail, err := governsvc.GetServiceDetail(ctx, request)
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, &pb.GetServiceDetailResponse{Service: serviceDetail})
+	_ = "STUB: not implemented"
+	return
 }
 
 func (res *Resource) ListService(w http.ResponseWriter, r *http.Request) {
-	request := &pb.GetServicesInfoRequest{}
-	ctx := r.Context()
-	query := r.URL.Query()
-	optsStr := query.Get("options")
-	request.Options = strings.Split(optsStr, ",")
-	request.AppId = query.Get("appId")
-	request.ServiceName = query.Get("serviceName")
-	request.Environment = query.Get("env")
-	request.WithShared = util.StringTRUE(query.Get("withShared"))
-	request.Properties = ParseProperties(query, "property")
-	countOnly := query.Get("countOnly")
-	if countOnly != "0" && countOnly != "1" && strings.TrimSpace(countOnly) != "" {
-		rest.WriteError(w, pb.ErrInvalidParams, "parameter countOnly must be 1 or 0")
-		return
-	}
-	if countOnly == "1" {
-		request.CountOnly = true
-	}
-	resp, err := governsvc.ListServiceDetail(ctx, request)
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, resp)
+	_ = "STUB: not implemented"
+	return
 }
 
 func ParseProperties(query url.Values, key string) map[string]string {
-	propertyList := query[key]
-	properties := make(map[string]string, len(propertyList))
-	for _, kv := range propertyList {
-		if !strings.Contains(kv, ":") {
-			properties[kv] = ""
-			continue
-		}
-
-		k, v := stringutil.SplitToTwo(kv, ":")
-		properties[k] = v
-	}
-	return properties
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (res *Resource) GetOverview(w http.ResponseWriter, r *http.Request) {
-	st, err := governsvc.GetOverview(r.Context(), &pb.GetServicesRequest{})
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, &pb.GetServicesInfoStatisticsResponse{Statistics: st})
+	_ = "STUB: not implemented"
+	return
 }
 
 func (res *Resource) ListApp(w http.ResponseWriter, r *http.Request) {
-	request := &pb.GetAppsRequest{}
-	ctx := r.Context()
-	query := r.URL.Query()
-	request.Environment = query.Get("env")
-	request.WithShared = util.StringTRUE(query.Get("withShared"))
-	resp, err := governsvc.ListApp(ctx, request)
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, resp)
+	_ = "STUB: not implemented"
+	return
 }

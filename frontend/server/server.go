@@ -18,58 +18,12 @@
 package server
 
 import (
-	"log"
-	"net/url"
-	"os"
-	"path/filepath"
-
-	"github.com/apache/servicecomb-service-center/frontend/schema"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
-func Serve(c Config) {
-	e := echo.New()
-	e.HideBanner = true
-	// handle all requests by serving a file of the same name
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("Cant get cwd, error: %s", err)
-	}
-	staticPath := filepath.Join(dir, "app")
-	e.Static("/", staticPath)
+func Serve(c Config) { _ = "STUB: not implemented"; return }
 
-	m := schema.Mux{
-		Disable:        os.Getenv("SCHEMA_DISABLE") == "true",
-		SchemaTestCIDR: c.EndpointCIDR,
-	}
-	e.Any("/testSchema/*", m.SchemaHandleFunc)
-
-	scProxy(c, e)
-
-	log.Printf("Error: %s\n", e.Start(c.FrontendAddr))
-}
+// handle all requests by serving a file of the same name
 
 // setup proxy for requests to service center
-func scProxy(c Config, e *echo.Echo) {
-	scURL, err := url.Parse(c.SCAddr)
-	if err != nil {
-		log.Fatalf("Error parsing service center address:%s, err:%s", c.SCAddr, err)
-	}
-
-	targets := []*middleware.ProxyTarget{
-		{
-			URL: scURL,
-		},
-	}
-	g := e.Group("/sc")
-	balancer := middleware.NewRoundRobinBalancer(targets)
-	pcfg := middleware.ProxyConfig{
-		Balancer: balancer,
-		Skipper:  middleware.DefaultSkipper,
-		Rewrite: map[string]string{
-			"/sc/*": "/$1",
-		},
-	}
-	g.Use(middleware.ProxyWithConfig(pcfg))
-}
+func scProxy(c Config, e *echo.Echo) { _ = "STUB: not implemented"; return }

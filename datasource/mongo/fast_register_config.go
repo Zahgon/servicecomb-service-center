@@ -19,8 +19,6 @@ package mongo
 
 import (
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/server/config"
 )
 
 var (
@@ -32,9 +30,4 @@ type FastRegConfig struct {
 	QueueSize int
 }
 
-func FastRegConfiguration() *FastRegConfig {
-	configOnce.Do(func() {
-		fastRegConfig.QueueSize = config.GetInt("registry.fastRegistration.queueSize", 0)
-	})
-	return &fastRegConfig
-}
+func FastRegConfiguration() *FastRegConfig { _ = "STUB: not implemented"; return nil }

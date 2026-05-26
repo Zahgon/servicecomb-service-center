@@ -18,11 +18,8 @@
 package cache
 
 import (
-	"context"
-	"sort"
 	"sync"
 
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
@@ -47,16 +44,6 @@ var (
 )
 
 func getOrCreateClustersIndex() ClustersIndex {
-	buildClustersIndexOnce.Do(func() {
-		var clusters []string
-		resp, _ := datasource.GetSCManager().GetClusters(context.Background())
-		for name := range resp {
-			clusters = append(clusters, name)
-		}
-		sort.Strings(clusters)
-		for i, name := range clusters {
-			clustersIndex[name] = i
-		}
-	})
-	return clustersIndex
+	_ = "STUB: not implemented"
+	return *new(ClustersIndex)
 }

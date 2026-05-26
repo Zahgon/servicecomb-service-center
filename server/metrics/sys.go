@@ -19,14 +19,10 @@ package metrics
 
 import (
 	"context"
-	"fmt"
-	"runtime"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/metrics"
 	helper "github.com/apache/servicecomb-service-center/pkg/prometheus"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/go-chassis/foundation/gopool"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -47,31 +43,4 @@ func init() {
 	gopool.Go(AutoReportCPUUsage)
 }
 
-func AutoReportCPUUsage(ctx context.Context) {
-	var (
-		cpuTotal float64
-		cpuProc  float64
-		cpus     = runtime.NumCPU()
-	)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-time.After(durationReportCPUUsage):
-			pt, ct := util.GetProcCPUUsage()
-			if pt <= 0 && ct <= 0 {
-				log.Warn(fmt.Sprintf("can not get proc cpu usage of current os %s/%s", runtime.GOOS, runtime.GOARCH))
-				return
-			}
-
-			diff := ct - cpuTotal
-			if diff <= 0 {
-				log.Warn("the current cpu usage is the same as the previous period")
-				continue
-			}
-			cpuGauge.WithLabelValues(metrics.InstanceName()).Set(
-				(pt - cpuProc) * float64(cpus) / diff)
-			cpuTotal, cpuProc = ct, pt
-		}
-	}
-}
+func AutoReportCPUUsage(ctx context.Context) { _ = "STUB: not implemented"; return }

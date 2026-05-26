@@ -29,6 +29,4 @@ type AuditLogger interface {
 	Record(r *http.Request, responseHeaders http.Header)
 }
 
-func Record(r *http.Request, responseHeaders http.Header) {
-	plugin.Plugins().Instance(AUDITLOG).(AuditLogger).Record(r, responseHeaders)
-}
+func Record(r *http.Request, responseHeaders http.Header) { _ = "STUB: not implemented"; return }

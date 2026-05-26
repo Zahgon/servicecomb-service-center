@@ -18,8 +18,6 @@
 package alarm
 
 import (
-	"fmt"
-
 	"github.com/apache/servicecomb-service-center/pkg/event"
 	"github.com/apache/servicecomb-service-center/server/alarm/model"
 )
@@ -47,42 +45,34 @@ const (
 
 var ALARM = event.RegisterType("ALARM", 0)
 
-func FieldBool(key string, v bool) model.Field {
-	return model.Field{Key: key, Value: v}
-}
+func FieldBool(key string, v bool) model.Field { _ = "STUB: not implemented"; return *new(model.Field) }
 
 func FieldString(key string, v string) model.Field {
-	return model.Field{Key: key, Value: v}
+	_ = "STUB: not implemented"
+	return *new(model.Field)
 }
 
 func FieldInt64(key string, v int64) model.Field {
-	return model.Field{Key: key, Value: v}
+	_ = "STUB: not implemented"
+	return *new(model.Field)
 }
 
-func FieldInt(key string, v int) model.Field {
-	return model.Field{Key: key, Value: v}
-}
+func FieldInt(key string, v int) model.Field { _ = "STUB: not implemented"; return *new(model.Field) }
 
 func FieldFloat64(key string, v float64) model.Field {
-	return model.Field{Key: key, Value: v}
+	_ = "STUB: not implemented"
+	return *new(model.Field)
 }
 
 func AdditionalContext(format string, args ...interface{}) model.Field {
-	return FieldString(FieldAdditionalContext, fmt.Sprintf(format, args...))
+	_ = "STUB: not implemented"
+	return *new(model.Field)
 }
 
-func ListAll() []*model.AlarmEvent {
-	return Center().ListAll()
-}
+func ListAll() []*model.AlarmEvent { _ = "STUB: not implemented"; return nil }
 
-func Raise(id model.ID, fields ...model.Field) error {
-	return Center().Raise(id, fields...)
-}
+func Raise(id model.ID, fields ...model.Field) error { _ = "STUB: not implemented"; return nil }
 
-func Clear(id model.ID) error {
-	return Center().Clear(id)
-}
+func Clear(id model.ID) error { _ = "STUB: not implemented"; return nil }
 
-func ClearAll() {
-	Center().ClearAll()
-}
+func ClearAll() { _ = "STUB: not implemented"; return }

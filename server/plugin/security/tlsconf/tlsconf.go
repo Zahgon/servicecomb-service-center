@@ -32,19 +32,10 @@ type TLSConfig interface {
 	ServerConfig() (*tls.Config, error)
 }
 
-func ClientConfig() (*tls.Config, error) {
-	return plugin.Plugins().Instance(TLS).(TLSConfig).ClientConfig()
-}
+func ClientConfig() (*tls.Config, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func ServerConfig() (*tls.Config, error) {
-	return plugin.Plugins().Instance(TLS).(TLSConfig).ServerConfig()
-}
+func ServerConfig() (*tls.Config, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func Init(opts Options) error {
-	options = opts
-	return nil
-}
+func Init(opts Options) error { _ = "STUB: not implemented"; return nil }
 
-func GetOptions() Options {
-	return options
-}
+func GetOptions() Options { _ = "STUB: not implemented"; return *new(Options) }

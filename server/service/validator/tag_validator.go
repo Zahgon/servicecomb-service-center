@@ -21,7 +21,6 @@ import (
 	"regexp"
 
 	"github.com/apache/servicecomb-service-center/pkg/validate"
-	quotasvc "github.com/apache/servicecomb-service-center/server/service/quota"
 	"github.com/go-chassis/cari/discovery"
 )
 
@@ -36,46 +35,30 @@ var (
 	tagRegex, _ = regexp.Compile(`^[a-zA-Z][a-zA-Z0-9_\-.]{0,63}$`)
 )
 
-func GetTagsReqValidator() *validate.Validator {
-	return getTagsReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-	})
-}
+func GetTagsReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func AddTagsReqValidator() *validate.Validator {
-	return addTagsReqValidator.Init(func(v *validate.Validator) {
-		max := int(quotasvc.TagQuota())
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("Tags", &validate.Rule{Max: max, Regexp: tagRegex})
-	})
-}
+func AddTagsReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func UpdateTagReqValidator() *validate.Validator {
-	return updateTagReqValidator.Init(func(v *validate.Validator) {
-		tagRule := &validate.Rule{Regexp: tagRegex}
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("Key", tagRule)
-		v.AddRule("Value", tagRule)
-	})
-}
+func UpdateTagReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func DeleteTagReqValidator() *validate.Validator {
-	return deleteTagReqValidator.Init(func(v *validate.Validator) {
-		max := int(quotasvc.TagQuota())
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("Keys", &validate.Rule{Min: 1, Max: max, Regexp: tagRegex})
-	})
-}
+func DeleteTagReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
 func ValidateAddServiceTagsRequest(v *discovery.AddServiceTagsRequest) error {
-	return AddTagsReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUpdateServiceTagRequest(v *discovery.UpdateServiceTagRequest) error {
-	return UpdateTagReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateDeleteServiceTagsRequest(v *discovery.DeleteServiceTagsRequest) error {
-	return DeleteTagReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetServiceTagsRequest(v *discovery.GetServiceTagsRequest) error {
-	return GetTagsReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }

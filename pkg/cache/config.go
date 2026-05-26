@@ -24,27 +24,12 @@ type Config struct {
 	max int64
 }
 
-func (c *Config) TTL() time.Duration {
-	return c.ttl
-}
+func (c *Config) TTL() time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
-func (c *Config) WithTTL(ttl time.Duration) *Config {
-	c.ttl = ttl
-	return c
-}
+func (c *Config) WithTTL(ttl time.Duration) *Config { _ = "STUB: not implemented"; return nil }
 
-func (c *Config) MaxSize() int64 {
-	return c.max
-}
+func (c *Config) MaxSize() int64 { _ = "STUB: not implemented"; return 0 }
 
-func (c *Config) WithMaxSize(s int64) *Config {
-	c.max = s
-	return c
-}
+func (c *Config) WithMaxSize(s int64) *Config { _ = "STUB: not implemented"; return nil }
 
-func Configure() *Config {
-	return &Config{
-		ttl: 5 * time.Minute,
-		max: 5000,
-	}
-}
+func Configure() *Config { _ = "STUB: not implemented"; return nil }

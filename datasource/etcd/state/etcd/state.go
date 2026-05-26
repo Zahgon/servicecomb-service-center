@@ -18,10 +18,7 @@
 package etcd
 
 import (
-	"fmt"
-
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 // State implements kvstore.State.
@@ -31,37 +28,10 @@ type State struct {
 	kvstore.Indexer
 }
 
-func (se *State) Run() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Run()
-	}
-}
+func (se *State) Run() { _ = "STUB: not implemented"; return }
 
-func (se *State) Stop() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Stop()
-	}
-}
+func (se *State) Stop() { _ = "STUB: not implemented"; return }
 
-func (se *State) Ready() <-chan struct{} {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		return r.Ready()
-	}
-	return closedCh
-}
+func (se *State) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-func NewEtcdState(name string, cfg *kvstore.Options) *State {
-	var adaptor State
-	switch {
-	case cfg.InitSize > 0:
-		kvCache := kvstore.NewKvCache(name, cfg)
-		adaptor.Cacher = NewKvCacher(cfg, kvCache)
-		adaptor.Indexer = NewCacheIndexer(cfg, kvCache)
-	default:
-		log.Info(fmt.Sprintf("core will not cache '%s' and ignore all events of it, init size: %d",
-			name, cfg.InitSize))
-		adaptor.Cacher = kvstore.NullCacher
-		adaptor.Indexer = NewEtcdIndexer(cfg.Key, cfg.Parser)
-	}
-	return &adaptor
-}
+func NewEtcdState(name string, cfg *kvstore.Options) *State { _ = "STUB: not implemented"; return nil }

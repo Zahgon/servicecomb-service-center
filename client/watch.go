@@ -19,13 +19,9 @@ package client
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"log"
 
 	pb "github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/pkg/errsvc"
-	"github.com/gorilla/websocket"
 )
 
 const (
@@ -33,29 +29,6 @@ const (
 )
 
 func (c *Client) Watch(ctx context.Context, domain, project, selfServiceID string, callback func(*pb.WatchInstanceResponse)) *errsvc.Error {
-	headers := c.CommonHeaders(ctx)
-	headers.Set("X-Domain-Name", domain)
-
-	conn, err := c.WebsocketDial(ctx, fmt.Sprintf(apiWatcherURL, project, selfServiceID), headers)
-	if err != nil {
-		return pb.NewError(pb.ErrInternal, err.Error())
-	}
-
-	for {
-		messageType, message, err := conn.ReadMessage()
-		if err != nil {
-			log.Println(err)
-			break
-		}
-		if messageType == websocket.TextMessage {
-			data := &pb.WatchInstanceResponse{}
-			err := json.Unmarshal(message, data)
-			if err != nil {
-				log.Println(err)
-				break
-			}
-			callback(data)
-		}
-	}
-	return pb.NewError(pb.ErrInternal, err.Error())
+	_ = "STUB: not implemented"
+	return nil
 }

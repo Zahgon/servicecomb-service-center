@@ -18,14 +18,9 @@
 package rpc
 
 import (
-	"crypto/tls"
 	"errors"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/resolver"
-	"google.golang.org/grpc/resolver/manual"
 )
 
 var (
@@ -44,44 +39,16 @@ type TLSConfig struct {
 }
 
 func GetPickFirstLbConn(config *Config) (*grpc.ClientConn, error) {
-	return getLbConn(config, func() []grpc.DialOption {
-		return []grpc.DialOption{}
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func GetRoundRobinLbConn(config *Config) (*grpc.ClientConn, error) {
-	return getLbConn(config, func() []grpc.DialOption {
-		return []grpc.DialOption{
-			grpc.WithDefaultServiceConfig(`{"loadBalancingConfig": [{"round_robin":{}}]}`),
-		}
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func getLbConn(config *Config, dialOptions func() []grpc.DialOption) (*grpc.ClientConn, error) {
-	addresses := config.Addrs
-	if len(addresses) <= 0 {
-		return nil, ErrAddrEmpty
-	}
-
-	addr := make([]resolver.Address, 0, len(addresses))
-	for _, a := range addresses {
-		addr = append(addr, resolver.Address{Addr: a})
-	}
-
-	r := manual.NewBuilderWithScheme(config.Scheme)
-	r.InitialState(resolver.State{Addresses: addr})
-
-	cred := insecure.NewCredentials()
-	if config.TLSConfig != nil {
-		cred = credentials.NewTLS(&tls.Config{
-			InsecureSkipVerify: config.TLSConfig.InsecureSkipVerify,
-		})
-	}
-
-	opinions := append(dialOptions(),
-		grpc.WithTransportCredentials(cred),
-		grpc.WithResolvers(r))
-
-	conn, err := grpc.Dial(r.Scheme()+":///"+config.ServiceName, opinions...)
-	return conn, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }

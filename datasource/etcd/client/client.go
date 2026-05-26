@@ -19,34 +19,13 @@ package client
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/task"
 	"github.com/little-cui/etcdadpt"
 )
 
 // KeepAlive will always return ok when cache is unavailable
 // unless the cache response is LeaseNotFound
 func KeepAlive(ctx context.Context, key string, leaseID int64, opts ...etcdadpt.OpOption) (int64, error) {
-	op := etcdadpt.OpPut(append(opts, etcdadpt.WithStrKey(key), etcdadpt.WithLease(leaseID))...)
-
-	t := NewLeaseAsyncTask(op)
-	if op.Mode == etcdadpt.ModeNoCache {
-		log.Debug(fmt.Sprintf("keep alive lease WitchNoCache, request etcd server, op: %s", op))
-		err := t.Do(ctx)
-		ttl := t.TTL
-		return ttl, err
-	}
-
-	err := task.GetService().Add(ctx, t)
-	if err != nil {
-		return 0, err
-	}
-	itf, err := task.GetService().LatestHandled(t.Key())
-	if err != nil {
-		return 0, err
-	}
-	pt := itf.(*LeaseTask)
-	return pt.TTL, pt.Err()
+	_ = "STUB: not implemented"
+	return 0, nil
 }

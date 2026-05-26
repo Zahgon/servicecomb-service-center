@@ -18,11 +18,8 @@
 package cors
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/rs/cors"
 )
 
@@ -36,10 +33,6 @@ func init() {
 }
 
 func Intercept(w http.ResponseWriter, r *http.Request) (err error) {
-	CORS.HandlerFunc(w, r)
-	if r.Method == "OPTIONS" {
-		log.Debug(fmt.Sprintf("identify the current request is a CORS, url: %s", r.RequestURI))
-		err = errors.New("Handle the preflight request")
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }

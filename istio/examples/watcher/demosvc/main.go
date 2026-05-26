@@ -150,15 +150,8 @@ func main() {
 	printDemoMsg("--- DEMO COMPLETE ---")
 }
 
-func breakpoint() {
-	fmt.Printf("\n[BREAKPOINT] Execution Paused\n")
-	fmt.Scanln()
-}
+func breakpoint() { _ = "STUB: not implemented"; return }
 
-func printDemoMsg(msg string) {
-	fmt.Printf("\n[DEMO] %s\n", msg)
-}
+func printDemoMsg(msg string) { _ = "STUB: not implemented"; return }
 
-func printServiceCenter2MeshMsg(msg string) {
-	fmt.Printf("\n[servicecenter2mesh] %s\n", msg)
-}
+func printServiceCenter2MeshMsg(msg string) { _ = "STUB: not implemented"; return }

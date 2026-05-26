@@ -24,9 +24,8 @@ type Tree struct {
 }
 
 func NewTree(isAddToLeft func(node *Node, addRes interface{}) bool) *Tree {
-	return &Tree{
-		isAddToLeft: isAddToLeft,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Node struct {
@@ -35,49 +34,19 @@ type Node struct {
 }
 
 func (t *Tree) GetRoot() *Node {
-	return t.root
+	_ = "STUB: not implemented"
+
+	// add res into Tree
+	return nil
 }
 
-// add res into Tree
-func (t *Tree) AddNode(res interface{}) *Node {
-	return t.addNode(t.root, res)
-}
+func (t *Tree) AddNode(res interface{}) *Node { _ = "STUB: not implemented"; return nil }
 
-func (t *Tree) addNode(n *Node, res interface{}) *Node {
-	if n == nil {
-		n = new(Node)
-		n.Res = res
-		if t.root == nil {
-			t.root = n
-		}
-		return n
-	}
-	if t.isAddToLeft(n, res) {
-		n.left = t.addNode(n.left, res)
-	} else {
-		n.right = t.addNode(n.right, res)
-	}
-	return n
-}
+func (t *Tree) addNode(n *Node, res interface{}) *Node { _ = "STUB: not implemented"; return nil }
 
 // middle oder traversal, handle is the func that deals with the res, n is the start node to traversal
 func (t *Tree) InOrderTraversal(n *Node, handle func(res interface{}) error) error {
-	if n == nil {
-		return nil
-	}
-
-	err := t.InOrderTraversal(n.left, handle)
-	if err != nil {
-		return err
-	}
-	err = handle(n.Res)
-	if err != nil {
-		return err
-	}
-	err = t.InOrderTraversal(n.right, handle)
-	if err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 

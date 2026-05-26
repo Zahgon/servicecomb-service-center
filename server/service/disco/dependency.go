@@ -19,12 +19,7 @@ package disco
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/service/validator"
 	pb "github.com/go-chassis/cari/discovery"
 )
 
@@ -32,45 +27,21 @@ type MicroServiceService struct {
 }
 
 func AddDependencies(ctx context.Context, in *pb.AddDependenciesRequest) error {
-	remoteIP := util.GetIPFromContext(ctx)
-
-	if err := validator.ValidateAddDependenciesRequest(in); err != nil {
-		log.Error(fmt.Sprintf("AddDependencies failed, operator: %s", remoteIP), err)
-		return pb.NewError(pb.ErrInvalidParams, err.Error())
-	}
-
-	return datasource.GetDependencyManager().PutDependencies(ctx, in.Dependencies, false)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func PutDependencies(ctx context.Context, in *pb.CreateDependenciesRequest) error {
-	remoteIP := util.GetIPFromContext(ctx)
-
-	if err := validator.ValidateCreateDependenciesRequest(in); err != nil {
-		log.Error(fmt.Sprintf("PutDependencies failed, operator: %s", remoteIP), err)
-		return pb.NewError(pb.ErrInvalidParams, err.Error())
-	}
-
-	return datasource.GetDependencyManager().PutDependencies(ctx, in.Dependencies, true)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func ListConsumers(ctx context.Context, in *pb.GetDependenciesRequest) (*pb.GetProDependenciesResponse, error) {
-	remoteIP := util.GetIPFromContext(ctx)
-
-	if err := validator.ValidateGetDependenciesRequest(in); err != nil {
-		log.Error(fmt.Sprintf("ListConsumers failed for validating parameters failed, operator: %s", remoteIP), err)
-		return nil, pb.NewError(pb.ErrInvalidParams, err.Error())
-	}
-
-	return datasource.GetDependencyManager().ListConsumers(ctx, in)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ListProviders(ctx context.Context, in *pb.GetDependenciesRequest) (*pb.GetConDependenciesResponse, error) {
-	remoteIP := util.GetIPFromContext(ctx)
-
-	if err := validator.ValidateGetDependenciesRequest(in); err != nil {
-		log.Error(fmt.Sprintf("ListProviders failed for validating parameters failed, operator: %s", remoteIP), err)
-		return nil, pb.NewError(pb.ErrInvalidParams, err.Error())
-	}
-
-	return datasource.GetDependencyManager().ListProviders(ctx, in)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

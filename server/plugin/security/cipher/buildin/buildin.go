@@ -26,25 +26,17 @@ func init() {
 	plugin.RegisterPlugin(plugin.Plugin{Kind: cipher.CIPHER, Name: "buildin", New: New})
 }
 
-func New() plugin.Instance {
-	return &DefaultCipher{}
-}
+func New() plugin.Instance { _ = "STUB: not implemented"; return *new(plugin.Instance) }
 
 type DefaultCipher struct {
 }
 
 func (c *DefaultCipher) Encrypt(src string) (string, error) {
-	df, ok := plugin.DynamicPluginFunc(cipher.CIPHER, "Encrypt").(func(src string) (string, error))
-	if ok {
-		return df(src)
-	}
-	return src, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (c *DefaultCipher) Decrypt(src string) (string, error) {
-	df, ok := plugin.DynamicPluginFunc(cipher.CIPHER, "Decrypt").(func(src string) (string, error))
-	if ok {
-		return df(src)
-	}
-	return src, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }

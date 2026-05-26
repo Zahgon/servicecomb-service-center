@@ -18,12 +18,7 @@
 package privacy
 
 import (
-	"strings"
-
 	scrypt "github.com/elithrar/simple-scrypt"
-	"golang.org/x/crypto/bcrypt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 const (
@@ -44,31 +39,15 @@ type passwordManager struct {
 }
 
 func (p *passwordManager) EncryptPassword(pwd string) (string, error) {
-	hash, err := scrypt.GenerateFromPassword([]byte(pwd), ScryptParams)
-	if err != nil {
-		return "", err
-	}
-	return string(hash), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (p *passwordManager) CheckPassword(hashedPwd, pwd string) bool {
-	if strings.HasPrefix(hashedPwd, algBcrypt) {
-		err := bcrypt.CompareHashAndPassword([]byte(hashedPwd), []byte(pwd))
-		if err == bcrypt.ErrMismatchedHashAndPassword {
-			log.Warn("incorrect password attempts")
-		}
-		return err == nil
-	}
-	err := scrypt.CompareHashAndPassword([]byte(hashedPwd), []byte(pwd))
-	if err == scrypt.ErrMismatchedHashAndPassword {
-		log.Warn("incorrect password attempts")
-	}
-	return err == nil
+	_ = "STUB: not implemented"
+	return false
 }
 
-func ScryptPassword(pwd string) (string, error) {
-	return DefaultManager.EncryptPassword(pwd)
-}
-func SamePassword(hashedPwd, pwd string) bool {
-	return DefaultManager.CheckPassword(hashedPwd, pwd)
-}
+func ScryptPassword(pwd string) (string, error) { _ = "STUB: not implemented"; return "", nil }
+
+func SamePassword(hashedPwd, pwd string) bool { _ = "STUB: not implemented"; return false }

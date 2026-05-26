@@ -18,9 +18,6 @@
 package diagnose
 
 import (
-	"path/filepath"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/scctl/etcd"
 	root "github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
 	"github.com/spf13/cobra"
@@ -33,30 +30,6 @@ func init() {
 }
 
 func NewDiagnoseCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "diagnose [options]",
-		Short:   "Output the service center diagnostic report",
-		Run:     CommandFunc,
-		Example: parent.CommandPath() + ` diagnose --addr "http://127.0.0.1:30100" --etcd-addr "http://127.0.0.1:2379";`,
-	}
-
-	cmd.Flags().StringVar(&EtcdClientConfig.Addrs, "etcd-addr",
-		util.GetEnvString("CSE_REGISTRY_ADDRESS", "http://127.0.0.1:2379"),
-		"the http addr and port of etcd endpoints")
-	cmd.Flags().StringVar(&EtcdClientConfig.CertFile, "etcd-cert",
-		filepath.Join(util.GetEnvString("SSL_ROOT", "."), "server.cer"),
-		"the certificate file path to access etcd, can be overrode by env $SSL_ROOT/server.cer.")
-	cmd.Flags().StringVar(&EtcdClientConfig.CertKeyFile, "etcd-key",
-		filepath.Join(util.GetEnvString("SSL_ROOT", "."), "server_key.pem"),
-		"the key file path to access etcd, can be overrode by env $SSL_ROOT/server_key.pem.")
-	cmd.Flags().StringVar(&EtcdClientConfig.CAFile, "etcd-ca",
-		filepath.Join(util.GetEnvString("SSL_ROOT", "."), "trust.cer"),
-		"the CA file path  to access etcd, can be overrode by env $SSL_ROOT/trust.cer.")
-	cmd.Flags().StringVar(&EtcdClientConfig.CertKeyPWDPath, "etcd-pass-file",
-		filepath.Join(util.GetEnvString("SSL_ROOT", "."), "cert_pwd"),
-		"the passphase file path to decrypt key file, can be overrode by env $SSL_ROOT/cert_pwd.")
-	cmd.Flags().StringVar(&EtcdClientConfig.CertKeyPWD, "etcd-pass", "",
-		"the passphase string to decrypt key file.")
-
-	return cmd
+	_ = "STUB: not implemented"
+	return nil
 }

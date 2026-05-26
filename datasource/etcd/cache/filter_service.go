@@ -20,25 +20,18 @@ package cache
 import (
 	"context"
 
-	pb "github.com/go-chassis/cari/discovery"
-
 	"github.com/apache/servicecomb-service-center/pkg/cache"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type ServiceFilter struct {
 }
 
 func (f *ServiceFilter) Name(ctx context.Context, _ *cache.Node) string {
-	provider := ctx.Value(CtxProviderKey).(*pb.MicroServiceKey)
-	return util.StringJoin([]string{
-		provider.Tenant,
-		provider.Environment,
-		provider.AppId,
-		provider.ServiceName}, "/")
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (f *ServiceFilter) Init(_ context.Context, _ *cache.Node) (node *cache.Node, err error) {
-	node = cache.NewNode()
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

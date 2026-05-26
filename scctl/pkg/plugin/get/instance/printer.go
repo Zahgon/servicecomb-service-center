@@ -18,9 +18,6 @@
 package instance
 
 import (
-	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/model"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/writer"
 )
@@ -37,84 +34,29 @@ type Record struct {
 	model.Instance
 }
 
-func (s *Record) FrameworksString() string {
-	if s.Framework == nil || len(s.Framework.Name) == 0 {
-		return ""
-	}
-	return s.Framework.Name
-}
+func (s *Record) FrameworksString() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) EndpointsString() string {
-	return util.StringJoin(s.Endpoints, "\n")
-}
+func (s *Record) EndpointsString() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) LeaseString() string {
-	if s.Lease < 0 {
-		return ""
-	}
-	if s.Lease == 0 {
-		return neverExpire
-	}
-	return writer.TimeFormat(time.Duration(s.Lease) * time.Second)
-}
+func (s *Record) LeaseString() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) AgeString() string {
-	return writer.TimeFormat(s.Age())
-}
+func (s *Record) AgeString() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) Domain() string {
-	domain, _ := util.FromDomainProject(s.DomainProject)
-	return domain
-}
+func (s *Record) Domain() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Record) PrintBody(fmt string, all bool) []string {
-	switch {
-	case fmt == "wide":
-		return []string{s.Domain(), s.Host, s.EndpointsString(), s.Version, s.ServiceName, s.AppID, s.Environment,
-			s.FrameworksString(), s.LeaseString(), s.AgeString()}
-	case all:
-		return []string{s.Domain(), s.Host, s.EndpointsString(), s.Version, s.ServiceName,
-			s.AppID, s.LeaseString(), s.AgeString()}
-	default:
-		return []string{s.Host, s.EndpointsString(), s.Version, s.ServiceName,
-			s.AppID, s.LeaseString(), s.AgeString()}
-	}
-}
+func (s *Record) PrintBody(fmt string, all bool) []string { _ = "STUB: not implemented"; return nil }
 
 type Printer struct {
 	Records map[string]*Record
 	flags   []interface{}
 }
 
-func (sp *Printer) SetOutputFormat(f string, all bool) {
-	sp.Flags(f, all)
-}
+func (sp *Printer) SetOutputFormat(f string, all bool) { _ = "STUB: not implemented"; return }
 
-func (sp *Printer) Flags(flags ...interface{}) []interface{} {
-	if len(flags) > 0 {
-		sp.flags = flags
-	}
-	return sp.flags
-}
+func (sp *Printer) Flags(flags ...interface{}) []interface{} { _ = "STUB: not implemented"; return nil }
 
-func (sp *Printer) PrintBody() (slice [][]string) {
-	for _, s := range sp.Records {
-		slice = append(slice, s.PrintBody(sp.flags[0].(string), sp.flags[1].(bool)))
-	}
-	return
-}
+func (sp *Printer) PrintBody() (slice [][]string) { _ = "STUB: not implemented"; return nil }
 
-func (sp *Printer) PrintTitle() []string {
-	switch {
-	case sp.flags[0] == "wide":
-		return longInstanceTableHeader
-	case sp.flags[1].(bool):
-		return domainInstanceTableHeader
-	default:
-		return shortInstanceTableHeader
-	}
-}
+func (sp *Printer) PrintTitle() []string { _ = "STUB: not implemented"; return nil }
 
-func (sp *Printer) Sorter() *writer.RecordsSorter {
-	return nil
-}
+func (sp *Printer) Sorter() *writer.RecordsSorter { _ = "STUB: not implemented"; return nil }

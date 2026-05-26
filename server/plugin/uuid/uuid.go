@@ -34,6 +34,4 @@ type IDGenerator interface {
 	GetInstanceID(ctx context.Context) string
 }
 
-func Generator() IDGenerator {
-	return plugin.Plugins().Instance(UUID).(IDGenerator)
-}
+func Generator() IDGenerator { _ = "STUB: not implemented"; return *new(IDGenerator) }

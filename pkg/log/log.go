@@ -18,7 +18,6 @@
 package log
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/go-chassis/openlog"
@@ -36,88 +35,37 @@ var (
 	Logger      = NewLogger(DefaultConfig())
 )
 
-func Init(cfg Config) {
-	logger := NewZapLogger(cfg.
-		WithCallerSkip(cfg.CallerSkip + globalCallerSkip).
-		WithReplaceGlobals(true).
-		WithRedirectStdLog(true))
-	flushFunc = logger.Sync
-	recoverFunc = func(r interface{}) {
-		logger.Recover(r, cfg.CallerSkip+globalRecoverCallerSkip)
-	}
-	Logger = logger
-}
+func Init(cfg Config) { _ = "STUB: not implemented"; return }
 
-func NewLogger(cfg Config) openlog.Logger {
-	return NewZapLogger(cfg.WithCallerSkip(cfg.CallerSkip + globalCallerSkip))
-}
+func NewLogger(cfg Config) openlog.Logger { _ = "STUB: not implemented"; return *new(openlog.Logger) }
 
-func DefaultConfig() Config {
-	return Config{
-		LoggerLevel:   defaultLogLevel,
-		LogFormatText: true,
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func Debug(msg string) {
-	Logger.Debug(msg)
-}
+func Debug(msg string) { _ = "STUB: not implemented"; return }
 
-func Info(msg string) {
-	Logger.Info(msg)
-}
+func Info(msg string) { _ = "STUB: not implemented"; return }
 
-func Warn(msg string) {
-	Logger.Warn(msg)
-}
+func Warn(msg string) { _ = "STUB: not implemented"; return }
 
-func Error(msg string, err error) {
-	Logger.Error(msg, openlog.WithErr(err))
-}
+func Error(msg string, err error) { _ = "STUB: not implemented"; return }
 
-func Fatal(msg string, err error) {
-	Logger.Fatal(msg, openlog.WithErr(err))
-}
+func Fatal(msg string, err error) { _ = "STUB: not implemented"; return }
 
-func Flush() {
-	flushFunc()
-}
+func Flush() { _ = "STUB: not implemented"; return }
 
-func NilOrWarn(start time.Time, message string) {
-	cost := time.Since(start)
-	if cost < time.Second {
-		return
-	}
-	Logger.Warn(fmt.Sprintf("[%s]%s", cost, message))
-}
+func NilOrWarn(start time.Time, message string) { _ = "STUB: not implemented"; return }
 
-func DebugOrWarn(start time.Time, message string) {
-	cost := time.Since(start)
-	if cost < time.Second {
-		Logger.Debug(fmt.Sprintf("[%s]%s", cost, message))
-		return
-	}
-	Logger.Warn(fmt.Sprintf("[%s]%s", cost, message))
-}
+func DebugOrWarn(start time.Time, message string) { _ = "STUB: not implemented"; return }
 
-func InfoOrWarn(start time.Time, message string) {
-	cost := time.Since(start)
-	if cost < time.Second {
-		Logger.Info(fmt.Sprintf("[%s]%s", cost, message))
-		return
-	}
-	Logger.Warn(fmt.Sprintf("[%s]%s", cost, message))
-}
+func InfoOrWarn(start time.Time, message string) { _ = "STUB: not implemented"; return }
 
 // Panic is a function can only be called in defer function.
 func Panic(r interface{}) {
-	recoverFunc(r)
+	_ = "STUB: not implemented"
+
+	// Recover is a function call recover() and print the stack in log
+	// Please call this function like 'defer log.Recover()' in your code
+	return
 }
 
-// Recover is a function call recover() and print the stack in log
-// Please call this function like 'defer log.Recover()' in your code
-func Recover() {
-	if r := recover(); r != nil {
-		Panic(r)
-	}
-}
+func Recover() { _ = "STUB: not implemented"; return }

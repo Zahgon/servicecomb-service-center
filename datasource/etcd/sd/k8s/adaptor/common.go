@@ -18,20 +18,14 @@
 package adaptor
 
 import (
-	"context"
-	"strings"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
 	"github.com/apache/servicecomb-service-center/pkg/queue"
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/plugin/uuid"
 )
 
 const (
@@ -79,38 +73,17 @@ func init() {
 }
 
 func createKubeClient(kubeConfigPath string) (kubernetes.Interface, error) {
-	cfg, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
-	if err != nil {
-		return nil, err
-	}
-	return kubernetes.NewForConfig(cfg)
+	_ = "STUB: not implemented"
+	return *new(kubernetes.Interface), nil
 }
 
-func Queue(t K8sType) *queue.TaskQueue {
-	q, _ := eventQueues.Fetch(t, func() (interface{}, error) {
-		q := queue.NewTaskQueue(eventQueueSize)
-		q.Run()
-		return q, nil
-	})
-	return q.(*queue.TaskQueue)
-}
+func Queue(t K8sType) *queue.TaskQueue { _ = "STUB: not implemented"; return nil }
 
-func ShouldRegisterService(service *v1.Service) bool {
-	if service.Namespace == meta.NamespaceSystem {
-		return false
-	}
-	if register, ok := service.ObjectMeta.Annotations[AnnotationRegister]; ok && register == "false" {
-		return false
-	}
-	return true
-}
+func ShouldRegisterService(service *v1.Service) bool { _ = "STUB: not implemented"; return false }
 
-func UUID(id types.UID) string {
-	return strings.Replace(string(id), "-", "", -1)
-}
+func UUID(id types.UID) string { _ = "STUB: not implemented"; return "" }
 
 func generateServiceID(domainProject string, svc *v1.Service) string {
-	indexKey := path.GenerateServiceIndexKey(generateServiceKey(domainProject, svc))
-	ctx := context.WithValue(context.Background(), uuid.ContextKey, indexKey)
-	return uuid.Generator().GetServiceID(ctx)
+	_ = "STUB: not implemented"
+	return ""
 }

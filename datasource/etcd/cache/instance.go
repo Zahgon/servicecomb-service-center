@@ -24,7 +24,6 @@ import (
 	pb "github.com/go-chassis/cari/discovery"
 
 	"github.com/apache/servicecomb-service-center/pkg/cache"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var FindInstances = &FindInstancesCache{
@@ -50,23 +49,11 @@ type VersionRuleCacheItem struct {
 	queue  chan struct{}
 }
 
-func (vi *VersionRuleCacheItem) InitBrokenQueue() {
-	if vi.queue == nil {
-		vi.queue = make(chan struct{}, 1)
-	}
-	vi.broken = false
-	vi.queue <- struct{}{}
-}
+func (vi *VersionRuleCacheItem) InitBrokenQueue() { _ = "STUB: not implemented"; return }
 
-func (vi *VersionRuleCacheItem) BrokenWait() bool {
-	<-vi.queue
-	return vi.broken
-}
+func (vi *VersionRuleCacheItem) BrokenWait() bool { _ = "STUB: not implemented"; return false }
 
-func (vi *VersionRuleCacheItem) Broken() {
-	vi.broken = true
-	close(vi.queue)
-}
+func (vi *VersionRuleCacheItem) Broken() { _ = "STUB: not implemented"; return }
 
 type FindInstancesCache struct {
 	*cache.Tree
@@ -74,30 +61,17 @@ type FindInstancesCache struct {
 
 func (f *FindInstancesCache) Get(ctx context.Context, consumer *pb.MicroService, provider *pb.MicroServiceKey,
 	tags []string, rev string) (*VersionRuleCacheItem, error) {
-	cloneCtx := context.WithValue(context.WithValue(context.WithValue(context.WithValue(ctx,
-		CtxConsumerID, consumer),
-		CtxProviderKey, provider),
-		CtxTags, tags),
-		CtxRequestRev, rev)
-
-	node, err := f.Tree.Get(cloneCtx, cache.Options().Temporary(ctx.Value(util.CtxNocache) == "1"))
-	if node == nil {
-		return nil, err
-	}
-	return node.Cache.Get(FindResult).(*VersionRuleCacheItem), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *FindInstancesCache) GetWithProviderID(ctx context.Context, consumer *pb.MicroService, provider *pb.MicroServiceKey,
 	instanceKey *pb.HeartbeatSetElement, tags []string, rev string) (*VersionRuleCacheItem, error) {
-	cloneCtx := context.WithValue(ctx, CtxProviderInstanceKey, instanceKey)
-	return f.Get(cloneCtx, consumer, provider, tags, rev)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (f *FindInstancesCache) Remove(provider *pb.MicroServiceKey) {
-	f.Tree.Remove(context.WithValue(context.Background(), CtxProviderKey, provider))
-	if len(provider.Alias) > 0 {
-		copyProvider := *provider
-		copyProvider.ServiceName = copyProvider.Alias
-		f.Tree.Remove(context.WithValue(context.Background(), CtxProviderKey, &copyProvider))
-	}
+	_ = "STUB: not implemented"
+	return
 }

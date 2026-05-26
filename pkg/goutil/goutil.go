@@ -19,24 +19,11 @@
 package goutil
 
 import (
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/go-chassis/foundation/gopool"
 )
 
-func Init(cfgs ...*gopool.Config) {
-	gopool.Init(getConfig(cfgs))
-}
+func Init(cfgs ...*gopool.Config) { _ = "STUB: not implemented"; return }
 
-func New(cfgs ...*gopool.Config) *gopool.Pool {
-	return gopool.New(getConfig(cfgs))
-}
+func New(cfgs ...*gopool.Config) *gopool.Pool { _ = "STUB: not implemented"; return nil }
 
-func getConfig(cfgs []*gopool.Config) *gopool.Config {
-	var cfg *gopool.Config
-	if len(cfgs) == 0 {
-		cfg = gopool.Configure()
-	} else {
-		cfg = cfgs[0]
-	}
-	return cfg.WithRecoverFunc(log.Panic)
-}
+func getConfig(cfgs []*gopool.Config) *gopool.Config { _ = "STUB: not implemented"; return nil }

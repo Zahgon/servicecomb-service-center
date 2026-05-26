@@ -18,8 +18,6 @@
 package v3
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/rest"
 	v4 "github.com/apache/servicecomb-service-center/server/resource/disco"
 )
@@ -28,12 +26,4 @@ type SchemaService struct {
 	v4.SchemaResource
 }
 
-func (s *SchemaService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:serviceId/schemas/:schemaId", Func: s.GetSchema},
-		{Method: http.MethodPut, Path: "/registry/v3/microservices/:serviceId/schemas/:schemaId", Func: s.PutSchema},
-		{Method: http.MethodDelete, Path: "/registry/v3/microservices/:serviceId/schemas/:schemaId", Func: s.DeleteSchema},
-		{Method: http.MethodPost, Path: "/registry/v3/microservices/:serviceId/schemas", Func: s.PutSchemas},
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:serviceId/schemas", Func: s.ListSchema},
-	}
-}
+func (s *SchemaService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }

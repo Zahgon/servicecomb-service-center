@@ -20,12 +20,8 @@ package v4
 import (
 	"net/http"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/rest"
 	"github.com/apache/servicecomb-service-center/server/handler/exception"
-	"github.com/apache/servicecomb-service-center/server/pubsub"
-	"github.com/apache/servicecomb-service-center/server/service/heartbeat"
-	pb "github.com/go-chassis/cari/discovery"
 	"github.com/gorilla/websocket"
 )
 
@@ -43,48 +39,19 @@ type WatchService struct {
 	//
 }
 
-func (s *WatchService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: APIWatch, Func: s.Watch},
-		{Method: http.MethodGet, Path: APIHeartbeat, Func: s.Heartbeat},
-	}
-}
+func (s *WatchService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
 
 func upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
-	var upgrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Error("upgrade failed", err)
-	}
-	return conn, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *WatchService) Watch(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrade(w, r)
-	if err != nil {
-		return
-	}
-	defer conn.Close()
-
-	r.Method = "WATCH"
-	pubsub.Watch(r.Context(), &pb.WatchInstanceRequest{
-		SelfServiceId: r.URL.Query().Get(":serviceId"),
-	}, conn)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *WatchService) Heartbeat(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrade(w, r)
-	if err != nil {
-		log.Error("failed to establish connection", err)
-		return
-	}
-	defer conn.Close()
-	heartbeat.WatchHeartbeat(r.Context(), &pb.HeartbeatRequest{
-		ServiceId:  r.URL.Query().Get(":serviceId"),
-		InstanceId: r.URL.Query().Get(":instanceId"),
-	}, conn)
+	_ = "STUB: not implemented"
+	return
 }

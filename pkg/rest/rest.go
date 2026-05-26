@@ -30,11 +30,7 @@ func init() {
 
 // RegisterServant registers a RouteGroup into router
 // servant must be an pointer to service object
-func RegisterServant(group RouteGroup) {
-	router.RegisterServant(group)
-}
+func RegisterServant(group RouteGroup) { _ = "STUB: not implemented"; return }
 
 // GetRouter return the router fo REST service
-func GetRouter() http.Handler {
-	return router
-}
+func GetRouter() http.Handler { _ = "STUB: not implemented"; return *new(http.Handler) }

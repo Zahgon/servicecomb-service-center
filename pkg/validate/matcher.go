@@ -17,36 +17,9 @@
 
 package validate
 
-import "unicode"
-
 type PasswordChecker struct {
 }
 
-func (p *PasswordChecker) MatchString(s string) bool {
-	var (
-		hasValidLen = false
-		hasUpper    = false
-		hasLower    = false
-		hasNumber   = false
-		hasSpecial  = false
-	)
-	if len(s) >= 8 && len(s) <= 32 {
-		hasValidLen = true
-	}
-	for _, char := range s {
-		switch {
-		case unicode.IsUpper(char):
-			hasUpper = true
-		case unicode.IsLower(char):
-			hasLower = true
-		case unicode.IsNumber(char):
-			hasNumber = true
-		case unicode.IsPunct(char) || unicode.IsSymbol(char):
-			hasSpecial = true
-		}
-	}
-	return hasValidLen && hasUpper && hasLower && hasNumber && hasSpecial
-}
-func (p *PasswordChecker) String() string {
-	return "password"
-}
+func (p *PasswordChecker) MatchString(s string) bool { _ = "STUB: not implemented"; return false }
+
+func (p *PasswordChecker) String() string { _ = "STUB: not implemented"; return "" }

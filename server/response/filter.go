@@ -21,13 +21,9 @@ var filters = map[string]FilterFunc{}
 
 type FilterFunc func(obj interface{}, filters []map[string]string) interface{}
 
-func RegisterFilter(apiPath string, f FilterFunc) {
-	filters[apiPath] = f
-}
+func RegisterFilter(apiPath string, f FilterFunc) { _ = "STUB: not implemented"; return }
 
 func Filter(apiPath string, obj interface{}, labels []map[string]string) interface{} {
-	if f, ok := filters[apiPath]; ok {
-		return f(obj, labels)
-	}
-	return obj
+	_ = "STUB: not implemented"
+	return nil
 }

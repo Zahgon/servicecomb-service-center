@@ -17,37 +17,6 @@
 
 package signal
 
-import (
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+func RegisterListener() { _ = "STUB: not implemented"; return }
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
-func RegisterListener() {
-	go HandleSignals()
-}
-
-func HandleSignals() {
-	defer log.Flush()
-
-	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh,
-		syscall.SIGINT,
-		syscall.SIGTERM,
-	)
-	wait := 5 * time.Second
-	for sig := range sigCh {
-		switch sig {
-		case syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM:
-			<-time.After(wait)
-			log.Warn(fmt.Sprintf("waiting for server response timed out(%s), force shutdown", wait))
-			os.Exit(1)
-		default:
-			log.Warn(fmt.Sprintf("received signal '%v'", sig))
-		}
-	}
-}
+func HandleSignals() { _ = "STUB: not implemented"; return }

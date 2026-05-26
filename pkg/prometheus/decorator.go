@@ -18,55 +18,32 @@
 package prometheus
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/go-chassis/v2/pkg/metrics"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	dto "github.com/prometheus/client_model/go"
 )
 
 // Vectors is unsafe, so all NewXXXVec funcs should be called during the initialization phase
 var Vectors = make(map[string]prometheus.Collector)
 
-func registerMetrics(name string, vec prometheus.Collector) {
-	if _, ok := Vectors[name]; ok {
-		log.Warn(fmt.Sprintf("found duplicate metrics name[%s], override!", name))
-	}
-	if err := metrics.GetSystemPrometheusRegistry().Register(vec); err != nil {
-		log.Fatal(fmt.Sprintf("register prometheus metrics[%s] failed", name), err)
-	}
-	Vectors[name] = vec
-}
+func registerMetrics(name string, vec prometheus.Collector) { _ = "STUB: not implemented"; return }
 
 func NewCounterVec(opts prometheus.CounterOpts, labelNames []string) *prometheus.CounterVec {
-	name := util.StringJoin([]string{opts.Subsystem, opts.Name}, "_")
-	vec := prometheus.NewCounterVec(opts, labelNames)
-	registerMetrics(name, vec)
-	return vec
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func NewGaugeVec(opts prometheus.GaugeOpts, labelNames []string) *prometheus.GaugeVec {
-	name := util.StringJoin([]string{opts.Subsystem, opts.Name}, "_")
-	vec := prometheus.NewGaugeVec(opts, labelNames)
-	registerMetrics(name, vec)
-	return vec
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func NewSummaryVec(opts prometheus.SummaryOpts, labelNames []string) *prometheus.SummaryVec {
-	name := util.StringJoin([]string{opts.Subsystem, opts.Name}, "_")
-	vec := prometheus.NewSummaryVec(opts, labelNames)
-	registerMetrics(name, vec)
-	return vec
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func Gather() ([]*dto.MetricFamily, error) {
-	return metrics.GetSystemPrometheusRegistry().Gather()
-}
+func Gather() ([]*dto.MetricFamily, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func HTTPHandler() http.Handler {
-	return promhttp.HandlerFor(metrics.GetSystemPrometheusRegistry(), promhttp.HandlerOpts{})
-}
+func HTTPHandler() http.Handler { _ = "STUB: not implemented"; return *new(http.Handler) }

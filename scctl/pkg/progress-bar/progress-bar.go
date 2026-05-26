@@ -23,13 +23,4 @@ import (
 	"github.com/cheggaaa/pb"
 )
 
-func NewProgressBar(count int, w io.Writer) *pb.ProgressBar {
-	bar := pb.New(count)
-	bar.Output = w
-	bar.Empty = " "
-	bar.SetMaxWidth(80)
-	bar.ShowTimeLeft = false
-	bar.ShowSpeed = false
-	bar.Start()
-	return bar
-}
+func NewProgressBar(count int, w io.Writer) *pb.ProgressBar { _ = "STUB: not implemented"; return nil }

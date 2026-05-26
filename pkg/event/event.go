@@ -37,26 +37,17 @@ type baseEvent struct {
 	createAt simple.Time
 }
 
-func (s *baseEvent) Type() Type {
-	return s.nType
-}
+func (s *baseEvent) Type() Type { _ = "STUB: not implemented"; return *new(Type) }
 
-func (s *baseEvent) Subject() string {
-	return s.subject
-}
+func (s *baseEvent) Subject() string { _ = "STUB: not implemented"; return "" }
 
-func (s *baseEvent) Group() string {
-	return s.group
-}
+func (s *baseEvent) Group() string { _ = "STUB: not implemented"; return "" }
 
-func (s *baseEvent) CreateAt() time.Time {
-	return s.createAt.Local()
-}
+func (s *baseEvent) CreateAt() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func NewEvent(t Type, s, g string) Event {
-	return NewEventWithTime(t, s, g, simple.FromTime(time.Now()))
-}
+func NewEvent(t Type, s, g string) Event { _ = "STUB: not implemented"; return *new(Event) }
 
 func NewEventWithTime(t Type, s, g string, now simple.Time) Event {
-	return &baseEvent{t, s, g, now}
+	_ = "STUB: not implemented"
+	return *new(Event)
 }

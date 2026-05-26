@@ -22,7 +22,6 @@ import (
 
 	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/pkg/validate"
-	quotasvc "github.com/apache/servicecomb-service-center/server/service/quota"
 	"github.com/go-chassis/cari/discovery"
 )
 
@@ -56,93 +55,49 @@ var (
 	accountStatusRegex, _ = regexp.Compile(`^(active|inactive)$|^$`)
 )
 
-func MicroServiceKeyValidator() *validate.Validator {
-	return microServiceKeyValidator.Init(func(v *validate.Validator) {
-		v.AddRule("Environment", &validate.Rule{Regexp: envRegex})
-		v.AddRule("AppId", &validate.Rule{Min: 1, Max: 160, Regexp: nameRegex})
-		v.AddRule("ServiceName", &validate.Rule{Min: 1, Max: 128, Regexp: nameRegex})
-		v.AddRule("Version", &validate.Rule{Min: 1, Max: 64, Regexp: versionRegex})
-	})
-}
+func MicroServiceKeyValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func MicroServiceSearchKeyValidator() *validate.Validator {
-	return microServiceKeySearchValidator.Init(func(v *validate.Validator) {
-		v.AddRule("Environment", &validate.Rule{Regexp: envRegex})
-		v.AddRule("AppId", &validate.Rule{Min: 1, Max: 160, Regexp: nameRegex})
-		// support name or alias
-		v.AddRule("ServiceName", &validate.Rule{Min: 1, Max: 160 + 1 + 128, Regexp: serviceNameForFindRegex})
-	})
-}
+func MicroServiceSearchKeyValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func GetServiceReqValidator() *validate.Validator {
-	return getServiceReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ServiceId", &validate.Rule{Min: 1, Max: 64, Regexp: serviceIDRegex})
-	})
-}
+// support name or alias
 
-func CreateServiceReqValidator() *validate.Validator {
-	return createServiceReqValidator.Init(func(v *validate.Validator) {
-		max := int(quotasvc.SchemaQuota())
+func GetServiceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-		var pathValidator validate.Validator
-		pathValidator.AddRule("Path", &validate.Rule{Regexp: pathRegex})
+func CreateServiceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-		var frameworkValidator validate.Validator
-		frameworkValidator.AddRule("Name", &validate.Rule{Max: 64, Regexp: nameRegex})
-		frameworkValidator.AddRule("Version", &validate.Rule{Max: 64})
-
-		var microServiceValidator validate.Validator
-		microServiceValidator.AddRules(MicroServiceKeyValidator().GetRules())
-		microServiceValidator.AddRule("AppId", &validate.Rule{Max: 160, Regexp: nameRegex})
-		microServiceValidator.AddRule("Version", &validate.Rule{Max: 64, Regexp: versionRegex})
-		microServiceValidator.AddRule("ServiceId", &validate.Rule{Max: 64, Regexp: serviceIDRegex})
-		microServiceValidator.AddRule("Description", &validate.Rule{Max: 256})
-		microServiceValidator.AddRule("Level", &validate.Rule{Regexp: levelRegex})
-		microServiceValidator.AddRule("Status", &validate.Rule{Regexp: statusRegex})
-		microServiceValidator.AddRule("Schemas", &validate.Rule{Max: max, Regexp: schemaIDRegex})
-		microServiceValidator.AddSub("Paths", &pathValidator)
-		microServiceValidator.AddRule("Alias", &validate.Rule{Max: 128, Regexp: aliasRegex})
-		microServiceValidator.AddRule("RegisterBy", &validate.Rule{Max: 64, Regexp: registerByRegex})
-		microServiceValidator.AddSub("Framework", &frameworkValidator)
-
-		v.AddRule("Service", &validate.Rule{Min: 1})
-		v.AddSub("Service", &microServiceValidator)
-	})
-}
-
-func UpdateServicePropsReqValidator() *validate.Validator {
-	return updateServicePropsReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-	})
-}
+func UpdateServicePropsReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
 func ValidateCreateServiceRequest(v *discovery.CreateServiceRequest) error {
-	return CreateServiceReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUnregisterManyService(in *discovery.DelServicesRequest) error {
-	return unregisterManyServiceValidator.
-		Init(func(v *validate.Validator) {
-			v.AddRule("ServiceIds", &validate.Rule{Min: 1, Regexp: serviceIDRangeRegex})
-		}).
-		Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetServiceExistenceRequest(in *discovery.GetExistenceRequest) error {
-	return existenceReqValidator.
-		Init(func(v *validate.Validator) {
-			v.AddRules(MicroServiceSearchKeyValidator().GetRules())
-			v.AddRule("Version", &validate.Rule{Min: 1, Max: 64, Regexp: versionRegex})
-		}).
-		Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUpdateServicePropsRequest(request *discovery.UpdateServicePropsRequest) error {
-	return UpdateServicePropsReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateDeleteServiceRequest(request *discovery.DeleteServiceRequest) error {
-	return GetServiceReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetServiceRequest(request *discovery.GetServiceRequest) error {
-	return GetServiceReqValidator().Validate(request)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetAppsRequest(v *discovery.GetAppsRequest) error {
-	return MicroServiceKeyValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }

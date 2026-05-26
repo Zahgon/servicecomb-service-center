@@ -21,7 +21,6 @@ import (
 	"sync"
 
 	grpc "github.com/apache/servicecomb-service-center/pkg/rpc"
-	serverconfig "github.com/apache/servicecomb-service-center/server/config"
 )
 
 var (
@@ -29,16 +28,6 @@ var (
 	once sync.Once
 )
 
-func initConfig() {
-	mode := serverconfig.GetBool("ssl.enable", false)
-	if mode {
-		cfg = &grpc.TLSConfig{
-			InsecureSkipVerify: true,
-		}
-	}
-}
+func initConfig() { _ = "STUB: not implemented"; return }
 
-func RPClientConfig() *grpc.TLSConfig {
-	once.Do(initConfig)
-	return cfg
-}
+func RPClientConfig() *grpc.TLSConfig { _ = "STUB: not implemented"; return nil }

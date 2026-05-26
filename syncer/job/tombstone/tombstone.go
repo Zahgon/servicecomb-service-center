@@ -22,8 +22,6 @@ import (
 
 	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/apache/servicecomb-service-center/syncer/service/tombstone"
-	"github.com/go-chassis/cari/dlock"
 	"github.com/robfig/cron/v3"
 )
 
@@ -51,21 +49,4 @@ func init() {
 	c.Start()
 }
 
-func deleteExpireTombStone() {
-	err := dlock.TryLock(deleteExpireTombstoneLockKey, deleteExpireTombstoneLockTTL)
-	if err != nil {
-		log.Error(fmt.Sprintf("try lock %s failed", deleteExpireTombstoneLockKey), err)
-		return
-	}
-	defer func() {
-		if err := dlock.Unlock(deleteExpireTombstoneLockKey); err != nil {
-			log.Error("unlock failed", err)
-		}
-	}()
-
-	log.Info("start delete expire tombstone job")
-	err = tombstone.DeleteExpireTombStone()
-	if err != nil {
-		log.Error("delete expire tombstone failed", err)
-	}
-}
+func deleteExpireTombStone() { _ = "STUB: not implemented"; return }

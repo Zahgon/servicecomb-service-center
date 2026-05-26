@@ -43,22 +43,18 @@ type Request struct {
 	URL      string
 }
 
-func Trace() Tracing {
-	return plugin.Plugins().Instance(TRACING).(Tracing)
-}
+func Trace() Tracing { _ = "STUB: not implemented"; return *new(Tracing) }
 
 func ServerBegin(operationName string, r interface{}) interface{} {
-	return Trace().ServerBegin(operationName, r)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func ServerEnd(span interface{}, code int, message string) {
-	Trace().ServerEnd(span, code, message)
-}
+func ServerEnd(span interface{}, code int, message string) { _ = "STUB: not implemented"; return }
 
 func ClientBegin(operationName string, r interface{}) interface{} {
-	return Trace().ClientBegin(operationName, r)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func ClientEnd(span interface{}, code int, message string) {
-	Trace().ClientEnd(span, code, message)
-}
+func ClientEnd(span interface{}, code int, message string) { _ = "STUB: not implemented"; return }

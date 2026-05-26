@@ -17,12 +17,6 @@
 
 package heartbeat
 
-import (
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 type healthCheckEngine func() (HealthCheck, error)
 
 var (
@@ -31,31 +25,16 @@ var (
 )
 
 func Install(pluginImplName string, engineFunc healthCheckEngine) {
-	plugins[ImplName(pluginImplName)] = engineFunc
+	_ = "STUB: not implemented"
+	return
 }
 
-func Init(opts Options) error {
-	inst, err := New(opts)
-	if err != nil {
-		return err
-	}
-	healthCheckInstance = inst
-	log.Info(fmt.Sprintf("healthcheck plugin [%s] enabled", opts.PluginImplName))
-	return nil
-}
+func Init(opts Options) error { _ = "STUB: not implemented"; return nil }
 
 func New(opts Options) (HealthCheck, error) {
-	if opts.PluginImplName == "" {
-		return nil, ErrPluginNameNil
-	}
-	f, ok := plugins[opts.PluginImplName]
-	if !ok {
-		return nil, ErrPluginNotSupport
-	}
-	return f()
+	_ = "STUB: not implemented"
+	return *new(HealthCheck), nil
 }
 
 // Instance is the instance of HealthCheck
-func Instance() HealthCheck {
-	return healthCheckInstance
-}
+func Instance() HealthCheck { _ = "STUB: not implemented"; return *new(HealthCheck) }

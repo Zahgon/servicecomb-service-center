@@ -29,12 +29,14 @@ type Instance interface{}
 
 // String implements fmt.Stringer.
 func (pn Kind) String() string {
-	return string(pn)
+	_ = "STUB: not implemented"
+
+	// Plugin generates a plugin instance
+	// Plugin holds the 'Kind' and 'ImplName'
+	// to manage the plugin instance generation.
+	return ""
 }
 
-// Plugin generates a plugin instance
-// Plugin holds the 'Kind' and 'ImplName'
-// to manage the plugin instance generation.
 type Plugin struct {
 	Kind Kind
 	Name ImplName

@@ -23,30 +23,15 @@ type Chain struct {
 	currentIndex int
 }
 
-func (c *Chain) Init(chainName string, hs []Handler) {
-	c.name = chainName
-	c.currentIndex = -1
-	c.handlers = hs
-}
+func (c *Chain) Init(chainName string, hs []Handler) { _ = "STUB: not implemented"; return }
 
-func (c *Chain) Name() string {
-	return c.name
-}
+func (c *Chain) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (c *Chain) syncNext(i *Invocation) {
-	if c.currentIndex >= len(c.handlers)-1 {
-		i.Success()
-		return
-	}
-	c.currentIndex++
-	c.handlers[c.currentIndex].Handle(i)
-}
+func (c *Chain) syncNext(i *Invocation) { _ = "STUB: not implemented"; return }
 
-func (c *Chain) Next(i *Invocation) {
-	c.syncNext(i)
-}
+func (c *Chain) Next(i *Invocation) { _ = "STUB: not implemented"; return }
 
 func NewChain(name string, handlers []Handler) (ch Chain) {
-	ch.Init(name, handlers)
-	return ch
+	_ = "STUB: not implemented"
+	return *new(Chain)
 }

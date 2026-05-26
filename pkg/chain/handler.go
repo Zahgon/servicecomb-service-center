@@ -17,13 +17,6 @@
 
 package chain
 
-import (
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-)
-
 const CapSize = 10
 
 var handlersMap = make(map[string][]Handler)
@@ -32,18 +25,6 @@ type Handler interface {
 	Handle(i *Invocation)
 }
 
-func RegisterHandler(catalog string, h Handler) {
-	handlers, ok := handlersMap[catalog]
-	if !ok {
-		handlers = make([]Handler, 0, CapSize)
-	}
-	handlers = append(handlers, h)
-	handlersMap[catalog] = handlers
+func RegisterHandler(catalog string, h Handler) { _ = "STUB: not implemented"; return }
 
-	t := util.Reflect(h)
-	log.Info(fmt.Sprintf("register chain handler[%s] %s", catalog, t.Name()))
-}
-
-func Handlers(catalog string) []Handler {
-	return handlersMap[catalog]
-}
+func Handlers(catalog string) []Handler { _ = "STUB: not implemented"; return nil }

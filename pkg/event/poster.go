@@ -27,58 +27,16 @@ type Poster struct {
 	groups  *util.ConcurrentMap
 }
 
-func (s *Poster) Subject() string {
-	return s.subject
-}
+func (s *Poster) Subject() string { _ = "STUB: not implemented"; return "" }
 
-func (s *Poster) Post(job Event) {
-	f := func(g *Group) {
-		g.ForEach(func(m Subscriber) {
-			m.OnMessage(job)
-		})
-	}
+func (s *Poster) Post(job Event) { _ = "STUB: not implemented"; return }
 
-	if len(job.Group()) == 0 {
-		s.groups.ForEach(func(item util.MapItem) (next bool) {
-			f(item.Value.(*Group))
-			return true
-		})
-		return
-	}
+func (s *Poster) Groups(name string) *Group { _ = "STUB: not implemented"; return nil }
 
-	itf, ok := s.groups.Get(job.Group())
-	if !ok {
-		return
-	}
-	f(itf.(*Group))
-}
+func (s *Poster) GetOrNewGroup(name string) *Group { _ = "STUB: not implemented"; return nil }
 
-func (s *Poster) Groups(name string) *Group {
-	g, ok := s.groups.Get(name)
-	if !ok {
-		return nil
-	}
-	return g.(*Group)
-}
+func (s *Poster) RemoveGroup(name string) { _ = "STUB: not implemented"; return }
 
-func (s *Poster) GetOrNewGroup(name string) *Group {
-	item, _ := s.groups.Fetch(name, func() (interface{}, error) {
-		return NewGroup(name), nil
-	})
-	return item.(*Group)
-}
+func (s *Poster) Size() int { _ = "STUB: not implemented"; return 0 }
 
-func (s *Poster) RemoveGroup(name string) {
-	s.groups.Remove(name)
-}
-
-func (s *Poster) Size() int {
-	return s.groups.Size()
-}
-
-func NewPoster(subject string) *Poster {
-	return &Poster{
-		subject: subject,
-		groups:  util.NewConcurrentMap(0),
-	}
-}
+func NewPoster(subject string) *Poster { _ = "STUB: not implemented"; return nil }

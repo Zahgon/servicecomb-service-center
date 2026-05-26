@@ -18,12 +18,7 @@
 package context
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	syncsvc "github.com/apache/servicecomb-service-center/server/service/sync"
 )
 
 const (
@@ -35,57 +30,8 @@ const (
 type Handler struct {
 }
 
-func (c *Handler) Handle(i *chain.Invocation) {
-	var (
-		v3 v3Context
-		v4 v4Context
-		r  = i.Context().Value(rest.CtxRequest).(*http.Request)
-	)
+func (c *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	switch {
-	case v3.IsMatch(r):
-		v3.Write(r)
-	case v4.IsMatch(r):
-		v4.Write(r)
-	}
+func (c *Handler) commonQueryToContext(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	syncsvc.SetContext(i.Context())
-
-	c.commonQueryToContext(i)
-
-	i.Next()
-}
-
-func (c *Handler) commonQueryToContext(i *chain.Invocation) {
-	r := i.Context().Value(rest.CtxRequest).(*http.Request)
-	query := r.URL.Query()
-
-	i.WithContext(util.CtxRemoteIP, util.GetRealIP(r))
-
-	global := util.StringTRUE(query.Get(queryGlobal))
-	if global && r.Method == http.MethodGet {
-		i.WithContext(util.CtxGlobal, "1")
-	}
-
-	noCache := util.StringTRUE(query.Get(queryNoCache))
-	if noCache {
-		i.WithContext(util.CtxNocache, "1")
-		return
-	}
-
-	cacheOnly := util.StringTRUE(query.Get(queryCacheOnly))
-	if cacheOnly {
-		i.WithContext(util.CtxCacheOnly, "1")
-		return
-	}
-
-	rev := query.Get("rev")
-	if len(rev) > 0 {
-		i.WithContext(util.CtxRequestRevision, rev)
-		return
-	}
-}
-
-func RegisterHandlers() {
-	chain.RegisterHandler(rest.ServerChainName, &Handler{})
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

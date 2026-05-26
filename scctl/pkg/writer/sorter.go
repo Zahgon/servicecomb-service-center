@@ -17,32 +17,20 @@
 
 package writer
 
-func firstColumnCmpFunc(row1, row2 []string) bool {
-	return row1[0] < row2[0]
-}
+func firstColumnCmpFunc(row1, row2 []string) bool { _ = "STUB: not implemented"; return false }
 
 type RecordsSorter struct {
 	Records     [][]string
 	CompareFunc func(row1, row2 []string) bool
 }
 
-func (s *RecordsSorter) Len() int {
-	return len(s.Records)
-}
+func (s *RecordsSorter) Len() int { _ = "STUB: not implemented"; return 0 }
 
-func (s *RecordsSorter) Swap(i, j int) {
-	s.Records[i], s.Records[j] = s.Records[j], s.Records[i]
-}
+func (s *RecordsSorter) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
-func (s *RecordsSorter) Less(i, j int) bool {
-	return s.CompareFunc(s.Records[i], s.Records[j])
-}
+func (s *RecordsSorter) Less(i, j int) bool { _ = "STUB: not implemented"; return false }
 
 func NewRecordsSorter(cmp func([]string, []string) bool) *RecordsSorter {
-	if cmp == nil {
-		cmp = firstColumnCmpFunc
-	}
-	return &RecordsSorter{
-		CompareFunc: cmp,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

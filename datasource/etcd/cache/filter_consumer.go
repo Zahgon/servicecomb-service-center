@@ -27,11 +27,11 @@ type ConsumerFilter struct {
 }
 
 func (f *ConsumerFilter) Name(ctx context.Context, _ *cache.Node) string {
-	return ctx.Value(CtxConsumerID).(string)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (f *ConsumerFilter) Init(_ context.Context, _ *cache.Node) (node *cache.Node, err error) {
-	node = cache.NewNode()
-	node.Cache.Set(DepResult, &DependencyRuleItem{})
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

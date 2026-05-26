@@ -19,15 +19,7 @@
 package grc
 
 import (
-	"fmt"
-	"strings"
-
-	"k8s.io/kube-openapi/pkg/validation/strfmt"
-	"k8s.io/kube-openapi/pkg/validation/validate"
-
 	"k8s.io/kube-openapi/pkg/validation/spec"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 type ValueType string
@@ -39,26 +31,7 @@ var policySchemas = make(map[string]*spec.Schema)
 
 // RegisterPolicySchema register a contract of one kind of policy
 // this API is not thread safe, only use it during sc init
-func RegisterPolicySchema(kind string, schema *spec.Schema) {
-	policySchemas[kind] = schema
-	log.Info("register policy schema: " + kind)
-}
+func RegisterPolicySchema(kind string, schema *spec.Schema) { _ = "STUB: not implemented"; return }
 
 // ValidatePolicySpec validates spec attributes
-func ValidatePolicySpec(kind string, spec interface{}) error {
-	schema, ok := policySchemas[kind]
-	if !ok {
-		log.Warn(fmt.Sprintf("can not recognize policy %s", kind))
-		return fmt.Errorf("not support kind[%s] yet", kind)
-	}
-	validator := validate.NewSchemaValidator(schema, nil, kind, strfmt.Default)
-	errs := validator.Validate(spec).Errors
-	if len(errs) != 0 {
-		var str []string
-		for _, err := range errs {
-			str = append(str, err.Error())
-		}
-		return fmt.Errorf("illegal policy[%s] spec, msg: %s", kind, strings.Join(str, "; "))
-	}
-	return nil
-}
+func ValidatePolicySpec(kind string, spec interface{}) error { _ = "STUB: not implemented"; return nil }

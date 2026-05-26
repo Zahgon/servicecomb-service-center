@@ -18,8 +18,6 @@
 package kvstore
 
 import (
-	"time"
-
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/apache/servicecomb-service-center/pkg/metrics"
@@ -62,31 +60,6 @@ var (
 		}, []string{"instance", "prefix"})
 )
 
-func ReportProcessEventCompleted(prefix string, evts []Event) {
-	l := float64(len(evts))
-	if l == 0 {
-		return
-	}
-	instance := metrics.InstanceName()
-	now := time.Now()
-	for _, evt := range evts {
-		elapsed := float64(now.Sub(evt.CreateAt.Local()).Nanoseconds()) / float64(time.Microsecond)
-		eventsLatency.WithLabelValues(instance, prefix).Observe(elapsed)
-	}
-	eventsCounter.WithLabelValues(instance, prefix).Add(l)
-	dispatchCounter.WithLabelValues(instance, prefix).Add(l)
-}
+func ReportProcessEventCompleted(prefix string, evts []Event) { _ = "STUB: not implemented"; return }
 
-func ReportDispatchEventCompleted(prefix string, evts []Event) {
-	l := float64(len(evts))
-	if l == 0 {
-		return
-	}
-	instance := metrics.InstanceName()
-	now := time.Now()
-	for _, evt := range evts {
-		elapsed := float64(now.Sub(evt.CreateAt.Local()).Nanoseconds()) / float64(time.Microsecond)
-		dispatchLatency.WithLabelValues(instance, prefix).Observe(elapsed)
-	}
-	dispatchCounter.WithLabelValues(instance, prefix).Add(-l)
-}
+func ReportDispatchEventCompleted(prefix string, evts []Event) { _ = "STUB: not implemented"; return }

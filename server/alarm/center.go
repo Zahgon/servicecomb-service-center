@@ -17,9 +17,4 @@
 
 package alarm
 
-func Center() *Service {
-	once.Do(func() {
-		service = NewAlarmService()
-	})
-	return service
-}
+func Center() *Service { _ = "STUB: not implemented"; return nil }

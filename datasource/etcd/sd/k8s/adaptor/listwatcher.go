@@ -19,7 +19,6 @@ package adaptor
 
 import (
 	"context"
-	"reflect"
 
 	pb "github.com/go-chassis/cari/discovery"
 	"k8s.io/client-go/tools/cache"
@@ -51,29 +50,11 @@ type k8sListWatcher struct {
 }
 
 func (w *k8sListWatcher) Handle(_ context.Context, obj interface{}) {
-	if w.cb == nil {
-		return
-	}
-	w.cb(obj.(K8sEvent))
+	_ = "STUB: not implemented"
+	return
 }
 
 func NewListWatcher(t K8sType, lister cache.SharedIndexInformer, f OnEventFunc) (lw ListWatcher) {
-	lw = &k8sListWatcher{SharedIndexInformer: lister, cb: f}
-	lw.AddEventHandler(
-		cache.ResourceEventHandlerFuncs{
-			AddFunc: func(obj interface{}) {
-				Queue(t).Add(queue.Task{Payload: K8sEvent{EventType: pb.EVT_CREATE, Object: obj}})
-			},
-			UpdateFunc: func(old, new interface{}) {
-				if !reflect.DeepEqual(old, new) {
-					Queue(t).Add(queue.Task{Payload: K8sEvent{EventType: pb.EVT_UPDATE, Object: new,
-						PrevObject: old}})
-				}
-			},
-			DeleteFunc: func(obj interface{}) {
-				Queue(t).Add(queue.Task{Payload: K8sEvent{EventType: pb.EVT_DELETE, Object: obj}})
-			},
-		})
-	Queue(t).AddWorker(lw)
-	return
+	_ = "STUB: not implemented"
+	return *new(ListWatcher)
 }

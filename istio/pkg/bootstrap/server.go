@@ -19,19 +19,11 @@ package bootstrap
 
 import (
 	"context"
-	"fmt"
-	"os"
 	"time"
 
 	"github.com/apache/servicecomb-service-center/istio/pkg/controllers/istioconnector"
 	"github.com/apache/servicecomb-service-center/istio/pkg/controllers/servicecenter"
 	"github.com/apache/servicecomb-service-center/istio/pkg/event"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/leaderelection"
-	"k8s.io/client-go/tools/leaderelection/resourcelock"
-
-	"istio.io/pkg/log"
 )
 
 // cli args
@@ -85,35 +77,18 @@ type Server struct {
 }
 
 func NewServer(args *Args) (*Server, error) {
+	_ = "STUB: not implemented"
 	// only allow 1 eventlist at a time
-	changeEvent := make(chan []event.ChangeEvent, 1)
-
-	// Create a new istio controller, the controller is ready to push configs to istio
-	istioController, err := istioconnector.NewController(args.Kubeconfig, changeEvent)
-	if err != nil {
-		return nil, err
-	}
-
-	serviceCenterController := servicecenter.NewController(args.ServiceCenterAddr, changeEvent)
-
-	s := &Server{
-		serviceCenterController: serviceCenterController,
-		istioController:         istioController,
-		serviceCenterEvent:      changeEvent,
-	}
-
-	return s, nil
+	return nil, nil
 }
+
+// Create a new istio controller, the controller is ready to push configs to istio
 
 // start the server need to start both service center and istio controller
 func (s *Server) Start(ctx context.Context, args *Args) error {
+	_ = "STUB: not implemented"
 	// by default the leader election is disabled, just do regular start
-	if !args.HA {
-		s.doRun(ctx)
-		return nil
-	}
-
-	return s.doLeaderElectionRun(ctx)
+	return nil
 }
 
 // This function is used to enable leader election using k8s client-go api. leaderElectAndRun runs the leader election,
@@ -125,68 +100,13 @@ func (s *Server) Start(ctx context.Context, args *Args) error {
 //
 // Note: this API is also used by K8S controller and Cluster auto scaler.
 func (s *Server) doLeaderElectionRun(ctx context.Context) error {
-	id, err := os.Hostname()
-	if err != nil {
-		return err
-	}
-
-	// creates the in-cluster config
-	kubeConf, err := rest.InClusterConfig()
-	if err != nil {
-		return fmt.Errorf("build default in cluster kube config failed: %w", err)
-	}
-
-	client, err := kubernetes.NewForConfig(kubeConf)
-
-	if err != nil {
-		log.Fatalf("build kube client failed: %v", err)
-		return err
-	}
-
-	rl, err := resourcelock.New(resourcelock.LeasesResourceLock,
-		lockNameSpace,
-		resourceName,
-		client.CoreV1(),
-		client.CoordinationV1(),
-		resourcelock.ResourceLockConfig{
-			Identity: id,
-		})
-	if err != nil {
-		log.Fatalf("error creating lock: %v", err)
-		return err
-	}
-
-	leaderelection.RunOrDie(ctx, leaderelection.LeaderElectionConfig{
-		Lock:            rl,
-		ReleaseOnCancel: true,
-		LeaseDuration:   defaultLeaseDuration,
-		RenewDeadline:   defaultRenewDeadline,
-		RetryPeriod:     defaultRetryPeriod,
-		Callbacks: leaderelection.LeaderCallbacks{
-			OnStartedLeading: func(c context.Context) {
-				s.doRun(ctx)
-			},
-			OnStoppedLeading: func() {
-				log.Infof("%s: stopped leading", id)
-			},
-		},
-	})
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (s *Server) doRun(ctx context.Context) {
-	go s.serviceCenterController.Run(ctx)
-	go s.istioController.Run(ctx)
-	log.Info("servicecenter2mesh Server Started !!!")
+// creates the in-cluster config
 
-	s.waitForShutdown(ctx)
-}
+func (s *Server) doRun(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // on server stop
-func (s *Server) waitForShutdown(ctx context.Context) {
-	go func() {
-		<-ctx.Done()
-		s.serviceCenterController.Stop()
-		close(s.serviceCenterEvent)
-	}()
-}
+func (s *Server) waitForShutdown(ctx context.Context) { _ = "STUB: not implemented"; return }

@@ -10,8 +10,6 @@ import (
 	context "context"
 
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -32,25 +30,18 @@ type eventServiceClient struct {
 }
 
 func NewEventServiceClient(cc grpc.ClientConnInterface) EventServiceClient {
-	return &eventServiceClient{cc}
+	_ = "STUB: not implemented"
+	return *new(EventServiceClient)
 }
 
 func (c *eventServiceClient) Sync(ctx context.Context, in *EventList, opts ...grpc.CallOption) (*Results, error) {
-	out := new(Results)
-	err := c.cc.Invoke(ctx, "/api.sync.v1.EventService/Sync", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *eventServiceClient) Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthReply, error) {
-	out := new(HealthReply)
-	err := c.cc.Invoke(ctx, "/api.sync.v1.EventService/Health", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // EventServiceServer is the server API for EventService service.
@@ -67,58 +58,41 @@ type UnimplementedEventServiceServer struct {
 }
 
 func (UnimplementedEventServiceServer) Sync(context.Context, *EventList) (*Results, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sync not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedEventServiceServer) Health(context.Context, *HealthRequest) (*HealthReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
-}
-func (UnimplementedEventServiceServer) mustEmbedUnimplementedEventServiceServer() {}
 
-// UnsafeEventServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to EventServiceServer will
-// result in compilation errors.
+func (UnimplementedEventServiceServer) Health(context.Context, *HealthRequest) (*HealthReply, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedEventServiceServer) mustEmbedUnimplementedEventServiceServer() {
+	_ = "STUB: not implemented"
+
+	// UnsafeEventServiceServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to EventServiceServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeEventServiceServer interface {
 	mustEmbedUnimplementedEventServiceServer()
 }
 
 func RegisterEventServiceServer(s grpc.ServiceRegistrar, srv EventServiceServer) {
-	s.RegisterService(&EventService_ServiceDesc, srv)
+	_ = "STUB: not implemented"
+	return
 }
 
 func _EventService_Sync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EventList)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EventServiceServer).Sync(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.sync.v1.EventService/Sync",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EventServiceServer).Sync(ctx, req.(*EventList))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _EventService_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealthRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EventServiceServer).Health(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.sync.v1.EventService/Health",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EventServiceServer).Health(ctx, req.(*HealthRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // EventService_ServiceDesc is the grpc.ServiceDesc for EventService service.

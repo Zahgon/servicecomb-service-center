@@ -38,14 +38,7 @@ type cacherRegisterInitiallizer func() (cacher *MongoCacher)
 var cacherRegisterMutex sync.Mutex
 var CacherRegister = make(map[string]cacherRegisterInitiallizer)
 
-func RegisterCacher(t string, f cacherRegisterInitiallizer) {
-	cacherRegisterMutex.Lock()
-	defer cacherRegisterMutex.Unlock()
-	if _, exist := CacherRegister[t]; exist {
-		return
-	}
-	CacherRegister[t] = f
-}
+func RegisterCacher(t string, f cacherRegisterInitiallizer) { _ = "STUB: not implemented"; return }
 
 type MongoEvent struct {
 	DocumentID string
@@ -61,19 +54,13 @@ type MongoEventHandler interface {
 }
 
 func NewMongoEventByResource(resource *sdcommon.Resource, action discovery.EventType) MongoEvent {
-	return MongoEvent{
-		Type:       action,
-		Value:      resource.Value,
-		DocumentID: resource.Key,
-	}
+	_ = "STUB: not implemented"
+	return *new(MongoEvent)
 }
 
 func NewMongoEvent(documentID string, action discovery.EventType, v interface{}) MongoEvent {
-	event := MongoEvent{}
-	event.DocumentID = documentID
-	event.Type = action
-	event.Value = v
-	return event
+	_ = "STUB: not implemented"
+	return *new(MongoEvent)
 }
 
 type MongoWatchResponse struct {

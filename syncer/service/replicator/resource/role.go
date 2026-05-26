@@ -19,11 +19,7 @@ package resource
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	v1sync "github.com/apache/servicecomb-service-center/syncer/api/v1"
 
 	crbac "github.com/go-chassis/cari/rbac"
@@ -33,13 +29,7 @@ const (
 	Role = "role"
 )
 
-func NewRole(e *v1sync.Event) Resource {
-	r := &role{
-		event: e,
-	}
-	r.manager = r
-	return r
-}
+func NewRole(e *v1sync.Event) Resource { _ = "STUB: not implemented"; return *new(Resource) }
 
 type role struct {
 	event *v1sync.Event
@@ -63,96 +53,39 @@ type roleManager interface {
 	DeleteRole(ctx context.Context, name string) error
 }
 
-func (r *role) loadInput() error {
-	r.input = new(crbac.Role)
-	callback := func() {
-		r.roleName = r.input.Name
-	}
-
-	r.deleteInput = new(string)
-
-	createOrUpdateParam := newInputParam(r.input, callback)
-	deleteParam := newInputParam(r.deleteInput, func() {
-		r.roleName = *r.deleteInput
-	})
-
-	return newInputLoader(
-		r.event,
-		createOrUpdateParam,
-		createOrUpdateParam,
-		deleteParam,
-	).loadInput()
-}
+func (r *role) loadInput() error { _ = "STUB: not implemented"; return nil }
 
 func (r *role) LoadCurrentResource(ctx context.Context) *Result {
-	err := r.loadInput()
-	if err != nil {
-		return FailResult(err)
-	}
-
-	cur, err := r.manager.GetRole(ctx, r.roleName)
-	if err != nil {
-		if errors.Is(err, rbac.ErrRoleNotExist) {
-			return nil
-		}
-		return FailResult(err)
-	}
-	r.cur = cur
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (r *role) NeedOperate(ctx context.Context) *Result {
-	checker := &checker{
-		curNotNil: r.cur != nil,
-		event:     r.event,
-		updateTime: func() (int64, error) {
-			return formatUpdateTimeSecond(r.cur.UpdateTime)
-		},
-		resourceID: r.input.Name,
-	}
-	checker.tombstoneLoader = checker
-	return checker.needOperate(ctx)
-}
+func (r *role) NeedOperate(ctx context.Context) *Result { _ = "STUB: not implemented"; return nil }
 
-func (r *role) CreateHandle(ctx context.Context) error {
-	if r.cur != nil {
-		log.Warn(fmt.Sprintf("create action but resource exist, %s, %s",
-			r.roleName, r.event.Id))
-		return r.UpdateHandle(ctx)
-	}
-	return r.manager.CreateRole(ctx, r.input)
-}
+func (r *role) CreateHandle(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (r *role) UpdateHandle(ctx context.Context) error {
-	if r.cur == nil {
-		log.Warn(fmt.Sprintf("update action but resource not exist, %s, %s",
-			r.roleName, r.event.Id))
-		return r.CreateHandle(ctx)
-	}
-	return r.manager.EditRole(ctx, r.roleName, r.input)
-}
+func (r *role) UpdateHandle(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (r *role) DeleteHandle(ctx context.Context) error {
-	return r.manager.DeleteRole(ctx, r.roleName)
-}
+func (r *role) DeleteHandle(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (r *role) Operate(ctx context.Context) *Result {
-	return newOperator(r).operate(ctx, r.event.Action)
-}
+func (r *role) Operate(ctx context.Context) *Result { _ = "STUB: not implemented"; return nil }
 
 func (r *role) GetRole(ctx context.Context, name string) (*crbac.Role, error) {
-	return rbac.Instance().GetRole(ctx, name)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (r *role) EditRole(ctx context.Context, name string, role *crbac.Role) error {
-	return rbac.Instance().UpdateRole(ctx, name, role)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (r *role) CreateRole(ctx context.Context, role *crbac.Role) error {
-	return rbac.Instance().CreateRole(ctx, role)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (r *role) DeleteRole(ctx context.Context, name string) error {
-	_, err := rbac.Instance().DeleteRole(ctx, name)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

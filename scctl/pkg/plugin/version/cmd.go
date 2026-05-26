@@ -18,12 +18,7 @@
 package version
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/client"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -35,32 +30,6 @@ func init() {
 	RootCmd = NewGetCommand(cmd.RootCmd())
 }
 
-func NewGetCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "version",
-		Aliases: []string{"ver"},
-		Short:   "Output the version of tool and service center",
-		Run:     CommandFunc,
-	}
-	parent.AddCommand(cmd)
-	return cmd
-}
+func NewGetCommand(parent *cobra.Command) *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-func CommandFunc(_ *cobra.Command, _ []string) {
-	defer cmd.StopAndExit(cmd.ExitSuccess)
-	fmt.Print(version.TOOL_NAME, " ")
-	version.Ver().Print()
-
-	scClient, err := client.NewSCClient(cmd.ScClientConfig)
-	if err != nil {
-		return
-	}
-	v, scErr := scClient.GetScVersion(context.Background())
-	if scErr != nil {
-		return
-	}
-
-	fmt.Println()
-	fmt.Print("service center ")
-	v.Print()
-}
+func CommandFunc(_ *cobra.Command, _ []string) { _ = "STUB: not implemented"; return }

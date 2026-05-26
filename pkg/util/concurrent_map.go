@@ -34,103 +34,40 @@ type ConcurrentMap struct {
 	once  sync.Once
 }
 
-func (cm *ConcurrentMap) resize() {
-	cm.items = make(map[interface{}]interface{}, cm.size)
-}
+func (cm *ConcurrentMap) resize() { _ = "STUB: not implemented"; return }
 
 func (cm *ConcurrentMap) init() {
 	cm.once.Do(cm.resize)
 }
 
-func (cm *ConcurrentMap) Put(key, val interface{}) {
-	cm.init()
-	cm.mux.Lock()
-	cm.items[key] = val
-	cm.mux.Unlock()
-	return
-}
+func (cm *ConcurrentMap) Put(key, val interface{}) { _ = "STUB: not implemented"; return }
 
 func (cm *ConcurrentMap) PutIfAbsent(key, val interface{}) (exist interface{}) {
-	cm.init()
-	cm.mux.Lock()
-	var b bool
-	exist, b = cm.items[key]
-	if !b {
-		cm.items[key], exist = val, val
-	}
-	cm.mux.Unlock()
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cm *ConcurrentMap) Fetch(key interface{}, f func() (interface{}, error)) (exist interface{}, err error) {
-	cm.init()
-	cm.mux.RLock()
-	var b bool
-	exist, b = cm.items[key]
-	cm.mux.RUnlock()
-	if !b {
-		cm.mux.Lock()
-		exist, b = cm.items[key]
-		if !b {
-			if exist, err = f(); err == nil {
-				cm.items[key] = exist
-			}
-		}
-		cm.mux.Unlock()
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cm *ConcurrentMap) Get(key interface{}) (val interface{}, b bool) {
-	cm.init()
-	cm.mux.RLock()
-	val, b = cm.items[key]
-	cm.mux.RUnlock()
-	return
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
-func (cm *ConcurrentMap) Remove(key interface{}) {
-	cm.init()
-	cm.mux.Lock()
-	delete(cm.items, key)
-	cm.mux.Unlock()
-	return
-}
+func (cm *ConcurrentMap) Remove(key interface{}) { _ = "STUB: not implemented"; return }
 
-func (cm *ConcurrentMap) Clear() {
-	cm.mux.Lock()
-	cm.resize()
-	cm.mux.Unlock()
-}
+func (cm *ConcurrentMap) Clear() { _ = "STUB: not implemented"; return }
 
-func (cm *ConcurrentMap) Size() (s int) {
-	return len(cm.items)
-}
+func (cm *ConcurrentMap) Size() (s int) { _ = "STUB: not implemented"; return 0 }
 
 func (cm *ConcurrentMap) ForEach(f func(item MapItem) (next bool)) {
-	cm.mux.RLock()
-	s := len(cm.items)
-	if s == 0 {
-		cm.mux.RUnlock()
-		return
-	}
-	// avoid dead lock in function 'f'
-	ch := make([]MapItem, 0, s)
-	for k, v := range cm.items {
-		ch = append(ch, MapItem{k, v})
-	}
-	cm.mux.RUnlock()
-
-	for _, i := range ch {
-		if b := f(i); b {
-			continue
-		}
-		break
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func NewConcurrentMap(size int) *ConcurrentMap {
-	c := &ConcurrentMap{size: size}
-	c.init()
-	return c
-}
+// avoid dead lock in function 'f'
+
+func NewConcurrentMap(size int) *ConcurrentMap { _ = "STUB: not implemented"; return nil }

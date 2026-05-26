@@ -18,12 +18,8 @@
 package access
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/pkg/validate"
 	"github.com/apache/servicecomb-service-center/server/core"
 )
 
@@ -35,17 +31,4 @@ func init() {
 	serverName = core.Service.ServiceName + "/" + core.Service.Version
 }
 
-func Intercept(w http.ResponseWriter, r *http.Request) error {
-	w.Header().Add(rest.HeaderServer, serverName)
-
-	if !validate.IsRequestURI(r.RequestURI) {
-		err := fmt.Errorf("Invalid Request URI %s", r.RequestURI)
-		w.WriteHeader(http.StatusBadRequest)
-		_, err = w.Write(util.StringToBytesWithNoCopy(err.Error()))
-		if err != nil {
-			return err
-		}
-		return err
-	}
-	return nil
-}
+func Intercept(w http.ResponseWriter, r *http.Request) error { _ = "STUB: not implemented"; return nil }

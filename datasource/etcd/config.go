@@ -18,27 +18,17 @@
 package etcd
 
 import (
-	"time"
-
-	"github.com/apache/servicecomb-service-center/server/config"
 	"github.com/little-cui/etcdadpt"
 )
 
 func Configuration() etcdadpt.Config {
-	cfg := etcdadpt.Config{}
+	_ = "STUB: not implemented"
+	return *
 
 	// cluster configs
-	cfg.ClusterName = config.GetString("registry.etcd.cluster.name", etcdadpt.DefaultClusterName, config.WithStandby("manager_name"))
-	cfg.ManagerAddress = config.GetString("registry.etcd.cluster.managerEndpoints", "", config.WithStandby("manager_addr"))
-	cfg.ClusterAddresses = config.GetString("registry.etcd.cluster.endpoints", "http://127.0.0.1:2379", config.WithStandby("manager_cluster"))
-
-	// connection configs
-	cfg.DialTimeout = config.GetDuration("registry.etcd.connect.timeout", etcdadpt.DefaultDialTimeout, config.WithStandby("connect_timeout"))
-	cfg.RequestTimeOut = config.GetDuration("registry.etcd.request.timeout", etcdadpt.DefaultRequestTimeout, config.WithStandby("registry_timeout"))
-	cfg.AutoSyncInterval = config.GetDuration("registry.etcd.autoSyncInterval", 30*time.Second, config.WithStandby("auto_sync_interval"))
-
-	// compaction configs
-	cfg.CompactIndexDelta = config.GetInt64("registry.etcd.compact.indexDelta", 100, config.WithStandby("compact_index_delta"))
-	cfg.CompactInterval = config.GetDuration("registry.etcd.compact.interval", 12*time.Hour, config.WithStandby("compact_interval"))
-	return cfg
+	new(etcdadpt.Config)
 }
+
+// connection configs
+
+// compaction configs

@@ -18,8 +18,6 @@
 package v3
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/rest"
 	v4 "github.com/apache/servicecomb-service-center/server/resource/disco"
 )
@@ -28,19 +26,6 @@ type MicroServiceService struct {
 	v4.ServiceResource
 }
 
-func (s *MicroServiceService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/registry/v3/existence", Func: s.ResourceExist},
-		{Method: http.MethodGet, Path: "/registry/v3/microservices", Func: s.ListService},
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:serviceId", Func: s.GetService},
-		{Method: http.MethodPost, Path: "/registry/v3/microservices", Func: s.RegisterService},
-		{Method: http.MethodPut, Path: "/registry/v3/microservices/:serviceId/properties", Func: s.PutServiceProperties},
-		{Method: http.MethodDelete, Path: "/registry/v3/microservices/:serviceId", Func: s.UnregisterService},
-		{Method: http.MethodDelete, Path: "/registry/v3/microservices", Func: s.UnregisterManyService},
-		// tags
-		{Method: http.MethodPost, Path: "/registry/v3/microservices/:serviceId/tags", Func: s.PutManyTags},
-		{Method: http.MethodPut, Path: "/registry/v3/microservices/:serviceId/tags/:key", Func: s.PutTag},
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:serviceId/tags", Func: s.ListTag},
-		{Method: http.MethodDelete, Path: "/registry/v3/microservices/:serviceId/tags/:key", Func: s.DeleteManyTags},
-	}
-}
+func (s *MicroServiceService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
+
+// tags

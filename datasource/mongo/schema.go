@@ -20,9 +20,6 @@ package mongo
 import (
 	"context"
 
-	"github.com/go-chassis/cari/discovery"
-
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/datasource/schema"
 )
 
@@ -31,64 +28,48 @@ func init() {
 }
 
 func NewSchemaDAO(_ schema.Options) (schema.DAO, error) {
-	return &SchemaDAO{}, nil
+	_ = "STUB: not implemented"
+	return *new(schema.DAO), nil
 }
 
 type SchemaDAO struct{}
 
 func (s *SchemaDAO) GetRef(_ context.Context, _ *schema.RefRequest) (*schema.Ref, error) {
-	return nil, schema.ErrSchemaNotFound
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *SchemaDAO) ListRef(_ context.Context, _ *schema.RefRequest) ([]*schema.Ref, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func (s *SchemaDAO) DeleteRef(_ context.Context, _ *schema.RefRequest) error {
-	return schema.ErrSchemaNotFound
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *SchemaDAO) GetContent(_ context.Context, _ *schema.ContentRequest) (*schema.Content, error) {
-	return nil, schema.ErrSchemaNotFound
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *SchemaDAO) PutContent(ctx context.Context, contentRequest *schema.PutContentRequest) error {
-	_, err := datasource.GetMetadataManager().ModifySchema(ctx, &discovery.ModifySchemaRequest{
-		ServiceId: contentRequest.ServiceID,
-		SchemaId:  contentRequest.SchemaID,
-		Schema:    contentRequest.Content.Content,
-		Summary:   contentRequest.Content.Summary,
-	})
-	if err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (s *SchemaDAO) PutManyContent(ctx context.Context, contentRequest *schema.PutManyContentRequest) error {
-	var schemas []*discovery.Schema
-	for i, item := range contentRequest.Contents {
-		schemaID := contentRequest.SchemaIDs[i]
-		schemas = append(schemas, &discovery.Schema{
-			SchemaId: schemaID,
-			Summary:  item.Summary,
-			Schema:   item.Content,
-		})
-	}
-	_, err := datasource.GetMetadataManager().ModifySchemas(ctx, &discovery.ModifySchemasRequest{
-		ServiceId: contentRequest.ServiceID,
-		Schemas:   schemas,
-	})
-	if err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (s *SchemaDAO) DeleteContent(_ context.Context, _ *schema.ContentRequest) error {
-	return schema.ErrSchemaContentNotFound
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *SchemaDAO) DeleteNoRefContents(_ context.Context) (int, error) {
+	_ = "STUB: not implemented"
 	return 0, nil
 }

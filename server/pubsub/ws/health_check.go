@@ -19,12 +19,7 @@ package ws
 
 import (
 	"context"
-	"fmt"
 	"sync"
-	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/go-chassis/foundation/gopool"
 )
 
 var checker *HealthCheck
@@ -39,62 +34,18 @@ type HealthCheck struct {
 	lock sync.Mutex
 }
 
-func (wh *HealthCheck) Run() {
-	gopool.Go(checker.loop)
-}
+func (wh *HealthCheck) Run() { _ = "STUB: not implemented"; return }
 
-func (wh *HealthCheck) loop(ctx context.Context) {
-	ticker := time.NewTicker(500 * time.Millisecond)
-	for {
-		select {
-		case <-ctx.Done():
-			// server shutdown
-			return
-		case <-ticker.C:
-			for _, ws := range wh.wss {
-				if t := ws.NeedCheck(); t == nil {
-					continue
-				}
-				wh.check(ws)
-			}
-		}
-	}
-}
+func (wh *HealthCheck) loop(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-func (wh *HealthCheck) check(ws *WebSocket) {
-	gopool.Go(func(ctx context.Context) {
-		if err := ws.CheckHealth(ctx); err != nil {
-			wh.Remove(ws)
-			log.Error(fmt.Sprintf("checker removed unhealth websocket[%s]", ws.RemoteAddr), err)
-		}
-	})
-}
+// server shutdown
 
-func (wh *HealthCheck) Accept(ws *WebSocket) int {
-	wh.lock.Lock()
-	wh.wss = append(wh.wss, ws)
-	n := len(wh.wss)
-	wh.lock.Unlock()
-	return n
-}
+func (wh *HealthCheck) check(ws *WebSocket) { _ = "STUB: not implemented"; return }
 
-func (wh *HealthCheck) Remove(ws *WebSocket) int {
-	wh.lock.Lock()
-	for i, t := range wh.wss {
-		if t == ws {
-			wh.wss = append(wh.wss[0:i], wh.wss[i+1:]...)
-			break
-		}
-	}
-	n := len(wh.wss)
-	wh.lock.Unlock()
-	return n
-}
+func (wh *HealthCheck) Accept(ws *WebSocket) int { _ = "STUB: not implemented"; return 0 }
 
-func NewHealthCheck() *HealthCheck {
-	return &HealthCheck{}
-}
+func (wh *HealthCheck) Remove(ws *WebSocket) int { _ = "STUB: not implemented"; return 0 }
 
-func HealthChecker() *HealthCheck {
-	return checker
-}
+func NewHealthCheck() *HealthCheck { _ = "STUB: not implemented"; return nil }
+
+func HealthChecker() *HealthCheck { _ = "STUB: not implemented"; return nil }

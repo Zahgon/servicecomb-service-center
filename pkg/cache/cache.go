@@ -20,8 +20,6 @@ package cache
 import (
 	"context"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type Cache struct {
@@ -29,21 +27,8 @@ type Cache struct {
 	lock sync.RWMutex
 }
 
-func (c *Cache) Set(k string, v interface{}) {
-	c.lock.Lock()
-	c.data = context.WithValue(c.data, util.CtxKey(k), v)
-	c.lock.Unlock()
-}
+func (c *Cache) Set(k string, v interface{}) { _ = "STUB: not implemented"; return }
 
-func (c *Cache) Get(k string) (v interface{}) {
-	c.lock.RLock()
-	v = c.data.Value(util.CtxKey(k))
-	c.lock.RUnlock()
-	return
-}
+func (c *Cache) Get(k string) (v interface{}) { _ = "STUB: not implemented"; return nil }
 
-func NewCache() *Cache {
-	return &Cache{
-		data: context.Background(),
-	}
-}
+func NewCache() *Cache { _ = "STUB: not implemented"; return nil }

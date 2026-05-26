@@ -19,33 +19,16 @@ package util
 
 import (
 	"context"
-	"errors"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/client"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/pkg/errsvc"
 )
 
 func HeartbeatUtil(ctx context.Context, domainProject string, serviceID string, instanceID string) (leaseID int64, ttl int64, _ *errsvc.Error) {
-	leaseID, err := GetLeaseID(ctx, domainProject, serviceID, instanceID)
-	if err != nil {
-		return leaseID, ttl, discovery.NewError(discovery.ErrUnavailableBackend, err.Error())
-	}
-	ttl, err = KeepAliveLease(ctx, domainProject, serviceID, instanceID, leaseID)
-	if err != nil {
-		return leaseID, ttl, discovery.NewError(discovery.ErrInstanceNotExists, err.Error())
-	}
-	return leaseID, ttl, nil
+	_ = "STUB: not implemented"
+	return 0, 0, nil
 }
 
 func KeepAliveLease(ctx context.Context, domainProject, serviceID, instanceID string, leaseID int64) (ttl int64, err error) {
-	if leaseID == -1 {
-		return ttl, errors.New("leaseId not exist, instance not exist")
-	}
-	ttl, err = client.KeepAlive(ctx, path.GenerateInstanceLeaseKey(domainProject, serviceID, instanceID), leaseID)
-	if err != nil {
-		return ttl, err
-	}
-	return ttl, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

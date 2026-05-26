@@ -19,12 +19,7 @@ package account
 
 import (
 	"context"
-	"fmt"
 	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	accountsvc "github.com/apache/servicecomb-service-center/server/service/account"
-	"github.com/go-chassis/foundation/gopool"
 )
 
 const CleanupInterval = 1 * time.Minute
@@ -35,46 +30,6 @@ func init() {
 
 // startReleasedLockHistoryCleanupJob cause of accountsvc.IsBanned may be never called
 // after locked account, then run a job to cleanup the released lock
-func startReleasedLockHistoryCleanupJob() {
-	log.Info(fmt.Sprintf("start released lock history cleanup job(every %s)", CleanupInterval))
-	gopool.Go(func(ctx context.Context) {
-		tick := time.NewTicker(CleanupInterval)
-		defer tick.Stop()
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-tick.C:
-				err := CleanupReleasedLockHistory(ctx)
-				if err != nil {
-					log.Error("cleanup lock history failed", err)
-				}
-			}
-		}
-	})
-}
+func startReleasedLockHistoryCleanupJob() { _ = "STUB: not implemented"; return }
 
-func CleanupReleasedLockHistory(ctx context.Context) error {
-	locks, _, err := accountsvc.ListLock(ctx)
-	if err != nil {
-		return err
-	}
-	now := time.Now().Unix()
-	var keys []string
-	for _, lock := range locks {
-		if lock.ReleaseAt > now {
-			continue
-		}
-		keys = append(keys, lock.Key)
-	}
-	n := len(keys)
-	if n == 0 {
-		return nil
-	}
-	err = accountsvc.DeleteLockList(ctx, keys)
-	if err != nil {
-		return err
-	}
-	log.Info(fmt.Sprintf("cleanup %d released lock history", n))
-	return nil
-}
+func CleanupReleasedLockHistory(ctx context.Context) error { _ = "STUB: not implemented"; return nil }

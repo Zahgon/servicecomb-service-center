@@ -18,8 +18,6 @@
 package metrics
 
 import (
-	"time"
-
 	"github.com/apache/servicecomb-service-center/pkg/event"
 
 	"github.com/apache/servicecomb-service-center/pkg/metrics"
@@ -71,26 +69,8 @@ var (
 		}, []string{"instance", "domain", "scheme"})
 )
 
-func ReportPublishCompleted(evt event.Event, err error) {
-	instance := metrics.InstanceName()
-	elapsed := float64(time.Since(evt.CreateAt()).Nanoseconds()) / float64(time.Microsecond)
-	status := success
-	if err != nil {
-		status = failure
-	}
-	notifyLatency.WithLabelValues(instance, evt.Type().String(), status).Observe(elapsed)
-	notifyCounter.WithLabelValues(instance, evt.Type().String(), status).Inc()
-	pendingGauge.WithLabelValues(instance, evt.Type().String()).Dec()
-}
+func ReportPublishCompleted(evt event.Event, err error) { _ = "STUB: not implemented"; return }
 
-func ReportPendingCompleted(evt event.Event) {
-	instance := metrics.InstanceName()
-	elapsed := float64(time.Since(evt.CreateAt()).Nanoseconds()) / float64(time.Microsecond)
-	pendingLatency.WithLabelValues(instance, evt.Type().String()).Observe(elapsed)
-	pendingGauge.WithLabelValues(instance, evt.Type().String()).Inc()
-}
+func ReportPendingCompleted(evt event.Event) { _ = "STUB: not implemented"; return }
 
-func ReportSubscriber(domain, scheme string, n float64) {
-	instance := metrics.InstanceName()
-	subscriberGauge.WithLabelValues(instance, domain, scheme).Add(n)
-}
+func ReportSubscriber(domain, scheme string, n float64) { _ = "STUB: not implemented"; return }

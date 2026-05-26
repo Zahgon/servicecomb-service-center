@@ -17,13 +17,4 @@
 
 package util
 
-import (
-	"regexp"
-	"strings"
-)
-
-func WildcardMatch(pattern, dist string) bool {
-	regx := "^" + strings.ReplaceAll(regexp.QuoteMeta(pattern), "\\*", ".*") + "$"
-	matched, _ := regexp.MatchString(regx, dist)
-	return matched
-}
+func WildcardMatch(pattern, dist string) bool { _ = "STUB: not implemented"; return false }

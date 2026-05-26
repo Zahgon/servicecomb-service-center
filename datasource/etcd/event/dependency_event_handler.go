@@ -19,26 +19,11 @@ package event
 
 import (
 	"context"
-	"fmt"
 	"sync"
-	"time"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	serviceUtil "github.com/apache/servicecomb-service-center/datasource/etcd/util"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/queue"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/config"
 	pb "github.com/go-chassis/cari/discovery"
-	"github.com/go-chassis/cari/dlock"
-	"github.com/go-chassis/foundation/backoff"
-	"github.com/go-chassis/foundation/gopool"
-	"github.com/go-chassis/foundation/stringutil"
-	"github.com/go-chassis/foundation/timeutil"
-	"github.com/little-cui/etcdadpt"
 )
 
 const depQueueLockKey = "/dep-queue"
@@ -53,77 +38,27 @@ type DependencyEventHandler struct {
 }
 
 func (h *DependencyEventHandler) Type() kvstore.Type {
-	return sd.TypeDependencyQueue
+	_ = "STUB: not implemented"
+	return *new(kvstore.Type)
 }
 
-func (h *DependencyEventHandler) OnEvent(evt kvstore.Event) {
-	action := evt.Type
-	if action != pb.EVT_CREATE && action != pb.EVT_UPDATE && action != pb.EVT_INIT {
-		return
-	}
-	h.notify()
-}
+func (h *DependencyEventHandler) OnEvent(evt kvstore.Event) { _ = "STUB: not implemented"; return }
 
-func (h *DependencyEventHandler) notify() {
-	err := h.signals.Put(struct{}{})
-	if err != nil {
-		log.Error("", err)
-	}
-}
+func (h *DependencyEventHandler) notify() { _ = "STUB: not implemented"; return }
 
 func (h *DependencyEventHandler) backoff(f func(), retries int) int {
-	if f != nil {
-		<-time.After(backoff.GetBackoff().Delay(retries))
-		f()
-	}
-	return retries + 1
+	_ = "STUB: not implemented"
+	return 0
 }
 
 func (h *DependencyEventHandler) tryWithBackoff(success func() error, backoff func(), retries int) (int, error) {
-	defer log.Recover()
-
-	if err := dlock.TryLock(depQueueLockKey, -1); err != nil {
-		log.Error(fmt.Sprintf("try to lock %s failed", depQueueLockKey), err)
-		return 0, nil
-	}
-	defer func() {
-		if err := dlock.Unlock(depQueueLockKey); err != nil {
-			log.Error("unlock failed", err)
-		}
-	}()
-
-	err := success()
-	if err != nil {
-		log.Error("handle dependency event failed", err)
-		return h.backoff(backoff, retries), err
-	}
-
+	_ = "STUB: not implemented"
 	return 0, nil
 }
 
-func (h *DependencyEventHandler) eventLoop() {
-	gopool.Go(func(ctx context.Context) {
-		// the events will lose, need to handle dependence records periodically
-		period := config.GetRegistry().CacheTTL
-		timer := time.NewTimer(period)
-		retries := 0
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-h.signals.Chan():
-				_, err := h.tryWithBackoff(h.Handle, h.notify, retries)
-				if err != nil {
-					log.Error("", err)
-				}
-				timeutil.ResetTimer(timer, period)
-			case <-timer.C:
-				h.notify()
-				timer.Reset(period)
-			}
-		}
-	})
-}
+func (h *DependencyEventHandler) eventLoop() { _ = "STUB: not implemented"; return }
+
+// the events will lose, need to handle dependence records periodically
 
 type DependencyEventHandlerResource struct {
 	dep           *pb.ConsumerDependency
@@ -132,115 +67,27 @@ type DependencyEventHandlerResource struct {
 }
 
 func NewDependencyEventHandlerResource(dep *pb.ConsumerDependency, kv *kvstore.KeyValue, domainProject string) *DependencyEventHandlerResource {
-	return &DependencyEventHandlerResource{
-		dep,
-		kv,
-		domainProject,
-	}
-}
-
-func (h *DependencyEventHandler) Handle() error {
-	testMux.Lock()
-	defer testMux.Unlock()
-
-	key := path.GetServiceDependencyQueueRootKey("")
-	resp, err := sd.DependencyQueue().Search(context.Background(), etcdadpt.WithNoCache(),
-		etcdadpt.WithStrKey(key), etcdadpt.WithPrefix())
-	if err != nil {
-		return err
-	}
-
-	// maintain dependency rules.
-	l := len(resp.Kvs)
-	if l == 0 {
-		return nil
-	}
-
-	cleanUpDomainProjects := make(map[string]struct{})
-	defer h.CleanUp(cleanUpDomainProjects)
-
-	for _, keyValue := range resp.Kvs {
-		r, ok := keyValue.Value.(*pb.ConsumerDependency)
-		if !ok {
-			log.Error("failed to assert consumerDependency", datasource.ErrAssertFail)
-			continue
-		}
-
-		_, domainProject, uuid := path.GetInfoFromDependencyQueueKV(keyValue.Key)
-		if uuid == path.DepsQueueUUID {
-			cleanUpDomainProjects[domainProject] = struct{}{}
-		}
-		res := NewDependencyEventHandlerResource(r, keyValue, domainProject)
-
-		if err := h.dependencyRuleHandle(res); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (h *DependencyEventHandler) Handle() error { _ = "STUB: not implemented"; return nil }
+
+// maintain dependency rules.
+
 func (h *DependencyEventHandler) dependencyRuleHandle(res interface{}) error {
-	ctx := util.WithGlobal(context.Background())
-	dependencyEventHandlerRes := res.(*DependencyEventHandlerResource)
-	r := dependencyEventHandlerRes.dep
-	consumerFlag := util.StringJoin([]string{r.Consumer.Environment, r.Consumer.AppId, r.Consumer.ServiceName, r.Consumer.Version}, "/")
-
-	domainProject := dependencyEventHandlerRes.domainProject
-	consumerInfo := pb.DependenciesToKeys([]*pb.MicroServiceKey{r.Consumer}, domainProject)[0]
-	providersInfo := pb.DependenciesToKeys(r.Providers, domainProject)
-
-	var (
-		dep serviceUtil.Dependency
-		err error
-	)
-	dep.DomainProject = domainProject
-	dep.Consumer = consumerInfo
-	dep.ProvidersRule = providersInfo
-	if r.Override {
-		err = serviceUtil.CreateDependencyRule(ctx, &dep)
-	} else {
-		err = serviceUtil.AddDependencyRule(ctx, &dep)
-	}
-	if err != nil {
-		log.Error(fmt.Sprintf("modify dependency rule failed, override: %t, consumer %s", r.Override, consumerFlag), err)
-		return fmt.Errorf("override: %t, consumer is %s, %s", r.Override, consumerFlag, err.Error())
-	}
-
-	if err = h.removeKV(ctx, dependencyEventHandlerRes.kv); err != nil {
-		log.Error(fmt.Sprintf("remove dependency rule failed, override: %t, consumer %s", r.Override, consumerFlag), err)
-		return err
-	}
-
-	log.Info(fmt.Sprintf("maintain dependency [%v] successfully", r))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (h *DependencyEventHandler) removeKV(ctx context.Context, kv *kvstore.KeyValue) error {
-	dResp, err := etcdadpt.TxnWithCmp(ctx, etcdadpt.Ops(etcdadpt.OpDel(etcdadpt.WithKey(kv.Key))),
-		etcdadpt.If(etcdadpt.EqualVer(stringutil.Bytes2str(kv.Key), kv.Version)),
-		nil)
-	if err != nil {
-		return fmt.Errorf("can not remove the dependency %s request, %s", util.BytesToStringWithNoCopy(kv.Key), err.Error())
-	}
-	if !dResp.Succeeded {
-		log.Info(fmt.Sprintf("the dependency %s request is changed", util.BytesToStringWithNoCopy(kv.Key)))
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (h *DependencyEventHandler) CleanUp(domainProjects map[string]struct{}) {
-	for domainProject := range domainProjects {
-		ctx := util.WithGlobal(context.Background())
-		if err := serviceUtil.CleanUpDependencyRules(ctx, domainProject); err != nil {
-			log.Error(fmt.Sprintf("clean up '%s' dependency rules failed", domainProject), err)
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func NewDependencyEventHandler() *DependencyEventHandler {
-	h := &DependencyEventHandler{
-		signals: queue.NewUniQueue(),
-	}
-	h.eventLoop()
-	return h
-}
+func NewDependencyEventHandler() *DependencyEventHandler { _ = "STUB: not implemented"; return nil }

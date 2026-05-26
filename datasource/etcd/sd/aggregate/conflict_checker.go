@@ -19,12 +19,8 @@ package aggregate
 
 import (
 	"context"
-	"time"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/foundation/gopool"
 )
 
 type ConflictChecker struct {
@@ -32,45 +28,11 @@ type ConflictChecker struct {
 	ConflictHandleFunc func(origin, conflict *kvstore.KeyValue)
 }
 
-func (c *ConflictChecker) Run(ctx context.Context) {
-	d := etcd.Configuration().AutoSyncInterval
-	if d == 0 || c.Cache == nil {
-		return
-	}
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-time.After(d):
-			c.Check()
-		}
-	}
-}
+func (c *ConflictChecker) Run(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-func (c *ConflictChecker) Check() {
-	caches, ok := c.Cache.(Cache)
-	if !ok {
-		return
-	}
-
-	var arr []*kvstore.KeyValue
-	for _, item := range caches {
-		item.GetAll(&arr)
-	}
-
-	exists := make(map[string]*kvstore.KeyValue)
-	for _, v := range arr {
-		key := util.BytesToStringWithNoCopy(v.Key)
-		if kv, ok := exists[key]; ok {
-			c.ConflictHandleFunc(kv, v)
-			continue
-		}
-		exists[key] = v
-	}
-}
+func (c *ConflictChecker) Check() { _ = "STUB: not implemented"; return }
 
 func NewConflictChecker(cache kvstore.CacheReader, f func(origin, conflict *kvstore.KeyValue)) *ConflictChecker {
-	checker := &ConflictChecker{Cache: cache, ConflictHandleFunc: f}
-	gopool.Go(checker.Run)
-	return checker
+	_ = "STUB: not implemented"
+	return nil
 }

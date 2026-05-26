@@ -18,9 +18,6 @@
 package schema
 
 import (
-	"os"
-	"path/filepath"
-
 	pb "github.com/go-chassis/cari/discovery"
 )
 
@@ -32,49 +29,15 @@ type Writer interface {
 	Write([]*pb.Schema) error
 }
 
-func NewSchemaWriter(cfg Config) Writer {
-	switch {
-	case len(cfg.SaveDir) == 0:
-		return &StdoutWriter{}
-	default:
-		return &FileWriter{cfg.SaveDir}
-	}
-}
+func NewSchemaWriter(cfg Config) Writer { _ = "STUB: not implemented"; return *new(Writer) }
 
 type StdoutWriter struct {
 }
 
-func (w *StdoutWriter) Write(schemas []*pb.Schema) error {
-	for _, schema := range schemas {
-		_, err := os.Stdout.WriteString(schema.Schema)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (w *StdoutWriter) Write(schemas []*pb.Schema) error { _ = "STUB: not implemented"; return nil }
 
 type FileWriter struct {
 	Dir string
 }
 
-func (w *FileWriter) Write(schemas []*pb.Schema) error {
-	err := os.MkdirAll(w.Dir, 0750)
-	if err != nil {
-		return err
-	}
-	for _, schemas := range schemas {
-		file, err := os.OpenFile(filepath.Join(w.Dir, schemas.SchemaId+".yaml"),
-			os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0640)
-		if err != nil {
-			return err
-		}
-		_, err = file.WriteString(schemas.Schema)
-		if err != nil {
-			file.Close()
-			return err
-		}
-		file.Close()
-	}
-	return nil
-}
+func (w *FileWriter) Write(schemas []*pb.Schema) error { _ = "STUB: not implemented"; return nil }

@@ -17,12 +17,6 @@
 
 package rbac
 
-import (
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 type initFunc func(opts Options) (DAO, error)
 
 var (
@@ -31,32 +25,10 @@ var (
 )
 
 // Install load plugins configuration into plugins
-func Install(pluginImplName string, f initFunc) {
-	plugins[pluginImplName] = f
-}
+func Install(pluginImplName string, f initFunc) { _ = "STUB: not implemented"; return }
 
 // Init construct storage plugin instance
 // invoked by sc main process.
-func Init(opts Options) error {
-	if opts.Kind == "" {
-		return nil
-	}
+func Init(opts Options) error { _ = "STUB: not implemented"; return nil }
 
-	engineFunc, ok := plugins[opts.Kind]
-	if !ok {
-		return fmt.Errorf("plugin implement not supported [%s]", opts.Kind)
-	}
-
-	var err error
-	instance, err = engineFunc(opts)
-	if err != nil {
-		return err
-	}
-	log.Info(fmt.Sprintf("rbac plugin [%s] enabled", opts.Kind))
-
-	return nil
-}
-
-func Instance() DAO {
-	return instance
-}
+func Instance() DAO { _ = "STUB: not implemented"; return *new(DAO) }

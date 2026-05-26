@@ -17,27 +17,8 @@
 
 package resource
 
-import (
-	roa "github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/resource/disco"
-	"github.com/apache/servicecomb-service-center/server/resource/gov"
-	"github.com/apache/servicecomb-service-center/server/resource/govern"
-	"github.com/apache/servicecomb-service-center/server/resource/rbac"
-	rbacsvc "github.com/apache/servicecomb-service-center/server/service/rbac"
-)
-
 func init() {
 	initRouter()
 }
 
-func initRouter() {
-	if rbacsvc.Enabled() {
-		roa.RegisterServant(&rbac.AuthResource{})
-		roa.RegisterServant(&rbac.RoleResource{})
-	}
-	roa.RegisterServant(&disco.ServiceResource{})
-	roa.RegisterServant(&disco.SchemaResource{})
-	roa.RegisterServant(&disco.InstanceResource{})
-	roa.RegisterServant(&gov.Governance{})
-	roa.RegisterServant(&govern.Resource{})
-}
+func initRouter() { _ = "STUB: not implemented"; return }

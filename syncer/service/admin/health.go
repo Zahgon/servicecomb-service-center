@@ -18,24 +18,9 @@
 package admin
 
 import (
-	"context"
 	"errors"
-	"fmt"
-	"time"
 
-	"github.com/go-chassis/go-chassis/v2/server/restful"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
-
-	"github.com/apache/servicecomb-service-center/client"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	pkgrpc "github.com/apache/servicecomb-service-center/pkg/rpc"
-	"github.com/apache/servicecomb-service-center/server/plugin/security/cipher"
-	v1sync "github.com/apache/servicecomb-service-center/syncer/api/v1"
-	syncerclient "github.com/apache/servicecomb-service-center/syncer/client"
-	"github.com/apache/servicecomb-service-center/syncer/config"
-	"github.com/apache/servicecomb-service-center/syncer/metrics"
-	"github.com/apache/servicecomb-service-center/syncer/rpc"
 )
 
 const (
@@ -66,111 +51,19 @@ type Peer struct {
 	Token     string   `json:"-"`
 }
 
-func Init() {
-	cfg := config.GetConfig()
-	peerInfos = make([]*PeerInfo, 0, len(cfg.Sync.Peers))
-	for _, c := range cfg.Sync.Peers {
-		if len(c.Endpoints) <= 0 {
-			log.Warn("no endpoints of peer: " + c.Name)
-			continue
-		}
-		p := &Peer{
-			Name:      c.Name,
-			Kind:      c.Kind,
-			Mode:      c.Mode,
-			Endpoints: c.Endpoints,
-		}
-		if config.GetConfig().Sync.RbacEnabled {
-			plainToken, err := cipher.Decrypt(c.Token)
-			if err != nil {
-				log.Error(fmt.Sprintf("decrypt token of peer %s failed, use original content", c.Name), err)
-				plainToken = c.Token
-			}
-			p.Token = plainToken
-		}
+func Init() { _ = "STUB: not implemented"; return }
 
-		conn, err := newRPCConn(p.Endpoints)
-		if err != nil {
-			log.Error(fmt.Sprintf("new client failed for peer: %s", c.Name), err)
-			continue
-		}
-		peerInfos = append(peerInfos, &PeerInfo{Peer: p, ClientConn: conn})
-	}
-}
+func Health() (*Resp, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func Health() (*Resp, error) {
-	if len(peerInfos) <= 0 {
-		return nil, ErrConfigIsEmpty
-	}
+func getPeerStatus(peerInfo *PeerInfo) string { _ = "STUB: not implemented"; return "" }
 
-	resp := &Resp{Peers: make([]*Peer, 0, len(peerInfos))}
-	for _, peerInfo := range peerInfos {
-		if len(peerInfo.Peer.Endpoints) <= 0 {
-			continue
-		}
-		status := getPeerStatus(peerInfo)
-		resp.Peers = append(resp.Peers, &Peer{
-			Name:      peerInfo.Peer.Name,
-			Kind:      peerInfo.Peer.Kind,
-			Mode:      peerInfo.Peer.Mode,
-			Endpoints: peerInfo.Peer.Endpoints,
-			Status:    status,
-		})
-	}
+func reportClockDiff(peerName string, local int64, resp int64) { _ = "STUB: not implemented"; return }
 
-	reportMetrics(resp.Peers)
-	return resp, nil
-}
-
-func getPeerStatus(peerInfo *PeerInfo) string {
-	if peerInfo.ClientConn == nil {
-		log.Warn("clientConn is nil")
-		return rpc.HealthStatusAbnormal
-	}
-	local := time.Now().UnixNano()
-	set := client.NewSet(peerInfo.ClientConn)
-	ctx := context.Background()
-	if config.GetConfig().Sync.RbacEnabled {
-		ctx = metadata.NewOutgoingContext(ctx, metadata.New(map[string]string{
-			restful.HeaderAuth: "Bearer " + peerInfo.Peer.Token,
-		}))
-	}
-	reply, err := set.EventServiceClient.Health(ctx, &v1sync.HealthRequest{})
-	if err != nil || reply == nil {
-		log.Error("get peer health failed", err)
-		return rpc.HealthStatusAbnormal
-	}
-	reportClockDiff(peerInfo.Peer.Name, local, reply.LocalTimestamp)
-	return reply.Status
-}
-
-func reportClockDiff(peerName string, local int64, resp int64) {
-	curr := time.Now().UnixNano()
-	spent := (curr - local) / 2
-	metrics.PeersClockDiffSet(peerName, local+spent-resp)
-}
-
-func reportMetrics(peers []*Peer) {
-	var connectPeersCount int64
-	for _, peer := range peers {
-		if peer.Status == rpc.HealthStatusConnected {
-			connectPeersCount++
-		}
-	}
-
-	metrics.PeersTotalSet(int64(len(peers)))
-	metrics.ConnectedPeersSet(connectPeersCount)
-}
+func reportMetrics(peers []*Peer) { _ = "STUB: not implemented"; return }
 
 func newRPCConn(endpoints []string) (*grpc.ClientConn, error) {
-	return pkgrpc.GetRoundRobinLbConn(&pkgrpc.Config{
-		Addrs:       endpoints,
-		Scheme:      scheme,
-		ServiceName: serviceName,
-		TLSConfig:   syncerclient.RPClientConfig(),
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func Peers() []*PeerInfo {
-	return peerInfos
-}
+func Peers() []*PeerInfo { _ = "STUB: not implemented"; return nil }

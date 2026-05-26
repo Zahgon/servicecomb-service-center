@@ -18,11 +18,7 @@
 package maxbody
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/config"
 )
 
 const (
@@ -44,25 +40,6 @@ var resourcesMap = map[string]int64{
 type Handler struct {
 }
 
-func (c *Handler) Handle(i *chain.Invocation) {
-	r := i.Context().Value(rest.CtxRequest).(*http.Request)
-	if r.Method == http.MethodGet {
-		i.Next()
-		return
-	}
+func (c *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	w, pattern := i.Context().Value(rest.CtxResponse).(http.ResponseWriter),
-		i.Context().Value(rest.CtxMatchPattern).(string)
-	v, ok := resourcesMap[pattern]
-	if !ok {
-		v = config.GetServer().MaxBodyBytes
-	}
-
-	r.Body = http.MaxBytesReader(w, r.Body, v)
-
-	i.Next()
-}
-
-func RegisterHandlers() {
-	chain.RegisterHandler(rest.ServerChainName, &Handler{})
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

@@ -85,23 +85,13 @@ type CommonParser struct {
 }
 
 func (p *CommonParser) Unmarshal(src []byte) (interface{}, error) {
-	v := p.NewFunc()
-	if err := p.FromFunc(src, &v); err != nil {
-		return nil, err
-	}
-	return v, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func check(src []byte, dist interface{}) error {
-	if src == nil {
-		return ErrParseNilPoint
-	}
-	if dist == nil {
-		return ErrTargetNilPoint
-	}
-	return nil
-}
+func check(src []byte, dist interface{}) error { _ = "STUB: not implemented"; return nil }
 
 func New(valueFunc CreateValueFunc, parseValueFunc ParseValueFunc) Parser {
-	return &CommonParser{NewFunc: valueFunc, FromFunc: parseValueFunc}
+	_ = "STUB: not implemented"
+	return *new(Parser)
 }

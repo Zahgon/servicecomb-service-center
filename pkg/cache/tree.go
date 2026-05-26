@@ -34,127 +34,34 @@ type Tree struct {
 	lock    sync.RWMutex
 }
 
-func (t *Tree) AddFilter(fs ...Filter) *Tree {
-	t.lock.Lock()
-	t.filters = append(t.filters, fs...)
-	t.lock.Unlock()
-	return t
-}
+func (t *Tree) AddFilter(fs ...Filter) *Tree { _ = "STUB: not implemented"; return nil }
 
 func (t *Tree) Get(ctx context.Context, ops ...Option) (node *Node, err error) {
-	var op Option
-	if len(ops) > 0 {
-		op = ops[0]
-	}
-
-	var (
-		parent *Node
-		i      int
-	)
-
-	if !op.NoCache {
-		if parent, err = t.getOrCreateRoot(ctx); parent == nil {
-			return
-		}
-		i++
-		// parent may be a temp root in concurrent scene
-	}
-
-	for ; i < len(t.filters); i++ {
-		if op.Level > 0 && op.Level == i {
-			break
-		}
-		if parent, err = t.getOrCreateNode(ctx, i, parent); parent == nil {
-			break
-		}
-	}
-	node = parent
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (t *Tree) Remove(ctx context.Context) {
-	if len(t.filters) == 0 {
-		return
-	}
+// parent may be a temp root in concurrent scene
 
-	t.roots.Delete(t.filters[0].Name(ctx, nil))
-}
+func (t *Tree) Remove(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 func (t *Tree) getOrCreateRoot(ctx context.Context) (node *Node, err error) {
-	if len(t.filters) == 0 {
-		return
-	}
-
-	filter := t.filters[0]
-	name := filter.Name(ctx, nil)
-	item, err := t.roots.Fetch(name, t.Config.TTL(), func() (interface{}, error) {
-		node, err := t.getOrCreateNode(ctx, 0, nil)
-		if err != nil {
-			return nil, err
-		}
-		if node == nil {
-			return nil, errNilNode
-		}
-		return node, nil
-	})
-	switch err {
-	case nil:
-		node = item.Value().(*Node)
-	case errNilNode:
-		err = nil
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (t *Tree) getOrCreateNode(ctx context.Context, idx int, parent *Node) (node *Node, err error) {
-	filter := t.filters[idx]
-	name := t.nodeFullName(filter.Name(ctx, parent), parent)
-
-	if parent == nil {
-		// new a temp node
-		return t.createNode(ctx, idx, name, parent)
-	}
-
-	item, err := parent.Childs.Fetch(name, func() (interface{}, error) {
-		node, err := t.createNode(ctx, idx, name, parent)
-		if err != nil {
-			return nil, err
-		}
-		if node == nil {
-			return nil, errNilNode
-		}
-		return node, nil
-	})
-	switch err {
-	case nil:
-		node = item.(*Node)
-	case errNilNode:
-		err = nil
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (t *Tree) nodeFullName(name string, parent *Node) string {
-	if parent != nil {
-		name = parent.Name + "." + name
-	}
-	return name
-}
+// new a temp node
+
+func (t *Tree) nodeFullName(name string, parent *Node) string { _ = "STUB: not implemented"; return "" }
 
 func (t *Tree) createNode(ctx context.Context, idx int, name string, parent *Node) (node *Node, err error) {
-	node, err = t.filters[idx].Init(ctx, parent)
-	if node == nil {
-		return
-	}
-	node.Name = name
-	node.Tree = t
-	node.Level = idx
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func NewTree(cfg *Config) *Tree {
-	return &Tree{
-		Config: cfg,
-		roots:  ccache.New(ccache.Configure().MaxSize(cfg.MaxSize())),
-	}
-}
+func NewTree(cfg *Config) *Tree { _ = "STUB: not implemented"; return nil }

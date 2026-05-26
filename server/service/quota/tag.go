@@ -18,13 +18,9 @@
 package quota
 
 import (
-	"context"
-
 	"github.com/apache/servicecomb-service-center/server/plugin/quota"
 )
 
 const TypeTag quota.ResourceType = "TAG"
 
-func TagQuota() int64 {
-	return quota.GetQuota(context.Background(), TypeTag)
-}
+func TagQuota() int64 { _ = "STUB: not implemented"; return 0 }

@@ -18,25 +18,19 @@
 package tracing
 
 import (
-	tracesvc "github.com/apache/servicecomb-service-center/server/plugin/tracing"
 	"github.com/little-cui/etcdadpt/middleware/tracing"
 )
 
 type Tracer struct{}
 
 func (t *Tracer) Begin(operationName string, r *tracing.Request) (span interface{}) {
-	return tracesvc.ClientBegin(operationName, &tracesvc.Request{
-		Ctx:      r.Ctx,
-		Endpoint: r.Endpoint,
-		Method:   r.Options.Action.String(),
-		URL:      "/?" + r.Options.URI(),
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (t *Tracer) End(span interface{}, response *tracing.Response) {
-	tracesvc.ClientEnd(span, response.Code, response.Message)
+	_ = "STUB: not implemented"
+	return
 }
 
-func New() *Tracer {
-	return &Tracer{}
-}
+func New() *Tracer { _ = "STUB: not implemented"; return nil }

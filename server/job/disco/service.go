@@ -18,15 +18,8 @@
 package disco
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/server/config"
-	discosvc "github.com/apache/servicecomb-service-center/server/service/disco"
-	"github.com/go-chassis/cari/dlock"
-	"github.com/robfig/cron/v3"
 )
 
 const (
@@ -44,38 +37,6 @@ func init() {
 	startRetireServiceJob()
 }
 
-func startRetireServiceJob() {
-	localPlan := &datasource.RetirePlan{
-		Cron:    config.GetString("registry.service.retire.cron", defaultRetireMicroserviceCron),
-		Reserve: config.GetInt("registry.service.retire.reserve", defaultReserveVersionCount),
-	}
-	log.Info(fmt.Sprintf("start retire microservice job, plan is %v", localPlan))
+func startRetireServiceJob() { _ = "STUB: not implemented"; return }
 
-	c := cron.New()
-	_, err := c.AddFunc(localPlan.Cron, func() {
-		retireService(localPlan)
-	})
-	if err != nil {
-		log.Error("cron add func failed", err)
-		return
-	}
-	c.Start()
-}
-
-func retireService(localPlan *datasource.RetirePlan) {
-	if err := dlock.TryLock(retireServiceLockKey, retireServiceLockTTL); err != nil {
-		log.Error(fmt.Sprintf("try lock %s failed", retireServiceLockKey), err)
-		return
-	}
-	defer func() {
-		if err := dlock.Unlock(retireServiceLockKey); err != nil {
-			log.Error("unlock failed", err)
-		}
-	}()
-
-	log.Info("start retire microservice")
-	err := discosvc.RetireService(context.Background(), localPlan)
-	if err != nil {
-		log.Error("retire microservice failed", err)
-	}
-}
+func retireService(localPlan *datasource.RetirePlan) { _ = "STUB: not implemented"; return }

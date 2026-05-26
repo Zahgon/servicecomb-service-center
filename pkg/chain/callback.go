@@ -18,10 +18,7 @@
 package chain
 
 import (
-	"context"
-
 	"github.com/apache/servicecomb-service-center/pkg/goutil"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 var pool = goutil.New()
@@ -34,40 +31,15 @@ type Result struct {
 	Args []interface{}
 }
 
-func (r Result) String() string {
-	if r.OK {
-		return "OK"
-	}
-	return r.Err.Error()
-}
+func (r Result) String() string { _ = "STUB: not implemented"; return "" }
 
 type Callback struct {
 	Func  CallbackFunc
 	Async bool
 }
 
-func (cb *Callback) Invoke(r Result) {
-	if cb.Async {
-		pool.Do(func(_ context.Context) {
-			cb.Func(r)
-		})
-		return
-	}
-	defer log.Recover()
-	cb.Func(r)
-}
+func (cb *Callback) Invoke(r Result) { _ = "STUB: not implemented"; return }
 
-func (cb *Callback) Fail(err error, args ...interface{}) {
-	cb.Invoke(Result{
-		OK:   false,
-		Err:  err,
-		Args: args,
-	})
-}
+func (cb *Callback) Fail(err error, args ...interface{}) { _ = "STUB: not implemented"; return }
 
-func (cb *Callback) Success(args ...interface{}) {
-	cb.Invoke(Result{
-		OK:   true,
-		Args: args,
-	})
-}
+func (cb *Callback) Success(args ...interface{}) { _ = "STUB: not implemented"; return }

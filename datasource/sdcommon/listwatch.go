@@ -19,7 +19,6 @@ package sdcommon
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
@@ -28,9 +27,7 @@ type ListWatchConfig struct {
 	Context context.Context
 }
 
-func (lo *ListWatchConfig) String() string {
-	return fmt.Sprintf("{timeout: %s}", lo.Timeout)
-}
+func (lo *ListWatchConfig) String() string { _ = "STUB: not implemented"; return "" }
 
 type ListWatch interface {
 	List(op ListWatchConfig) (*ListWatchResp, error)

@@ -26,40 +26,19 @@ type Group struct {
 	members *util.ConcurrentMap
 }
 
-func (g *Group) Name() string {
-	return g.name
-}
+func (g *Group) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (g *Group) Member(name string) Subscriber {
-	s, ok := g.members.Get(name)
-	if !ok {
-		return nil
-	}
-	return s.(Subscriber)
-}
+func (g *Group) Member(name string) Subscriber { _ = "STUB: not implemented"; return *new(Subscriber) }
 
-func (g *Group) ForEach(iter func(m Subscriber)) {
-	g.members.ForEach(func(item util.MapItem) (next bool) {
-		iter(item.Value.(Subscriber))
-		return true
-	})
-}
+func (g *Group) ForEach(iter func(m Subscriber)) { _ = "STUB: not implemented"; return }
 
 func (g *Group) AddMember(subscriber Subscriber) Subscriber {
-	return g.members.PutIfAbsent(subscriber.ID(), subscriber).(Subscriber)
+	_ = "STUB: not implemented"
+	return *new(Subscriber)
 }
 
-func (g *Group) RemoveMember(name string) {
-	g.members.Remove(name)
-}
+func (g *Group) RemoveMember(name string) { _ = "STUB: not implemented"; return }
 
-func (g *Group) Size() int {
-	return g.members.Size()
-}
+func (g *Group) Size() int { _ = "STUB: not implemented"; return 0 }
 
-func NewGroup(name string) *Group {
-	return &Group{
-		name:    name,
-		members: util.NewConcurrentMap(0),
-	}
-}
+func NewGroup(name string) *Group { _ = "STUB: not implemented"; return nil }

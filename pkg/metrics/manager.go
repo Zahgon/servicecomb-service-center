@@ -35,20 +35,8 @@ var (
 	Gatherer = EmptyGather
 )
 
-func Init(opts Options) error {
-	options = opts
-	for _, key := range options.SysMetrics {
-		SysMetrics.Put(key, struct{}{})
-	}
-	Gatherer = NewGatherer(opts)
-	Gatherer.Start()
-	return nil
-}
+func Init(opts Options) error { _ = "STUB: not implemented"; return nil }
 
-func GetOptions() Options {
-	return options
-}
+func GetOptions() Options { _ = "STUB: not implemented"; return *new(Options) }
 
-func InstanceName() string {
-	return GetOptions().InstanceName
-}
+func InstanceName() string { _ = "STUB: not implemented"; return "" }

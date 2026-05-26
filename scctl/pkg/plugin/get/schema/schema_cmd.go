@@ -18,23 +18,7 @@
 package schema
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"os"
-	"path/filepath"
-	"strings"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-
-	pb "github.com/apache/servicecomb-service-center/scctl/pkg/progress-bar"
-
-	"github.com/apache/servicecomb-service-center/client"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/model"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/plugin/get"
 	"github.com/spf13/cobra"
 )
@@ -50,83 +34,9 @@ func init() {
 	NewSchemaCommand(get.RootCmd)
 }
 
-func NewSchemaCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "schema [options]",
-		Short: "Output the microservice schema information of the service center ",
-		Run:   CommandFunc,
-	}
-
-	cmd.Flags().StringVarP(&SaveDir, "save-dir", "s", "",
-		"the directory to save the schemas data")
-	cmd.Flags().StringVar(&AppID, "app", "", "the application name of microservice")
-	cmd.Flags().StringVar(&ServiceName, "name", "", "the name of microservice")
-	cmd.Flags().StringVar(&Version, "version", "", "the semantic version of microservice")
-
-	parent.AddCommand(cmd)
-	return cmd
-}
+func NewSchemaCommand(parent *cobra.Command) *cobra.Command { _ = "STUB: not implemented"; return nil }
 
 // schemas/[${domain}/][${project}/][${env}/]${app}/${microservice}.${version}/${schemaId}.yaml
-func saveDirectory(root string, ms *dump.Microservice) string {
-	if len(root) == 0 {
-		return ""
-	}
-	domain, project := util.FromDomainProject(model.GetDomainProject(ms))
-	if domain == datasource.RegistryDomain {
-		domain = ""
-	}
-	if project == datasource.RegistryDomain {
-		project = ""
-	}
-	return filepath.Join(root, "schemas", domain, project, ms.Value.Environment, ms.Value.AppId, ms.Value.ServiceName+".v"+ms.Value.Version)
-}
+func saveDirectory(root string, ms *dump.Microservice) string { _ = "STUB: not implemented"; return "" }
 
-func CommandFunc(_ *cobra.Command, _ []string) {
-	scClient, err := client.NewSCClient(cmd.ScClientConfig)
-	if err != nil {
-		cmd.StopAndExit(cmd.ExitError, err)
-	}
-	cache, scErr := scClient.GetScCache(context.Background())
-	if scErr != nil {
-		cmd.StopAndExit(cmd.ExitError, scErr)
-	}
-
-	var progressBarWriter io.Writer = os.Stdout
-	if len(SaveDir) == 0 {
-		progressBarWriter = io.Discard
-	}
-	progressBar := pb.NewProgressBar(len(cache.Microservices), progressBarWriter)
-	defer progressBar.FinishPrint("Finished.")
-
-	for _, ms := range cache.Microservices {
-		progressBar.Increment()
-
-		domainProject := model.GetDomainProject(ms)
-		if !get.AllDomains && strings.Index(domainProject+path.SPLIT, get.Domain+path.SPLIT) != 0 {
-			continue
-		}
-		if len(AppID) > 0 && ms.Value.AppId != AppID {
-			continue
-		}
-		if len(ServiceName) > 0 && ms.Value.ServiceName != ServiceName {
-			continue
-		}
-		if len(Version) > 0 && ms.Value.Version != Version {
-			continue
-		}
-		dp := strings.Split(domainProject, "/")
-		schemas, err := scClient.GetSchemasByServiceID(context.Background(), dp[0], dp[1], ms.Value.ServiceId)
-		if err != nil {
-			cmd.StopAndExit(cmd.ExitError, err)
-		}
-		if len(schemas) == 0 {
-			continue
-		}
-
-		writer := NewSchemaWriter(Config{SaveDir: saveDirectory(SaveDir, ms)})
-		if err := writer.Write(schemas); err != nil {
-			fmt.Fprintln(os.Stderr, "output schema data failed", err.Error())
-		}
-	}
-}
+func CommandFunc(_ *cobra.Command, _ []string) { _ = "STUB: not implemented"; return }

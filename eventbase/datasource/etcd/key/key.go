@@ -17,11 +17,6 @@
 
 package key
 
-import (
-	"strconv"
-	"strings"
-)
-
 const (
 	split           = "/"
 	syncer          = "syncer"
@@ -30,47 +25,24 @@ const (
 	TombstoneKeyLen = 6
 )
 
-func getSyncRootKey() string {
-	return split + syncer + split + task
-}
+func getSyncRootKey() string { _ = "STUB: not implemented"; return "" }
 
-func getTombstoneRootKey() string {
-	return split + syncer + split + tombstone
-}
+func getTombstoneRootKey() string { _ = "STUB: not implemented"; return "" }
 
 func TaskKey(domain, project, taskID string, timestamp int64) string {
-	strTimestamp := strconv.FormatInt(timestamp, 10)
-	return strings.Join([]string{getSyncRootKey(), domain, project, strTimestamp, taskID}, split)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func TaskList(domain, project string) string {
-	if len(domain) == 0 {
-		return getSyncRootKey()
-	}
-	if len(project) == 0 {
-		return strings.Join([]string{getSyncRootKey(), domain, ""}, split)
-	}
-	return strings.Join([]string{getSyncRootKey(), domain, project, ""}, split)
-}
+func TaskList(domain, project string) string { _ = "STUB: not implemented"; return "" }
 
-func TombstoneList(domain, project string) string {
-	if len(domain) == 0 {
-		return getTombstoneRootKey()
-	}
-	if len(project) == 0 {
-		return strings.Join([]string{getTombstoneRootKey(), domain, ""}, split)
-	}
-	return strings.Join([]string{getTombstoneRootKey(), domain, project, ""}, split)
-}
+func TombstoneList(domain, project string) string { _ = "STUB: not implemented"; return "" }
 
 func TombstoneKey(domain, project, resourceType, resourceID string) string {
-	return strings.Join([]string{getTombstoneRootKey(), domain, project, resourceType, resourceID}, split)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func SplitTombstoneKey(keyInfo []byte) []string {
-	return strings.Split(string(keyInfo), split)
-}
+func SplitTombstoneKey(keyInfo []byte) []string { _ = "STUB: not implemented"; return nil }
 
-func JoinResourceID(infos []string) string {
-	return strings.Join(infos, split)
-}
+func JoinResourceID(infos []string) string { _ = "STUB: not implemented"; return "" }

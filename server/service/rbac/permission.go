@@ -34,28 +34,7 @@ var (
 )
 
 // AdminPerms allocate all resource permissions
-func AdminPerms() []*rbac.Permission {
-	resources := rbac.BuildResourceList(
-		ResourceAccount, ResourceConfig, ResourceRole,
-		ResourceService, ResourceGovern, ResourceOps, ResourceSchema)
-	perm := []*rbac.Permission{
-		{
-			Resources: resources,
-			Verbs:     []string{"*"},
-		},
-	}
-	return perm
-}
+func AdminPerms() []*rbac.Permission { _ = "STUB: not implemented"; return nil }
 
 // DevPerms allocate all resource permissions except account and role resources
-func DevPerms() []*rbac.Permission {
-	resources := rbac.BuildResourceList(
-		ResourceConfig, ResourceService, ResourceGovern, ResourceOps, ResourceSchema)
-	perm := []*rbac.Permission{
-		{
-			Resources: resources,
-			Verbs:     []string{"*"},
-		},
-	}
-	return perm
-}
+func DevPerms() []*rbac.Permission { _ = "STUB: not implemented"; return nil }

@@ -48,9 +48,6 @@ type DistributorOptions struct {
 }
 
 // GetImplName return the impl name
-func (c *AppConfig) GetImplName(kind plugin.Kind) string {
-	return GetString(kind.String()+".kind", plugin.Buildin, WithStandby(kind.String()+"_plugin"))
-}
-func (c *AppConfig) GetPluginDir() string {
-	return c.Server.Config.PluginsDir
-}
+func (c *AppConfig) GetImplName(kind plugin.Kind) string { _ = "STUB: not implemented"; return "" }
+
+func (c *AppConfig) GetPluginDir() string { _ = "STUB: not implemented"; return "" }

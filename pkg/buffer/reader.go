@@ -19,22 +19,9 @@ package buffer
 
 import (
 	"bytes"
-	"io"
-	"strings"
 )
 
 func ReadLine(buf *bytes.Buffer, cb func(line string) bool) error {
-	for {
-		s, err := buf.ReadString('\n')
-		if err != nil && err != io.EOF {
-			return err
-		}
-		if !cb(strings.TrimSpace(s)) {
-			break
-		}
-		if err != nil {
-			break
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

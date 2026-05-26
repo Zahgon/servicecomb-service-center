@@ -19,23 +19,9 @@ package dao
 
 import (
 	"context"
-
-	"github.com/go-chassis/cari/db/mongo"
-
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 func GetTags(ctx context.Context, filter interface{}) (tags map[string]string, err error) {
-	result := mongo.GetClient().GetDB().Collection(model.CollectionService).FindOne(ctx, filter)
-	if result.Err() != nil {
-		return nil, result.Err()
-	}
-	var service model.Service
-	err = result.Decode(&service)
-	if err != nil {
-		log.Error("type conversion error", err)
-		return nil, err
-	}
-	return service.Tags, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

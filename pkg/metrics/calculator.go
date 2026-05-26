@@ -35,78 +35,18 @@ type CommonCalculator struct {
 
 // Get value of metricFamily
 func (c *CommonCalculator) Calc(mf *dto.MetricFamily) *Details {
-	if len(mf.GetMetric()) == 0 {
-		return nil
-	}
-
-	details := NewDetails()
-	switch mf.GetType() {
-	case dto.MetricType_GAUGE:
-		metricGaugeOf(details, mf.GetMetric())
-	case dto.MetricType_COUNTER:
-		metricCounterOf(details, mf.GetMetric())
-	case dto.MetricType_SUMMARY:
-		metricSummaryOf(details, mf.GetMetric())
-	case dto.MetricType_HISTOGRAM:
-		metricHistogramOf(details, mf.GetMetric())
-	}
-	return details
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func metricGaugeOf(details *Details, m []*dto.Metric) {
-	for _, d := range m {
-		details.Summary += d.GetGauge().GetValue()
-		details.put(d.GetLabel(), d.GetGauge().GetValue())
-	}
-}
+func metricGaugeOf(details *Details, m []*dto.Metric) { _ = "STUB: not implemented"; return }
 
-func metricCounterOf(details *Details, m []*dto.Metric) {
-	for _, d := range m {
-		details.Summary += d.GetCounter().GetValue()
-		details.put(d.GetLabel(), d.GetCounter().GetValue())
-	}
-}
+func metricCounterOf(details *Details, m []*dto.Metric) { _ = "STUB: not implemented"; return }
 
-func metricSummaryOf(details *Details, m []*dto.Metric) {
-	var (
-		count uint64
-		sum   float64
-	)
-	for _, d := range m {
-		count += d.GetSummary().GetSampleCount()
-		sum += d.GetSummary().GetSampleSum()
-		details.put(d.GetLabel(), d.GetSummary().GetSampleSum()/float64(d.GetSummary().GetSampleCount()))
-	}
+func metricSummaryOf(details *Details, m []*dto.Metric) { _ = "STUB: not implemented"; return }
 
-	if count == 0 {
-		return
-	}
+func metricHistogramOf(details *Details, m []*dto.Metric) { _ = "STUB: not implemented"; return }
 
-	details.Summary = sum / float64(count)
-}
+func RegisterCalculator(c Calculator) { _ = "STUB: not implemented"; return }
 
-func metricHistogramOf(details *Details, m []*dto.Metric) {
-	var (
-		count uint64
-		sum   float64
-	)
-	for _, d := range m {
-		count += d.GetHistogram().GetSampleCount()
-		sum += d.GetHistogram().GetSampleSum()
-		details.put(d.GetLabel(), d.GetHistogram().GetSampleSum()/float64(d.GetHistogram().GetSampleCount()))
-	}
-
-	if count == 0 {
-		return
-	}
-
-	details.Summary = sum / float64(count)
-}
-
-func RegisterCalculator(c Calculator) {
-	DefaultCalculator = c
-}
-
-func Calculate(mf *dto.MetricFamily) *Details {
-	return DefaultCalculator.Calc(mf)
-}
+func Calculate(mf *dto.MetricFamily) *Details { _ = "STUB: not implemented"; return nil }

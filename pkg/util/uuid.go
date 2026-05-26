@@ -17,15 +17,6 @@
 
 package util
 
-import (
-	"strings"
-
-	"github.com/gofrs/uuid"
-)
-
 const DASH = "-"
 
-func GenerateUUID() string {
-	id, _ := uuid.NewV4()
-	return strings.Replace(id.String(), string(DASH), "", -1)
-}
+func GenerateUUID() string { _ = "STUB: not implemented"; return "" }

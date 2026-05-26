@@ -19,64 +19,19 @@ package util
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"strings"
 
 	"github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/pkg/errsvc"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func AllowAcrossDimension(ctx context.Context, providerService *discovery.MicroService, consumerService *discovery.MicroService) error {
-	if providerService.AppId != consumerService.AppId {
-		if len(providerService.Properties) == 0 {
-			return fmt.Errorf("not allow across app access")
-		}
-
-		if allowCrossApp, ok := providerService.Properties[discovery.PropAllowCrossApp]; !ok || strings.ToLower(allowCrossApp) != "true" {
-			return fmt.Errorf("not allow across app access")
-		}
-	}
-
-	if !datasource.IsGlobal(discovery.MicroServiceToKey(util.ParseTargetDomainProject(ctx), providerService)) &&
-		providerService.Environment != consumerService.Environment {
-		return fmt.Errorf("not allow across environment access")
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func Accessible(ctx context.Context, consumerID string, providerID string) *errsvc.Error {
-	if len(consumerID) == 0 {
-		return nil
-	}
-
-	domainProject := util.ParseDomainProject(ctx)
-	targetDomainProject := util.ParseTargetDomainProject(ctx)
-
-	consumerService, err := GetService(ctx, domainProject, consumerID)
-	if err != nil {
-		if errors.Is(err, datasource.ErrNoData) {
-			return discovery.NewError(discovery.ErrServiceNotExists, "consumer serviceID is invalid")
-		}
-		return discovery.NewError(discovery.ErrInternal, fmt.Sprintf("An error occurred in query consumer(%s)", err.Error()))
-	}
-
-	// 跨应用权限
-	providerService, err := GetService(ctx, targetDomainProject, providerID)
-	if err != nil {
-		if errors.Is(err, datasource.ErrNoData) {
-			return discovery.NewError(discovery.ErrServiceNotExists, "provider serviceID is invalid")
-		}
-		return discovery.NewError(discovery.ErrInternal, fmt.Sprintf("An error occurred in query provider(%s)", err.Error()))
-	}
-
-	err = AllowAcrossDimension(ctx, providerService, consumerService)
-	if err != nil {
-		return discovery.NewError(discovery.ErrPermissionDeny, err.Error())
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// 跨应用权限

@@ -19,37 +19,11 @@ package context
 
 import (
 	"net/http"
-	"strings"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type v3Context struct {
 }
 
-func (v *v3Context) IsMatch(r *http.Request) bool {
-	return strings.Index(r.RequestURI, "/registry/v3/") == 0
-}
+func (v *v3Context) IsMatch(r *http.Request) bool { _ = "STUB: not implemented"; return false }
 
-func (v *v3Context) Write(r *http.Request) {
-	ctx := r.Context()
-
-	domain, project := util.ParseDomain(ctx), util.ParseProject(ctx)
-
-	if len(domain) == 0 {
-		domain = r.Header.Get("X-Tenant-Name")
-		if len(domain) == 0 {
-			domain = r.Header.Get("X-Domain-Name")
-		}
-
-		if len(domain) == 0 {
-			domain = "default"
-		}
-		util.SetRequestContext(r, util.CtxDomain, domain)
-	}
-
-	if len(project) == 0 {
-		util.SetRequestContext(r, util.CtxProject, datasource.RegistryProject)
-	}
-}
+func (v *v3Context) Write(r *http.Request) { _ = "STUB: not implemented"; return }

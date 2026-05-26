@@ -19,10 +19,7 @@ package rbac
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/server/plugin/auth"
 	rbacmodel "github.com/go-chassis/cari/rbac"
 )
@@ -30,128 +27,57 @@ import (
 // Allow return: matched labels(empty if no label defined), error
 func Allow(ctx context.Context, _ string, roleList []string,
 	targetResource *auth.ResourceScope) ([]map[string]string, error) {
+	_ = "STUB: not implemented"
 	//TODO check project
-	allPerms, err := getPermsByRoles(ctx, roleList)
-	if err != nil {
-		log.Error("get role list errors", err)
-		return nil, err
-	}
-	if len(allPerms) == 0 {
-		log.Warn("role list has no any permissions")
-		return nil, rbacmodel.NewError(rbacmodel.ErrNoPermission, "role has no any permissions")
-	}
-	allow, labelList := GetLabel(allPerms, targetResource.Type, targetResource.Verb)
-	if !allow {
-		return nil, rbacmodel.NewError(rbacmodel.ErrNoPermission,
-			fmt.Sprintf("role has no permissions[%s:%s]", targetResource.Type, targetResource.Verb))
-	}
-	// allow, but no label found, means we can ignore the labels
-	if len(labelList) == 0 {
-		return nil, nil
-	}
-	// target resource needs no label, return without filter
-	if len(targetResource.Labels) == 0 {
-		return labelList, nil
-	}
-	// allow, and labels found, filter the labels
-	filteredLabelList := FilterLabel(targetResource.Labels, labelList)
-	// target resource label matches no label in permission, means not allow
-	if len(filteredLabelList) == 0 {
-		return nil, rbacmodel.NewError(rbacmodel.ErrNoPermission,
-			fmt.Sprintf("role has no permissions[%s:%s] for labels %v",
-				targetResource.Type, targetResource.Verb, targetResource.Labels))
-	}
-	return filteredLabelList, nil
+	return nil, nil
 }
 
+// allow, but no label found, means we can ignore the labels
+
+// target resource needs no label, return without filter
+
+// allow, and labels found, filter the labels
+
+// target resource label matches no label in permission, means not allow
+
 func FilterLabel(targetResourceLabel []map[string]string, permLabelList []map[string]string) []map[string]string {
-	l := make([]map[string]string, 0)
-	for _, resourceLabel := range targetResourceLabel {
-		for _, label := range permLabelList {
-			if LabelMatched(resourceLabel, label) {
-				l = append(l, label)
-			}
-		}
-	}
-	return l
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func LabelMatched(targetResourceLabel map[string]string, permLabel map[string]string) bool {
-	for k, v := range permLabel {
-		if vv := targetResourceLabel[k]; vv != v {
-			return false
-		}
-	}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 func getPermsByRoles(ctx context.Context, roleList []string) ([]*rbacmodel.Permission, error) {
-	var allPerms = make([]*rbacmodel.Permission, 0)
-	for _, name := range roleList {
-		r, err := rbac.Instance().GetRole(ctx, name)
-		if err == nil {
-			allPerms = append(allPerms, r.Perms...)
-			continue
-		}
-		if err == rbac.ErrRoleNotExist {
-			log.Warn(fmt.Sprintf("role [%s] not exist", name))
-			continue
-		}
-		log.Error(fmt.Sprintf("get role [%s] failed", name), err)
-		return nil, err
-	}
-	return allPerms, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetLabel checks if the perms have permission to operate the resource(ignore label),
 // if one perm have the permission, add it's label to the result.
 func GetLabel(perms []*rbacmodel.Permission, targetResource, verb string) (allow bool, labelList []map[string]string) {
-	for _, perm := range perms {
-		a, l := GetLabelFromSinglePerm(perm, targetResource, verb)
-		if !a {
-			continue
-		}
-		allow = true
-		// allow and has no label, return fast
-		if len(l) == 0 {
-			return true, nil
-		}
-		labelList = append(labelList, l...)
-	}
-	return
+	_ = "STUB: not implemented"
+	return false, nil
 }
+
+// allow and has no label, return fast
 
 // GetLabel checks if the perm have permission to operate the resource(ignore label),
 // if the perm have the permission, return it's label.
 func GetLabelFromSinglePerm(perm *rbacmodel.Permission, targetResource, verb string) (allow bool, labelList []map[string]string) {
-	if !allowVerb(perm.Verbs, verb) {
-		return false, nil
-	}
-
-	return getResourceLabel(perm.Resources, targetResource)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func allowVerb(haystack []string, needle string) bool {
-	for _, e := range haystack {
-		if e == "*" || e == needle {
-			return true
-		}
-	}
-	return false
-}
+func allowVerb(haystack []string, needle string) bool { _ = "STUB: not implemented"; return false }
 
 func getResourceLabel(resources []*rbacmodel.Resource, needle string) (allow bool, labelList []map[string]string) {
-	for _, resource := range resources {
-		// filter the same resource
-		if resource.Type != needle {
-			continue
-		}
-		// has no label, return fast
-		if len(resource.Labels) == 0 {
-			return true, nil
-		}
-		labelList = append(labelList, resource.Labels)
-		allow = true
-	}
-	return
+	_ = "STUB: not implemented"
+	return false, nil
 }
+
+// filter the same resource
+
+// has no label, return fast

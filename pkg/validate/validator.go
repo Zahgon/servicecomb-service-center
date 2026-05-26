@@ -18,12 +18,7 @@
 package validate
 
 import (
-	"errors"
-	"fmt"
-	"reflect"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type Validator struct {
@@ -32,152 +27,36 @@ type Validator struct {
 	once  sync.Once
 }
 
-func (v *Validator) Init(f func(*Validator)) *Validator {
-	v.once.Do(func() {
-		f(v)
-	})
-	return v
-}
+func (v *Validator) Init(f func(*Validator)) *Validator { _ = "STUB: not implemented"; return nil }
 
-func (v *Validator) GetRule(name string) *Rule {
-	if v.rules == nil {
-		return nil
-	}
-	return v.rules[name]
-}
+func (v *Validator) GetRule(name string) *Rule { _ = "STUB: not implemented"; return nil }
 
-func (v *Validator) AddRule(name string, rule *Rule) {
-	if v.rules == nil {
-		v.rules = make(map[string](*Rule))
-	}
-	v.rules[name] = rule
-}
+func (v *Validator) AddRule(name string, rule *Rule) { _ = "STUB: not implemented"; return }
 
-func (v *Validator) RemoveRule(name string) {
-	if v.rules == nil {
-		return
-	}
-	delete(v.rules, name)
-}
+func (v *Validator) RemoveRule(name string) { _ = "STUB: not implemented"; return }
 
-func (v *Validator) GetRules() map[string](*Rule) {
-	return v.rules
-}
+func (v *Validator) GetRules() map[string](*Rule) { _ = "STUB: not implemented"; return nil }
 
-func (v *Validator) AddRules(in map[string](*Rule)) {
-	if len(in) == 0 {
-		return
-	}
-	for key, value := range in {
-		v.AddRule(key, value)
-	}
-}
+func (v *Validator) AddRules(in map[string](*Rule)) { _ = "STUB: not implemented"; return }
 
-func (v *Validator) GetSub(name string) *Validator {
-	if v.subs == nil {
-		return nil
-	}
-	return v.subs[name]
-}
+func (v *Validator) GetSub(name string) *Validator { _ = "STUB: not implemented"; return nil }
 
-func (v *Validator) AddSub(name string, s *Validator) {
-	if v.subs == nil {
-		v.subs = make(map[string](*Validator))
-	}
-	v.subs[name] = s
-}
+func (v *Validator) AddSub(name string, s *Validator) { _ = "STUB: not implemented"; return }
 
-func (v *Validator) GetSubs() map[string](*Validator) {
-	return v.subs
-}
+func (v *Validator) GetSubs() map[string](*Validator) { _ = "STUB: not implemented"; return nil }
 
-func (v *Validator) AddSubs(in map[string](*Validator)) {
-	if len(in) == 0 {
-		return
-	}
-	for key, value := range in {
-		v.AddSub(key, value)
-	}
-}
+func (v *Validator) AddSubs(in map[string](*Validator)) { _ = "STUB: not implemented"; return }
 
-func (v *Validator) Validate(s interface{}) error {
-	sv := reflect.ValueOf(s)
-	k := sv.Kind()
-	switch k {
-	case reflect.Ptr:
-		if !sv.IsNil() {
-			return v.Validate(sv.Elem().Interface())
-		}
-		return errors.New("invalid nil pointer")
-	case reflect.Struct:
-	default:
-		return fmt.Errorf("not support validate type '%s'", k)
-	}
+func (v *Validator) Validate(s interface{}) error { _ = "STUB: not implemented"; return nil }
 
-	st := util.Reflect(s)
-	for i, l := 0, sv.NumField(); i < l; i++ {
-		field := sv.Field(i)
-		fieldName := st.Fields[i].Name
-		rule, ok := v.rules[fieldName]
-		subV, sub := v.subs[fieldName]
+// check current rule
+// if pointer, check it's a nil pointer or not
+// if array, slice and map, check the length and regex
+// if sub type is not a string when do regex check, return OK
 
-		fi := field.Interface()
-		if field.Kind() == reflect.Ptr && !field.IsNil() {
-			fi = field.Elem().Interface()
-			field = reflect.ValueOf(fi)
-		}
+// check sub rule
+// do not support sub type is not pointer or struct
 
-		if ok {
-			// check current rule
-			// if pointer, check it's a nil pointer or not
-			// if array, slice and map, check the length and regex
-			// if sub type is not a string when do regex check, return OK
-			ok, invalidValue := rule.Match(fi)
-			if !ok {
-				if rule.Hide {
-					return fmt.Errorf("field '%s.%s' does not match rule: %s", st.Type.Name(), fieldName, rule)
-				}
-				return fmt.Errorf("field '%s.%s' invalid value '%v' does not match rule: %s", st.Type.Name(), fieldName, invalidValue, rule)
-			}
-		}
+// TODO how to validate non-base type key
 
-		if sub {
-			// check sub rule
-			// do not support sub type is not pointer or struct
-			switch field.Kind() {
-			case reflect.Struct:
-				if !sub {
-					continue
-				}
-				if err := subV.Validate(fi); err != nil {
-					return err
-				}
-			case reflect.Array, reflect.Slice:
-				if !sub {
-					break
-				}
-				for i, l := 0, field.Len(); i < l; i++ {
-					if err := subV.Validate(field.Index(i).Interface()); err != nil {
-						return err
-					}
-				}
-			case reflect.Map:
-				if !sub {
-					break
-				}
-				keys := field.MapKeys()
-				for _, key := range keys {
-					// TODO how to validate non-base type key
-					if err := subV.Validate(field.MapIndex(key).Interface()); err != nil {
-						return err
-					}
-				}
-			}
-		}
-	}
-	return nil
-}
-
-func NewValidator() *Validator {
-	return &Validator{}
-}
+func NewValidator() *Validator { _ = "STUB: not implemented"; return nil }

@@ -17,12 +17,6 @@
 
 package health
 
-import (
-	"errors"
-
-	"github.com/apache/servicecomb-service-center/server/alarm"
-)
-
 var healthChecker Checker = &DefaultHealthChecker{}
 
 type Checker interface {
@@ -32,19 +26,8 @@ type Checker interface {
 type DefaultHealthChecker struct {
 }
 
-func (hc *DefaultHealthChecker) Healthy() error {
-	for _, a := range alarm.ListAll() {
-		if a.ID == alarm.IDBackendConnectionRefuse && a.Status != alarm.Cleared {
-			return errors.New(a.FieldString(alarm.FieldAdditionalContext))
-		}
-	}
-	return nil
-}
+func (hc *DefaultHealthChecker) Healthy() error { _ = "STUB: not implemented"; return nil }
 
-func SetGlobalHealthChecker(hc Checker) {
-	healthChecker = hc
-}
+func SetGlobalHealthChecker(hc Checker) { _ = "STUB: not implemented"; return }
 
-func GlobalHealthChecker() Checker {
-	return healthChecker
-}
+func GlobalHealthChecker() Checker { _ = "STUB: not implemented"; return *new(Checker) }

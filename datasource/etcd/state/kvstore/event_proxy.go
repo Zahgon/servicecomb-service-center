@@ -18,11 +18,7 @@
 package kvstore
 
 import (
-	"fmt"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var (
@@ -34,42 +30,17 @@ type KvEventProxy struct {
 	lock           sync.RWMutex
 }
 
-func (h *KvEventProxy) AddHandleFunc(f EventFunc) {
-	h.lock.Lock()
-	h.evtHandleFuncs = append(h.evtHandleFuncs, f)
-	h.lock.Unlock()
-}
+func (h *KvEventProxy) AddHandleFunc(f EventFunc) { _ = "STUB: not implemented"; return }
 
-func (h *KvEventProxy) OnEvent(evt Event) {
-	h.lock.RLock()
-	for _, f := range h.evtHandleFuncs {
-		f(evt)
-	}
-	h.lock.RUnlock()
-}
+func (h *KvEventProxy) OnEvent(evt Event) { _ = "STUB: not implemented"; return }
 
 // InjectConfig will inject a resource changed event callback function in Options
-func (h *KvEventProxy) InjectConfig(cfg *Options) *Options {
-	return cfg.AppendEventFunc(h.OnEvent)
-}
+func (h *KvEventProxy) InjectConfig(cfg *Options) *Options { _ = "STUB: not implemented"; return nil }
 
 // unsafe
-func EventProxy(t Type) *KvEventProxy {
-	proxy, ok := eventProxies[t]
-	if !ok {
-		proxy = &KvEventProxy{}
-		eventProxies[t] = proxy
-	}
-	return proxy
-}
+func EventProxy(t Type) *KvEventProxy { _ = "STUB: not implemented"; return nil }
 
 // the event handler/func must be good performance, or will block the event bus.
-func AddEventHandleFunc(t Type, f EventFunc) {
-	EventProxy(t).AddHandleFunc(f)
-	log.Info(fmt.Sprintf("register event handle function[%s] %s", t, util.FuncName(f)))
-}
+func AddEventHandleFunc(t Type, f EventFunc) { _ = "STUB: not implemented"; return }
 
-func AddEventHandler(h EventHandler) {
-	EventProxy(h.Type()).AddHandleFunc(h.OnEvent)
-	log.Info(fmt.Sprintf("register event handler[%s] %s", h.Type(), util.Reflect(h).Name()))
-}
+func AddEventHandler(h EventHandler) { _ = "STUB: not implemented"; return }

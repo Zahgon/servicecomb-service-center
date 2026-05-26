@@ -19,8 +19,6 @@ package etcd
 
 import (
 	"github.com/apache/servicecomb-service-center/eventbase/datasource"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource/etcd/task"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource/etcd/tombstone"
 )
 
 type Datasource struct {
@@ -29,15 +27,18 @@ type Datasource struct {
 }
 
 func (d *Datasource) TaskDao() datasource.TaskDao {
-	return d.taskDao
+	_ = "STUB: not implemented"
+	return *new(datasource.TaskDao)
 }
 
 func (d *Datasource) TombstoneDao() datasource.TombstoneDao {
-	return d.tombstoneDao
+	_ = "STUB: not implemented"
+	return *new(datasource.TombstoneDao)
 }
 
 func NewDatasource() datasource.DataSource {
-	return &Datasource{taskDao: &task.Dao{}, tombstoneDao: &tombstone.Dao{}}
+	_ = "STUB: not implemented"
+	return *new(datasource.DataSource)
 }
 
 func init() {

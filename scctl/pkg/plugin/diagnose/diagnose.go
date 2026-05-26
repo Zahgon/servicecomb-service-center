@@ -20,12 +20,8 @@ package diagnose
 import (
 	"bytes"
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/client"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/scctl/etcd"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
 	"github.com/spf13/cobra"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -50,130 +46,40 @@ var typeMap = map[string]string{
 type etcdResponse map[string][]*mvccpb.KeyValue
 
 func CommandFunc(_ *cobra.Command, _ []string) {
+	_ = "STUB: not implemented"
 	// initialize sc/etcd clients
-	scClient, err := client.NewSCClient(cmd.ScClientConfig)
-	if err != nil {
-		cmd.StopAndExit(cmd.ExitError, err)
-	}
-	etcdClient, err := etcd.NewEtcdClient(EtcdClientConfig)
-	if err != nil {
-		cmd.StopAndExit(cmd.ExitError, err)
-	}
-	defer etcdClient.Close()
-
-	// query etcd
-	etcdResp, err := getEtcdResponse(context.Background(), etcdClient)
-	if err != nil {
-		cmd.StopAndExit(cmd.ExitError, err)
-	}
-
-	// query sc
-	cache, scErr := scClient.GetScCache(context.Background())
-	if scErr != nil {
-		cmd.StopAndExit(cmd.ExitError, scErr)
-	}
-
-	// diagnose go...
-	details, err := diagnose(cache, etcdResp)
-	if err != nil {
-		fmt.Println(details)                // stdout
-		cmd.StopAndExit(cmd.ExitError, err) // stderr
-	}
+	return
 }
 
+// query etcd
+
+// query sc
+
+// diagnose go...
+
+// stdout
+// stderr
+
 func getEtcdResponse(ctx context.Context, etcdClient *clientv3.Client) (etcdResponse, error) {
-	etcdResp := make(etcdResponse)
-	for t, prefix := range typeMap {
-		if err := setResponse(ctx, etcdClient, t, prefix, etcdResp); err != nil {
-			return nil, err
-		}
-	}
-	return etcdResp, nil
+	_ = "STUB: not implemented"
+	return *new(etcdResponse), nil
 }
 
 func setResponse(ctx context.Context, etcdClient *clientv3.Client, key, prefix string, etcdResp etcdResponse) error {
-	resp, err := etcdClient.Get(ctx, prefix, clientv3.WithPrefix())
-	if err != nil {
-		return err
-	}
-	etcdResp[key] = resp.Kvs
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func diagnose(cache *dump.Cache, etcdResp etcdResponse) (details string, err error) {
-	var (
-		service  = ServiceCompareHolder{Cache: cache.Microservices, Kvs: etcdResp[service]}
-		instance = InstanceCompareHolder{Cache: cache.Instances, Kvs: etcdResp[instance]}
-	)
-
-	sr := service.Compare()
-	ir := instance.Compare()
-
-	var (
-		b    bytes.Buffer
-		full bytes.Buffer
-	)
-	writeResult(&b, &full, sr, ir)
-	if b.Len() > 0 {
-		return full.String(), fmt.Errorf("error: %s", b.String())
-	}
+	_ = "STUB: not implemented"
 	return "", nil
 }
 
 func writeResult(b *bytes.Buffer, full *bytes.Buffer, rss ...*CompareResult) {
-	g, m, l := make(map[string][]string), make(map[string][]string), make(map[string][]string)
-	for _, rs := range rss {
-		for t, arr := range rs.Results {
-			switch t {
-			case greater:
-				g[rs.Name] = arr
-			case mismatch:
-				m[rs.Name] = arr
-			case less:
-				l[rs.Name] = arr
-			}
-		}
-	}
-
-	i := 0
-	if s := len(g); s > 0 {
-		i++
-		header := fmt.Sprintf("%d. found in cache but not in etcd ", i)
-		b.WriteString(header)
-		full.WriteString(header)
-		writeBody(full, g)
-	}
-	if s := len(m); s > 0 {
-		i++
-		header := fmt.Sprintf("%d. found different between cache and etcd ", i)
-		b.WriteString(header)
-		full.WriteString(header)
-		writeBody(full, m)
-	}
-	if s := len(l); s > 0 {
-		i++
-		header := fmt.Sprintf("%d. found in etcd but not in cache ", i)
-		b.WriteString(header)
-		full.WriteString(header)
-		writeBody(full, l)
-	}
-	if l := b.Len(); l > 0 {
-		b.Truncate(l - 1)
-		full.Truncate(full.Len() - 1)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func writeBody(b *bytes.Buffer, r map[string][]string) {
-	b.WriteString("\b, details:\n")
-	for t, v := range r {
-		writeSection(b, t)
-		b.WriteString(fmt.Sprint(v))
-		b.WriteRune('\n')
-	}
-}
+func writeBody(b *bytes.Buffer, r map[string][]string) { _ = "STUB: not implemented"; return }
 
-func writeSection(b *bytes.Buffer, t string) {
-	b.WriteString("  ")
-	b.WriteString(t)
-	b.WriteString(": ")
-}
+func writeSection(b *bytes.Buffer, t string) { _ = "STUB: not implemented"; return }

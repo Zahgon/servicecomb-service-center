@@ -19,13 +19,10 @@ package checker
 
 import (
 	"context"
-	"fmt"
 
 	pb "github.com/go-chassis/cari/discovery"
 
 	"github.com/apache/servicecomb-service-center/datasource/mongo/heartbeat"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func init() {
@@ -36,26 +33,17 @@ type HeartBeatChecker struct {
 }
 
 func NewHeartBeatChecker() (heartbeat.HealthCheck, error) {
-	return &HeartBeatChecker{}, nil
+	_ = "STUB: not implemented"
+	return *new(heartbeat.HealthCheck), nil
 }
 
 func (h *HeartBeatChecker) Heartbeat(ctx context.Context, request *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
-	remoteIP := util.GetIPFromContext(ctx)
-	err := UpdateInstanceRefreshTime(ctx, request.ServiceId, request.InstanceId)
-	if err != nil {
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrInstanceNotExists, err.Error())),
-		}
-		return resp, err
-	}
-	return &pb.HeartbeatResponse{
-		Response: pb.CreateResponse(pb.ResponseSuccess,
-			"Update service instance heartbeat successfully."),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (h *HeartBeatChecker) CheckInstance(_ context.Context, _ *pb.MicroServiceInstance) error {
+	_ = "STUB: not implemented"
 	// do nothing
 	return nil
 }

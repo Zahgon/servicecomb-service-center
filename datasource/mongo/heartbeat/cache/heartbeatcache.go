@@ -20,13 +20,10 @@ package heartbeatcache
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	pb "github.com/go-chassis/cari/discovery"
 
 	"github.com/apache/servicecomb-service-center/datasource/mongo/heartbeat"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 const (
@@ -47,88 +44,29 @@ type HeartBeatCache struct {
 }
 
 func NewHeartBeatCache() (heartbeat.HealthCheck, error) {
-	return &HeartBeatCache{Cfg: Configuration()}, nil
+	_ = "STUB: not implemented"
+	return *new(heartbeat.HealthCheck), nil
 }
 
 func (h *HeartBeatCache) Heartbeat(ctx context.Context, request *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
-	if ins, ok := h.Cfg.InstanceHeartbeatStore.Get(request.InstanceId); ok {
-		return h.inCacheStrategy(ctx, request, ins)
-	}
-	return h.notInCacheStrategy(ctx, request)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // CheckInstance func is to add instance related information to the cache
 func (h *HeartBeatCache) CheckInstance(_ context.Context, instance *pb.MicroServiceInstance) error {
-	return h.Cfg.AddHeartbeatTask(instance.ServiceId, instance.InstanceId, instance.HealthCheck.Interval*(instance.HealthCheck.Times+1))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (h *HeartBeatCache) inCacheStrategy(ctx context.Context, request *pb.HeartbeatRequest, insHeartbeatInfo interface{}) (*pb.HeartbeatResponse, error) {
-	remoteIP := util.GetIPFromContext(ctx)
-	heartbeatInfo, ok := insHeartbeatInfo.(*InstanceHeartbeatInfo)
-	if !ok {
-		log.Error("type conversion failed: %v", ErrHeartbeatConversionFailed)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrInstanceNotExists, ErrHeartbeatConversionFailed.Error())),
-		}
-		return resp, ErrHeartbeatConversionFailed
-	}
-	err := h.Cfg.AddHeartbeatTask(request.ServiceId, request.InstanceId, heartbeatInfo.TTL)
-	if err != nil {
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrNotEnoughQuota, err.Error())),
-		}
-		return resp, err
-	}
-	err = updateInstance(ctx, request.ServiceId, request.InstanceId)
-	if err != nil {
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrInstanceNotExists, err.Error())),
-		}
-		return resp, err
-	}
-	return &pb.HeartbeatResponse{
-		Response: pb.CreateResponse(pb.ResponseSuccess, "update service instance heartbeat successfully"),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (h *HeartBeatCache) notInCacheStrategy(ctx context.Context, request *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
-	remoteIP := util.GetIPFromContext(ctx)
-	instance, err := findInstance(ctx, request.ServiceId, request.InstanceId)
-	if err != nil {
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrInstanceNotExists, err.Error())),
-		}
-		return resp, err
-	}
-	interval, times := instance.Instance.HealthCheck.Interval, instance.Instance.HealthCheck.Times
-	// Set the range of interval and time
-	if interval > maxInterval || interval < minTimes {
-		interval = defaultInterval
-	}
-	if times > maxTimes || times < minTimes {
-		times = maxTimes
-	}
-	err = h.Cfg.AddHeartbeatTask(request.ServiceId, request.InstanceId, interval*(times+1))
-	if err != nil {
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrNotEnoughQuota, err.Error())),
-		}
-		return resp, err
-	}
-	err = updateInstance(ctx, request.ServiceId, request.InstanceId)
-	if err != nil {
-		h.Cfg.RemoveCacheInstance(request.InstanceId)
-		log.Error(fmt.Sprintf("heartbeat failed, instance[%s]. operator %s", request.InstanceId, remoteIP), err)
-		resp := &pb.HeartbeatResponse{
-			Response: pb.CreateResponseWithSCErr(pb.NewError(pb.ErrInstanceNotExists, err.Error())),
-		}
-		return resp, err
-	}
-	return &pb.HeartbeatResponse{
-		Response: pb.CreateResponse(pb.ResponseSuccess, "update service instance heartbeat successfully"),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Set the range of interval and time

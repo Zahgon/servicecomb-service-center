@@ -18,44 +18,10 @@
 package etcd
 
 import (
-	"crypto/tls"
-	"os"
-	"strings"
-	"time"
-
 	clientv3 "go.etcd.io/etcd/client/v3"
-
-	"github.com/go-chassis/foundation/tlsutil"
 )
 
 func NewEtcdClient(cfg Config) (*clientv3.Client, error) {
-	var (
-		endpoints = strings.Split(cfg.Addrs, ",")
-		cliTLS    *tls.Config
-	)
-	for _, ip := range endpoints {
-		if strings.Contains(ip, "https://") {
-			if len(cfg.CertKeyPWD) == 0 && len(cfg.CertKeyPWDPath) > 0 {
-				content, _ := os.ReadFile(cfg.CertKeyPWDPath)
-				cfg.CertKeyPWD = string(content)
-			}
-			opts := append(tlsutil.DefaultClientTLSOptions(),
-				tlsutil.WithCA(cfg.CAFile),
-				tlsutil.WithCert(cfg.CertFile),
-				tlsutil.WithKey(cfg.CertKeyFile),
-				tlsutil.WithKeyPass(cfg.CertKeyPWD))
-			cliTLS, _ = tlsutil.GetClientTLSConfig(opts...)
-			break
-		}
-	}
-
-	client, err := clientv3.New(clientv3.Config{
-		Endpoints:   endpoints,
-		DialTimeout: 10 * time.Second,
-		TLS:         cliTLS,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return client, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -31,17 +31,11 @@ type plugin struct {
 	cfg  *kvstore.Options
 }
 
-func (e *plugin) Name() string {
-	return e.name
-}
+func (e *plugin) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (e *plugin) Config() *kvstore.Options {
-	return e.cfg
-}
+func (e *plugin) Config() *kvstore.Options { _ = "STUB: not implemented"; return nil }
 
 func NewPlugin(name string, cfg *kvstore.Options) Plugin {
-	return &plugin{
-		name: name,
-		cfg:  cfg,
-	}
+	_ = "STUB: not implemented"
+	return *new(Plugin)
 }

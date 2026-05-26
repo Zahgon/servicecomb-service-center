@@ -22,30 +22,20 @@ import (
 
 	"github.com/go-chassis/cari/sync"
 
-	"github.com/apache/servicecomb-service-center/eventbase/datasource"
 	"github.com/apache/servicecomb-service-center/eventbase/model"
 )
 
 func Get(ctx context.Context, req *model.GetTombstoneRequest) (*sync.Tombstone, error) {
-	if len(req.Domain) == 0 {
-		req.Domain = sync.Default
-	}
-	if len(req.Project) == 0 {
-		req.Project = sync.Default
-	}
-	return datasource.GetTombstoneDao().Get(ctx, req)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func Delete(ctx context.Context, tombstones ...*sync.Tombstone) error {
-	return datasource.GetTombstoneDao().Delete(ctx, tombstones...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func List(ctx context.Context, request *model.ListTombstoneRequest) ([]*sync.Tombstone, error) {
-	opts := []datasource.TombstoneFindOption{
-		datasource.WithTombstoneDomain(request.Domain),
-		datasource.WithTombstoneProject(request.Project),
-		datasource.WithResourceType(request.ResourceType),
-		datasource.WithBeforeTimestamp(request.BeforeTimestamp),
-	}
-	return datasource.GetTombstoneDao().List(ctx, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

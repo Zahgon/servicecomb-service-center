@@ -21,7 +21,6 @@ import (
 	"context"
 
 	"github.com/apache/servicecomb-service-center/pkg/plugin"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/plugin/uuid"
 )
 
@@ -29,25 +28,11 @@ func init() {
 	plugin.RegisterPlugin(plugin.Plugin{Kind: uuid.UUID, Name: "buildin", New: New})
 }
 
-func New() plugin.Instance {
-	return &UUID{}
-}
+func New() plugin.Instance { _ = "STUB: not implemented"; return *new(plugin.Instance) }
 
 type UUID struct {
 }
 
-func (du *UUID) GetServiceID(_ context.Context) string {
-	df, ok := plugin.DynamicPluginFunc(uuid.UUID, "GetServiceID").(func() string)
-	if ok {
-		return df()
-	}
-	return util.GenerateUUID()
-}
+func (du *UUID) GetServiceID(_ context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func (du *UUID) GetInstanceID(_ context.Context) string {
-	df, ok := plugin.DynamicPluginFunc(uuid.UUID, "GetInstanceID").(func() string)
-	if ok {
-		return df()
-	}
-	return util.GenerateUUID()
-}
+func (du *UUID) GetInstanceID(_ context.Context) string { _ = "STUB: not implemented"; return "" }

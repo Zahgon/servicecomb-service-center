@@ -36,73 +36,63 @@ type TaskFindOption func(options *TaskFindOptions)
 
 type TombstoneFindOption func(options *TombstoneFindOptions)
 
-func NewTaskFindOptions() TaskFindOptions {
-	return TaskFindOptions{}
-}
+func NewTaskFindOptions() TaskFindOptions { _ = "STUB: not implemented"; return *new(TaskFindOptions) }
 
 func NewTombstoneFindOptions() TombstoneFindOptions {
-	return TombstoneFindOptions{}
+	_ = "STUB: not implemented"
+	return *new(TombstoneFindOptions)
 }
 
 // WithDomain find task with domain
 func WithDomain(domain string) TaskFindOption {
-	return func(options *TaskFindOptions) {
-		options.Domain = domain
-	}
+	_ = "STUB: not implemented"
+	return *new(TaskFindOption)
 }
 
 // WithProject find task with project
 func WithProject(project string) TaskFindOption {
-	return func(options *TaskFindOptions) {
-		options.Project = project
-	}
+	_ = "STUB: not implemented"
+	return *new(TaskFindOption)
 }
 
 // WithAction find task with action
 func WithAction(action string) TaskFindOption {
-	return func(options *TaskFindOptions) {
-		options.Action = action
-	}
+	_ = "STUB: not implemented"
+	return *new(TaskFindOption)
 }
 
 // WithStatus find task with status
 func WithStatus(status string) TaskFindOption {
-	return func(options *TaskFindOptions) {
-		options.Status = status
-	}
+	_ = "STUB: not implemented"
+	return *new(TaskFindOption)
 }
 
 // WithDataType find task with dataType
 func WithDataType(dataType string) TaskFindOption {
-	return func(options *TaskFindOptions) {
-		options.ResourceType = dataType
-	}
+	_ = "STUB: not implemented"
+	return *new(TaskFindOption)
 }
 
 // WithTombstoneDomain find tombstone with domain
 func WithTombstoneDomain(domain string) TombstoneFindOption {
-	return func(options *TombstoneFindOptions) {
-		options.Domain = domain
-	}
+	_ = "STUB: not implemented"
+	return *new(TombstoneFindOption)
 }
 
 // WithTombstoneProject find tombstone with project
 func WithTombstoneProject(project string) TombstoneFindOption {
-	return func(options *TombstoneFindOptions) {
-		options.Project = project
-	}
+	_ = "STUB: not implemented"
+	return *new(TombstoneFindOption)
 }
 
 // WithResourceType find tombstone with resource type
 func WithResourceType(resourceType string) TombstoneFindOption {
-	return func(options *TombstoneFindOptions) {
-		options.ResourceType = resourceType
-	}
+	_ = "STUB: not implemented"
+	return *new(TombstoneFindOption)
 }
 
 // WithBeforeTimestamp find tombstone with beforeTimestamp
 func WithBeforeTimestamp(timestamp int64) TombstoneFindOption {
-	return func(options *TombstoneFindOptions) {
-		options.BeforeTimestamp = timestamp
-	}
+	_ = "STUB: not implemented"
+	return *new(TombstoneFindOption)
 }

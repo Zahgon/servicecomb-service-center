@@ -25,19 +25,22 @@ var (
 type nullCache struct {
 }
 
-func (n *nullCache) Name() string                                      { return "NULL" }
-func (n *nullCache) Size() int                                         { return 0 }
-func (n *nullCache) Get(_ string) *KeyValue                            { return nil }
-func (n *nullCache) GetAll(_ *[]*KeyValue) int                         { return 0 }
-func (n *nullCache) GetPrefix(_ string, _ *[]*KeyValue) int            { return 0 }
-func (n *nullCache) ForEach(_ func(k string, v *KeyValue) (next bool)) {}
-func (n *nullCache) Put(_ string, _ *KeyValue)                         {}
-func (n *nullCache) Remove(_ string)                                   {}
-func (n *nullCache) MarkDirty()                                        {}
-func (n *nullCache) Dirty() bool                                       { return false }
-func (n *nullCache) Clear()                                            {}
+func (n *nullCache) Name() string                           { _ = "STUB: not implemented"; return "" }
+func (n *nullCache) Size() int                              { _ = "STUB: not implemented"; return 0 }
+func (n *nullCache) Get(_ string) *KeyValue                 { _ = "STUB: not implemented"; return nil }
+func (n *nullCache) GetAll(_ *[]*KeyValue) int              { _ = "STUB: not implemented"; return 0 }
+func (n *nullCache) GetPrefix(_ string, _ *[]*KeyValue) int { _ = "STUB: not implemented"; return 0 }
+func (n *nullCache) ForEach(_ func(k string, v *KeyValue) (next bool)) {
+	_ = "STUB: not implemented"
+	return
+}
+func (n *nullCache) Put(_ string, _ *KeyValue) { _ = "STUB: not implemented"; return }
+func (n *nullCache) Remove(_ string)           { _ = "STUB: not implemented"; return }
+func (n *nullCache) MarkDirty()                { _ = "STUB: not implemented"; return }
+func (n *nullCache) Dirty() bool               { _ = "STUB: not implemented"; return false }
+func (n *nullCache) Clear()                    { _ = "STUB: not implemented"; return }
 
 type nullCacher struct {
 }
 
-func (n *nullCacher) Cache() CacheReader { return NullCache }
+func (n *nullCacher) Cache() CacheReader { _ = "STUB: not implemented"; return *new(CacheReader) }

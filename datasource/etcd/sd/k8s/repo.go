@@ -21,7 +21,6 @@
 package k8s
 
 import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd/k8s/adaptor"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 )
@@ -34,9 +33,11 @@ type Repository struct {
 }
 
 func (r *Repository) New(t kvstore.Type, cfg *kvstore.Options) state.State {
-	return adaptor.NewK8sAdaptor(t, cfg)
+	_ = "STUB: not implemented"
+	return *new(state.State)
 }
 
 func NewRepository(_ state.Config) state.Repository {
-	return &Repository{}
+	_ = "STUB: not implemented"
+	return *new(state.Repository)
 }

@@ -26,47 +26,22 @@ import (
 
 type Option func(options *kvstore.Options)
 
-func WithPrefix(key string) Option {
-	return func(opts *kvstore.Options) {
-		opts.Key = key
-	}
-}
+func WithPrefix(key string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithInitSize(size int) Option {
-	return func(opts *kvstore.Options) {
-		opts.InitSize = size
-	}
-}
+func WithInitSize(size int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithTimeout(ot time.Duration) Option {
-	return func(opts *kvstore.Options) {
-		opts.Timeout = ot
-	}
-}
+func WithTimeout(ot time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithPeriod(ot time.Duration) Option {
-	return func(opts *kvstore.Options) {
-		opts.Period = ot
-	}
-}
+func WithPeriod(ot time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithDeferHandler(h kvstore.DeferHandler) Option {
-	return func(opts *kvstore.Options) {
-		opts.DeferHandler = h
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func WithParser(parser parser.Parser) Option {
-	return func(opts *kvstore.Options) {
-		opts.Parser = parser
-	}
-}
+func WithParser(parser parser.Parser) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func ToOptions(opts ...Option) kvstore.Options {
-	def := kvstore.NewOptions()
-	config := *def
-	for _, opt := range opts {
-		opt(&config)
-	}
-	return config
+	_ = "STUB: not implemented"
+	return *new(kvstore.Options)
 }

@@ -19,15 +19,8 @@ package util
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	pb "github.com/go-chassis/cari/discovery"
-	"github.com/little-cui/etcdadpt"
 )
 
 // DependencyRelationFilterOpt contains SameDomainProject and NonSelf flag
@@ -39,23 +32,18 @@ type DependencyRelationFilterOpt struct {
 type DependencyRelationFilterOption func(opt DependencyRelationFilterOpt) DependencyRelationFilterOpt
 
 func WithSameDomainProject() DependencyRelationFilterOption {
-	return func(opt DependencyRelationFilterOpt) DependencyRelationFilterOpt {
-		opt.SameDomainProject = true
-		return opt
-	}
+	_ = "STUB: not implemented"
+	return *new(DependencyRelationFilterOption)
 }
+
 func WithoutSelfDependency() DependencyRelationFilterOption {
-	return func(opt DependencyRelationFilterOpt) DependencyRelationFilterOpt {
-		opt.NonSelf = true
-		return opt
-	}
+	_ = "STUB: not implemented"
+	return *new(DependencyRelationFilterOption)
 }
 
 func ToDependencyRelationFilterOpt(opts ...DependencyRelationFilterOption) (op DependencyRelationFilterOpt) {
-	for _, opt := range opts {
-		op = opt(op)
-	}
-	return
+	_ = "STUB: not implemented"
+	return *new(DependencyRelationFilterOpt)
 }
 
 type DependencyRelation struct {
@@ -66,207 +54,66 @@ type DependencyRelation struct {
 }
 
 func (dr *DependencyRelation) GetDependencyProviders(opts ...DependencyRelationFilterOption) ([]*pb.MicroService, error) {
-	keys, err := dr.getProviderKeys()
-	if err != nil {
-		return nil, err
-	}
-	services := make([]*pb.MicroService, 0, len(keys))
-	op := ToDependencyRelationFilterOpt(opts...)
-	for _, key := range keys {
-		if op.SameDomainProject && key.Tenant != dr.domainProject {
-			continue
-		}
-
-		providerIDs, err := dr.parseDependencyRule(key)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, providerID := range providerIDs {
-			provider, err := GetService(dr.ctx, key.Tenant, providerID)
-			if err != nil {
-				if errors.Is(err, datasource.ErrNoData) {
-					log.Warn(fmt.Sprintf("provider[%s/%s/%s/%s] does not exist",
-						key.Environment, key.AppId, key.ServiceName, key.Version))
-				} else {
-					log.Warn(fmt.Sprintf("get provider[%s/%s/%s/%s] failed",
-						key.Environment, key.AppId, key.ServiceName, key.Version))
-				}
-				continue
-			}
-			if op.NonSelf && providerID == dr.consumer.ServiceId {
-				continue
-			}
-			services = append(services, provider)
-		}
-	}
-	return services, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) getDependencyProviderIds() ([]string, error) {
-	keys, err := dr.getProviderKeys()
-	if err != nil {
-		return nil, err
-	}
-	return dr.GetProviderIdsByRules(keys)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) getProviderKeys() ([]*pb.MicroServiceKey, error) {
-	if dr.consumer == nil {
-		return nil, errors.New("invalid consumer")
-	}
-	consumerMicroServiceKey := pb.MicroServiceToKey(dr.domainProject, dr.consumer)
-
-	conKey := path.GenerateConsumerDependencyRuleKey(dr.domainProject, consumerMicroServiceKey)
-	consumerDependency, err := TransferToMicroServiceDependency(dr.ctx, conKey)
-	if err != nil {
-		return nil, err
-	}
-	return consumerDependency.Dependency, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) GetProviderIdsByRules(providerRules []*pb.MicroServiceKey) ([]string, error) {
-	provideServiceIds := make([]string, 0, len(providerRules))
-	for _, provider := range providerRules {
-		serviceIDs, err := dr.parseDependencyRule(provider)
-		if err != nil {
-			log.Error(fmt.Sprintf("get service[%s/%s/%s/%s]'s providerIDs failed",
-				provider.Environment, provider.AppId, provider.ServiceName, provider.Version), err)
-			return provideServiceIds, err
-		}
-		if len(serviceIDs) == 0 {
-			log.Warn(fmt.Sprintf("get service[%s/%s/%s/%s]'s providerIDs is empty",
-				provider.Environment, provider.AppId, provider.ServiceName, provider.Version))
-			continue
-		}
-		provideServiceIds = append(provideServiceIds, serviceIDs...)
-	}
-	return provideServiceIds, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) parseDependencyRule(dependencyRule *pb.MicroServiceKey) (serviceIDs []string, err error) {
-	serviceIDs, _, err = FindServiceIds(dr.ctx, dependencyRule, false)
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) GetDependencyConsumers(opts ...DependencyRelationFilterOption) ([]*pb.MicroService, error) {
-	consumerDependAllList, err := dr.GetDependencyConsumersOfProvider()
-	if err != nil {
-		log.Error(fmt.Sprintf("get service[%s]'s consumers failed", dr.provider.ServiceId), err)
-		return nil, err
-	}
-	consumers := make([]*pb.MicroService, 0)
-	op := ToDependencyRelationFilterOpt(opts...)
-	for _, consumer := range consumerDependAllList {
-		if op.SameDomainProject && consumer.Tenant != dr.domainProject {
-			continue
-		}
-
-		service, err := dr.GetServiceByMicroServiceKey(consumer)
-		if err != nil {
-			if errors.Is(err, datasource.ErrNoData) {
-				log.Warn(fmt.Sprintf("consumer[%s/%s/%s/%s] does not exist",
-					consumer.Environment, consumer.AppId, consumer.ServiceName, consumer.Version))
-				continue
-			}
-			return nil, err
-		}
-
-		if op.NonSelf && service.ServiceId == dr.provider.ServiceId {
-			continue
-		}
-
-		consumers = append(consumers, service)
-	}
-	return consumers, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) GetServiceByMicroServiceKey(service *pb.MicroServiceKey) (*pb.MicroService, error) {
-	serviceID, err := GetServiceID(dr.ctx, service)
-	if err != nil {
-		return nil, err
-	}
-	if len(serviceID) == 0 {
-		log.Warn(fmt.Sprintf("service[%s/%s/%s/%s] not exist",
-			service.Environment, service.AppId, service.ServiceName, service.Version))
-		return nil, datasource.ErrNoData
-	}
-	return GetService(dr.ctx, service.Tenant, serviceID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) getDependencyConsumerIds() ([]string, error) {
-	consumerDependAllList, err := dr.GetDependencyConsumersOfProvider()
-	if err != nil {
-		return nil, err
-	}
-	consumerIDs := make([]string, 0, len(consumerDependAllList))
-	for _, consumer := range consumerDependAllList {
-		consumerID, err := GetServiceID(dr.ctx, consumer)
-		if err != nil {
-			log.Error(fmt.Sprintf("get consumer[%s/%s/%s/%s] failed",
-				consumer.Environment, consumer.AppId, consumer.ServiceName, consumer.Version), err)
-			return nil, err
-		}
-		if len(consumerID) == 0 {
-			log.Warn(fmt.Sprintf("get consumer[%s/%s/%s/%s] not exist",
-				consumer.Environment, consumer.AppId, consumer.ServiceName, consumer.Version))
-			continue
-		}
-		consumerIDs = append(consumerIDs, consumerID)
-	}
-	return consumerIDs, nil
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) GetDependencyConsumersOfProvider() ([]*pb.MicroServiceKey, error) {
-	if dr.provider == nil {
-		return nil, errors.New("invalid provider")
-	}
-	providerService := pb.MicroServiceToKey(dr.domainProject, dr.provider)
-	consumerDependList, err := dr.GetConsumerOfSameServiceNameAndAppID(providerService)
-	if err != nil {
-		log.Error(fmt.Sprintf("get consumers that depend on rule[%s/%s/%s/%s] failed",
-			dr.provider.Environment, dr.provider.AppId, dr.provider.ServiceName, dr.provider.Version), err)
-		return nil, err
-	}
-	return consumerDependList, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (dr *DependencyRelation) GetConsumerOfSameServiceNameAndAppID(provider *pb.MicroServiceKey) ([]*pb.MicroServiceKey, error) {
-	copyProvider := *provider
-	copyProvider.Version = ""
-	prefix := path.GenerateProviderDependencyRuleKey(dr.domainProject, &copyProvider)
-
-	opts := append(FromContext(dr.ctx),
-		etcdadpt.WithStrKey(prefix),
-		etcdadpt.WithPrefix())
-	rsp, err := sd.DependencyRule().Search(dr.ctx, opts...)
-	if err != nil {
-		log.Error(fmt.Sprintf("get service[%s/%s/%s]'s dependency rules failed",
-			provider.Environment, provider.AppId, provider.ServiceName), err)
-		return nil, err
-	}
-
-	allConsumers := make([]*pb.MicroServiceKey, 0, len(rsp.Kvs))
-	for _, kv := range rsp.Kvs {
-		allConsumers = append(allConsumers, kv.Value.(*pb.MicroServiceDependency).Dependency...)
-	}
-	return allConsumers, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewProviderDependencyRelation(ctx context.Context, domainProject string, provider *pb.MicroService) *DependencyRelation {
-	return NewDependencyRelation(ctx, domainProject, nil, provider)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func NewConsumerDependencyRelation(ctx context.Context, domainProject string, consumer *pb.MicroService) *DependencyRelation {
-	return NewDependencyRelation(ctx, domainProject, consumer, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func NewDependencyRelation(ctx context.Context, domainProject string, consumer *pb.MicroService, provider *pb.MicroService) *DependencyRelation {
-	return &DependencyRelation{
-		ctx:           ctx,
-		domainProject: domainProject,
-		consumer:      consumer,
-		provider:      provider,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

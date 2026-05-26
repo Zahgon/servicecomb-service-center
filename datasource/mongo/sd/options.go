@@ -18,7 +18,6 @@
 package sd
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -36,21 +35,8 @@ type Options struct {
 	Period   time.Duration
 }
 
-func (options *Options) String() string {
-	return fmt.Sprintf("{key: %s, timeout: %s, period: %s}",
-		options.Key, options.Timeout, options.Period)
-}
+func (options *Options) String() string { _ = "STUB: not implemented"; return "" }
 
-func (options *Options) SetTable(key string) *Options {
-	options.Key = key
-	return options
-}
+func (options *Options) SetTable(key string) *Options { _ = "STUB: not implemented"; return nil }
 
-func DefaultOptions() *Options {
-	return &Options{
-		Key:      "",
-		Timeout:  DefaultTimeout,
-		Period:   time.Second,
-		InitSize: DefaultCacheInitSize,
-	}
-}
+func DefaultOptions() *Options { _ = "STUB: not implemented"; return nil }

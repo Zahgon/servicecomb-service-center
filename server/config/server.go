@@ -75,10 +75,6 @@ type ServerConfigDetail struct {
 	InstanceTTL int64 `json:"-"`
 }
 
-func (si *ServerConfig) IsDev() bool {
-	return si.Environment == EnvironmentDev
-}
+func (si *ServerConfig) IsDev() bool { _ = "STUB: not implemented"; return false }
 
-func NewServerConfig() *ServerConfig {
-	return &ServerConfig{Config: ServerConfigDetail{Plugins: make(util.JSONObject)}}
-}
+func NewServerConfig() *ServerConfig { _ = "STUB: not implemented"; return nil }

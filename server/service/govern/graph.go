@@ -19,12 +19,7 @@ package govern
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	discosvc "github.com/apache/servicecomb-service-center/server/service/disco"
 	"github.com/go-chassis/cari/discovery"
 )
 
@@ -63,69 +58,16 @@ type Graph struct {
 }
 
 func Draw(ctx context.Context, withShared bool) (*Graph, error) {
-	var graph Graph
-
-	resp, err := discosvc.ListService(ctx, &discovery.GetServicesRequest{WithShared: withShared})
-	if err != nil {
-		return nil, err
-	}
-	services := resp.Services
-	if len(services) <= 0 {
-		return &graph, nil
-	}
-
-	domainProject := util.ParseDomainProject(ctx)
-	nodes := make([]Node, 0, len(services))
-	for _, service := range services {
-		var node Node
-		node.Name = service.ServiceName
-		node.ID = service.ServiceId
-		node.AppID = service.AppId
-		node.Version = service.Version
-		nodes = append(nodes, node)
-
-		proRequest := &discovery.GetDependenciesRequest{
-			ServiceId:  service.ServiceId,
-			SameDomain: true,
-			NoSelf:     true,
-		}
-		proResp, err := discosvc.ListProviders(ctx, proRequest)
-		if err != nil {
-			log.Error(fmt.Sprintf("get service[%s/%s/%s/%s]'s providers failed",
-				service.Environment, service.AppId, service.ServiceName, service.Version), err)
-			return nil, err
-		}
-
-		providers := proResp.Providers
-		lines := genLinesFromNode(withShared, domainProject, node, providers)
-		graph.Lines = append(graph.Lines, lines...)
-	}
-	graph.Nodes = nodes
-	return &graph, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func genLinesFromNode(withShared bool, domainProject string, node Node, providers []*discovery.MicroService) []Line {
-	lines := make([]Line, 0)
-	for _, child := range providers {
-		if child == nil {
-			continue
-		}
-
-		if node.ID == child.ServiceId {
-			continue
-		}
-		if isSkipped(withShared, domainProject, child) {
-			continue
-		}
-		line := Line{}
-		line.From = node
-		line.To.Name = child.ServiceName
-		line.To.ID = child.ServiceId
-		lines = append(lines, line)
-	}
-	return lines
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func isSkipped(withShared bool, domainProject string, service *discovery.MicroService) bool {
-	return !withShared && datasource.IsGlobal(discovery.MicroServiceToKey(domainProject, service))
+	_ = "STUB: not implemented"
+	return false
 }

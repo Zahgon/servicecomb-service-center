@@ -18,14 +18,9 @@
 package plugin
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
 	"plugin"
 	"regexp"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 var (
@@ -44,97 +39,24 @@ type Loader struct {
 	mux     sync.RWMutex
 }
 
-func (pm *Loader) Init() {
-	pm.Plugins = make(map[string]*wrapPlugin, 10)
+func (pm *Loader) Init() { _ = "STUB: not implemented"; return }
 
-	err := pm.ReloadPlugins()
-	if len(pm.Plugins) == 0 {
-		log.Error("no any plugin has been loaded", err)
-	}
-}
+func (pm *Loader) ReloadPlugins() error { _ = "STUB: not implemented"; return nil }
 
-func (pm *Loader) ReloadPlugins() error {
-	dir := os.ExpandEnv(GetConfigurator().GetPluginDir())
-	if len(dir) == 0 {
-		dir, _ = os.Getwd()
-	}
-	if len(dir) == 0 {
-		return fmt.Errorf("'plugins_dir' is unset")
-	}
-
-	files, err := os.ReadDir(dir)
-	if err != nil {
-		return err
-	}
-
-	for _, file := range files {
-		if !file.Type().IsRegular() {
-			continue
-		}
-
-		submatchs := regex.FindStringSubmatch(file.Name())
-		if len(submatchs) < 2 {
-			continue
-		}
-
-		// golang 1.8+ feature
-		pluginFileFullPath := filepath.Join(dir, file.Name())
-		p, err := plugin.Open(pluginFileFullPath)
-		if err != nil {
-			return fmt.Errorf("load plugin '%s' error for %s", submatchs[1], err.Error())
-		}
-		log.Info(fmt.Sprintf("load plugin '%s' successfully", submatchs[1]))
-
-		pm.mux.Lock()
-		pm.Plugins[submatchs[1]] = &wrapPlugin{p, make(map[string]plugin.Symbol, 10)}
-		pm.mux.Unlock()
-	}
-	return nil
-}
+// golang 1.8+ feature
 
 func (pm *Loader) Find(pluginName, funcName string) (plugin.Symbol, error) {
-	pm.mux.RLock()
-	w, ok := pm.Plugins[pluginName]
-	if !ok {
-		pm.mux.RUnlock()
-		return nil, fmt.Errorf("can not find plugin '%s'", pluginName)
-	}
-
-	f, ok := w.funcs[funcName]
-	if ok {
-		pm.mux.RUnlock()
-		return f, nil
-	}
-	pm.mux.RUnlock()
-
-	pm.mux.Lock()
-	var err error
-	f, err = w.p.Lookup(funcName)
-	if err != nil {
-		pm.mux.Unlock()
-		return nil, err
-	}
-	w.funcs[funcName] = f
-	pm.mux.Unlock()
-	return f, nil
+	_ = "STUB: not implemented"
+	return *new(plugin.Symbol), nil
 }
 
-func (pm *Loader) Exist(pluginName string) bool {
-	pm.mux.RLock()
-	_, ok := pm.Plugins[pluginName]
-	pm.mux.RUnlock()
-	return ok
-}
+func (pm *Loader) Exist(pluginName string) bool { _ = "STUB: not implemented"; return false }
 
-func GetLoader() *Loader {
-	once.Do(loader.Init)
-	return &loader
-}
+func GetLoader() *Loader { _ = "STUB: not implemented"; return nil }
 
-func Reload() error {
-	return GetLoader().ReloadPlugins()
-}
+func Reload() error { _ = "STUB: not implemented"; return nil }
 
 func FindFunc(pluginName, funcName string) (plugin.Symbol, error) {
-	return GetLoader().Find(pluginName, funcName)
+	_ = "STUB: not implemented"
+	return *new(plugin.Symbol), nil
 }

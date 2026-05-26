@@ -24,375 +24,149 @@ import (
 	"github.com/go-chassis/cari/rbac"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/x/bsonx"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type Option func(filter bson.M)
 
-func Domain(domain string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnDomain] = domain
-	}
-}
+func Domain(domain string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Project(project string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnProject] = project
-	}
-}
+func Project(project string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func AccountName(name interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnAccountName] = name
-	}
-}
+func AccountName(name interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Password(password string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnPassword] = password
-	}
-}
+func Password(password string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Roles(roles []string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnRoles] = roles
-	}
-}
+func Roles(roles []string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func TokenExpirationTime(tokenExpirationTime string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnTokenExpirationTime] = tokenExpirationTime
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func CurrentPassword(password string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnCurrentPassword] = password
-	}
-}
+func CurrentPassword(password string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Status(status string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnStatus] = status
-	}
-}
+func Status(status string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ID(id string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnID] = id
-	}
-}
+func ID(id string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func RoleName(name string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnRoleName] = name
-	}
-}
+func RoleName(name string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Perms(perms []*rbac.Permission) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnPerms] = perms
-	}
-}
+func Perms(perms []*rbac.Permission) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func AccountUpdateTime(dt interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnAccountUpdateTime] = dt
-	}
-}
+func AccountUpdateTime(dt interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func RoleUpdateTime(dt interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnRoleUpdateTime] = dt
-	}
-}
+func RoleUpdateTime(dt interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func AccountLockKey(key interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnAccountLockKey] = key
-	}
-}
+func AccountLockKey(key interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func AccountLockStatus(status interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnAccountLockStatus] = status
-	}
-}
+func AccountLockStatus(status interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func AccountLockReleaseAt(releaseAt interface{}) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnAccountLockReleaseAt] = releaseAt
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func In(data interface{}) Option {
-	return func(filter bson.M) {
-		filter["$in"] = data
-	}
-}
+func In(data interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func NotIn(data interface{}) Option {
-	return func(filter bson.M) {
-		filter["$nin"] = data
-	}
-}
+func NotIn(data interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Set(data interface{}) Option {
-	return func(filter bson.M) {
-		filter["$set"] = data
-	}
-}
+func Set(data interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Nor(options ...Option) Option {
-	return func(filter bson.M) {
-		filter["$nor"] = bson.A{NewFilter(options...)}
-	}
-}
+func Nor(options ...Option) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Or(options ...Option) Option {
-	return func(filter bson.M) {
-		var conditions bson.A
-		for _, option := range options {
-			conditions = append(conditions, NewFilter(option))
-		}
-		filter["$or"] = conditions
-	}
-}
+func Or(options ...Option) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func NewFilter(options ...Option) bson.M {
-	filter := bson.M{}
-	for _, option := range options {
-		option(filter)
-	}
-	return filter
-}
+func NewFilter(options ...Option) bson.M { _ = "STUB: not implemented"; return *new(bson.M) }
 
 func NewDomainProjectFilter(domain string, project string, options ...func(filter bson.M)) bson.M {
-	filter := bson.M{
-		model.ColumnDomain:  domain,
-		model.ColumnProject: project,
-	}
-	for _, option := range options {
-		option(filter)
-	}
-	return filter
+	_ = "STUB: not implemented"
+	return *new(bson.M)
 }
 
 func NewBasicFilter(ctx context.Context, options ...func(filter bson.M)) bson.M {
-	domain := util.ParseDomain(ctx)
-	project := util.ParseProject(ctx)
-
-	filter := bson.M{
-		model.ColumnDomain:  domain,
-		model.ColumnProject: project,
-	}
-	for _, option := range options {
-		option(filter)
-	}
-	return filter
+	_ = "STUB: not implemented"
+	return *new(bson.M)
 }
 
 func InstanceServiceID(serviceID interface{}) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnInstance, model.ColumnServiceID})] = serviceID
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func InstanceInstanceID(instanceID string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnInstance, model.ColumnInstanceID})] = instanceID
-	}
-}
+func InstanceInstanceID(instanceID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // ServiceServiceID serviceID can be string or bson.M
-func ServiceServiceID(serviceID interface{}) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnServiceID})] = serviceID
-	}
-}
+func ServiceServiceID(serviceID interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceEnv(env string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnEnv})] = env
-	}
-}
+func ServiceEnv(env string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceAppID(appID string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnAppID})] = appID
-	}
-}
+func ServiceAppID(appID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceModTime(modTime string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnModTime})] = modTime
-	}
-}
+func ServiceModTime(modTime string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func ServiceProperty(property map[string]string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnProperty})] = property
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 func ServiceServiceName(serviceName interface{}) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnServiceName})] = serviceName
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func ServiceID(serviceID string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnServiceID] = serviceID
-	}
-}
+func ServiceID(serviceID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceAlias(alias string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnAlias})] = alias
-	}
-}
+func ServiceAlias(alias string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceSchemas(schemas []string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnSchemas})] = schemas
-	}
-}
+func ServiceSchemas(schemas []string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceVersion(version interface{}) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnService, model.ColumnVersion})] = version
-	}
-}
+func ServiceVersion(version interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceType(serviceType string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnServiceType] = serviceType
-	}
-}
+func ServiceType(serviceType string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceKeyTenant(tenant string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnServiceKey, model.ColumnTenant})] = tenant
-	}
-}
+func ServiceKeyTenant(tenant string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func ServiceKeyAppID(appID string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnServiceKey, model.ColumnAppID})] = appID
-	}
-}
+func ServiceKeyAppID(appID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func ServiceKeyServiceName(serviceName string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnServiceKey, model.ColumnServiceName})] = serviceName
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func ServiceKeyServiceEnv(env string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnServiceKey, model.ColumnEnv})] = env
-	}
-}
+func ServiceKeyServiceEnv(env string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func ServiceKeyServiceVersion(version string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnServiceKey, model.ColumnVersion})] = version
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func Schema(schema string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnSchema] = schema
-	}
-}
+func Schema(schema string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func SchemaID(schemaID string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnSchemaID] = schemaID
-	}
-}
+func SchemaID(schemaID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func SchemaSummary(schemaSummary string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnSchemaSummary] = schemaSummary
-	}
-}
+func SchemaSummary(schemaSummary string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Tags(tags map[string]string) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnTag] = tags
-	}
-}
+func Tags(tags map[string]string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func Instance(instance *discovery.MicroServiceInstance) Option {
-	return func(filter bson.M) {
-		filter[model.ColumnInstance] = instance
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func InstanceModTime(modTime string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnInstance, model.ColumnModTime})] = modTime
-	}
-}
+func InstanceModTime(modTime string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func InstanceStatus(status string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnInstance, model.ColumnStatus})] = status
-	}
-}
+func InstanceStatus(status string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func InstanceProperties(properties map[string]string) Option {
-	return func(filter bson.M) {
-		filter[ConnectWithDot([]string{model.ColumnInstance, model.ColumnProperty})] = properties
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 func BuildIndexDoc(keys ...string) mongo.IndexModel {
-	keysDoc := bsonx.Doc{}
-	for _, key := range keys {
-		keysDoc = keysDoc.Append(key, bsonx.Int32(1))
-	}
-	index := mongo.IndexModel{
-		Keys: keysDoc,
-	}
-	return index
+	_ = "STUB: not implemented"
+	return *new(mongo.IndexModel)
 }
 
-func NotGlobal() Option {
-	var names []string
-	for name := range datasource.GlobalServiceNames {
-		names = append(names, name)
-	}
-	inFilter := NewFilter(In(names))
-	return Nor(
-		Domain(datasource.RegistryDomain),
-		Project(datasource.RegistryProject),
-		ServiceAppID(datasource.RegistryAppID),
-		ServiceServiceName(inFilter),
-	)
-}
+func NotGlobal() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Global() Option {
-	var names []string
-	for name := range datasource.GlobalServiceNames {
-		names = append(names, name)
-	}
-	inFilter := NewFilter(In(names))
-	options := []Option{
-		Domain(datasource.RegistryDomain),
-		Project(datasource.RegistryProject),
-		ServiceAppID(datasource.RegistryAppID),
-		ServiceServiceName(inFilter),
-	}
-	return func(filter bson.M) {
-		for _, option := range options {
-			option(filter)
-		}
-	}
-}
+func Global() Option { _ = "STUB: not implemented"; return *new(Option) }

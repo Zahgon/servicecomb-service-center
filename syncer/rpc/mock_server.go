@@ -18,35 +18,15 @@
 package rpc
 
 import (
-	"context"
-	"net"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	v1sync "github.com/apache/servicecomb-service-center/syncer/api/v1"
-	"github.com/go-chassis/foundation/gopool"
 	"google.golang.org/grpc"
 )
 
 const wait = 100 * time.Millisecond
 
 func MockServer(address string, srv v1sync.EventServiceServer) *grpc.Server {
-	server := grpc.NewServer()
-	v1sync.RegisterEventServiceServer(server, srv)
-
-	gopool.Go(func(context.Context) {
-		lis, err := net.Listen("tcp", address)
-		if err != nil {
-			log.Fatal("new tcp connection failed", err)
-		}
-
-		err = server.Serve(lis)
-		if err != nil {
-			log.Fatal("grpc server serve failed", err)
-		}
-	})
-
-	time.Sleep(wait)
-
-	return server
+	_ = "STUB: not implemented"
+	return nil
 }

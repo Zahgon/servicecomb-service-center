@@ -19,101 +19,31 @@ package mongo
 
 import (
 	"context"
-	"fmt"
 
-	dmongo "github.com/go-chassis/cari/db/mongo"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	mutil "github.com/apache/servicecomb-service-center/datasource/mongo/util"
 	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 func (al *RbacDAO) UpsertLock(ctx context.Context, lock *rbac.Lock) error {
-	key := lock.Key
-	releaseAt := lock.ReleaseAt
-	filter := mutil.NewFilter(mutil.AccountLockKey(key))
-	updateFilter := mutil.NewFilter(mutil.Set(mutil.NewFilter(
-		mutil.AccountLockKey(key),
-		mutil.AccountLockStatus(lock.Status),
-		mutil.AccountLockReleaseAt(releaseAt),
-	)))
-	result := dmongo.GetClient().GetDB().Collection(model.CollectionAccountLock).FindOneAndUpdate(ctx, filter, updateFilter,
-		options.FindOneAndUpdate().SetUpsert(true))
-	if result.Err() != nil && result.Err() != mongo.ErrNoDocuments {
-		log.Error(fmt.Sprintf("can not save account lock %s", key), result.Err())
-		return result.Err()
-	}
-	log.Info(fmt.Sprintf("%s is locked, release at %d", key, releaseAt))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (al *RbacDAO) GetLock(ctx context.Context, key string) (*rbac.Lock, error) {
-	filter := mutil.NewFilter(mutil.AccountLockKey(key))
-	result := dmongo.GetClient().GetDB().Collection(model.CollectionAccountLock).FindOne(ctx, filter)
-	if err := result.Err(); err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, rbac.ErrAccountLockNotExist
-		}
-		msg := fmt.Sprintf("failed to query account lock, key %s", key)
-		log.Error(msg, result.Err())
-		return nil, rbac.ErrQueryAccountLockFailed
-	}
-	var lock rbac.Lock
-	err := result.Decode(&lock)
-	if err != nil {
-		log.Error(fmt.Sprintf("failed to decode account lock %s", key), err)
-		return nil, err
-	}
-	return &lock, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (al *RbacDAO) ListLock(ctx context.Context) ([]*rbac.Lock, int64, error) {
-	filter := mutil.NewFilter()
-	cursor, err := dmongo.GetClient().GetDB().Collection(model.CollectionAccountLock).Find(ctx, filter)
-	if err != nil {
-		return nil, 0, err
-	}
-	var locks []*rbac.Lock
-	defer cursor.Close(ctx)
-	for cursor.Next(ctx) {
-		var lock rbac.Lock
-		err = cursor.Decode(&lock)
-		if err != nil {
-			log.Error("failed to decode account lock", err)
-			continue
-		}
-		locks = append(locks, &lock)
-	}
-	return locks, int64(len(locks)), nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 func (al *RbacDAO) DeleteLock(ctx context.Context, key string) error {
-	filter := mutil.NewFilter(mutil.AccountLockKey(key))
-	_, err := dmongo.GetClient().GetDB().Collection(model.CollectionAccountLock).DeleteMany(ctx, filter)
-	if err != nil {
-		log.Error(fmt.Sprintf("remove lock %s failed", key), err)
-		return rbac.ErrCannotReleaseLock
-	}
-	log.Info(fmt.Sprintf("%s is released", key))
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (al *RbacDAO) DeleteLockList(ctx context.Context, keys []string) error {
-	var delKeys []mongo.WriteModel
-	for _, key := range keys {
-		delKeys = append(delKeys, mongo.NewDeleteOneModel().SetFilter(mutil.NewFilter(mutil.AccountLockKey(key))))
-	}
-	if len(delKeys) == 0 {
-		return nil
-	}
-	_, err := dmongo.GetClient().GetDB().Collection(model.CollectionAccountLock).BulkWrite(ctx, delKeys)
-	if err != nil {
-		log.Error(fmt.Sprintf("remove locks %v failed", keys), err)
-		return rbac.ErrCannotReleaseLock
-	}
-	log.Info(fmt.Sprintf("%v are released", keys))
+	_ = "STUB: not implemented"
 	return nil
 }

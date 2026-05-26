@@ -19,14 +19,9 @@ package ws
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/event"
-	"github.com/apache/servicecomb-service-center/server/metrics"
-	pb "github.com/go-chassis/cari/discovery"
 )
 
 var errChanClosed = fmt.Errorf("chan closed")
@@ -36,46 +31,11 @@ type Broker struct {
 	producer *event.InstanceSubscriber
 }
 
-func (b *Broker) Listen(ctx context.Context) error {
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case instanceEvent, ok := <-b.producer.Job:
-			if !ok {
-				return errChanClosed
-			}
-			err := b.write(instanceEvent)
-			if err != nil {
-				return err
-			}
-		}
-	}
-}
-func (b *Broker) write(evt *event.InstanceEvent) error {
-	resp := evt.Response
-	providerFlag := fmt.Sprintf("%s/%s/%s", resp.Key.AppId, resp.Key.ServiceName, resp.Key.Version)
-	if resp.Action != string(pb.EVT_EXPIRE) {
-		providerFlag = fmt.Sprintf("%s/%s(%s)", resp.Instance.ServiceId, resp.Instance.InstanceId, providerFlag)
-	}
-	remoteAddr := b.consumer.Conn.RemoteAddr().String()
-	log.Info(fmt.Sprintf("event[%s] is coming in, subscriber[%s] watch %s, group: %s",
-		resp.Action, remoteAddr, providerFlag, b.producer.Group()))
+func (b *Broker) Listen(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	resp.Response = nil
-	data, err := json.Marshal(resp)
-	if err != nil {
-		log.Error(fmt.Sprintf("subscriber[%s] watch %s, group: %s", remoteAddr, providerFlag, b.producer.Group()), err)
-		data = util.StringToBytesWithNoCopy(fmt.Sprintf("marshal output file error, %s", err.Error()))
-	}
-	err = b.consumer.WriteTextMessage(data)
-	metrics.ReportPublishCompleted(evt, err)
-	return err
-}
+func (b *Broker) write(evt *event.InstanceEvent) error { _ = "STUB: not implemented"; return nil }
 
 func NewBroker(ws *WebSocket, is *event.InstanceSubscriber) *Broker {
-	return &Broker{
-		consumer: ws,
-		producer: is,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

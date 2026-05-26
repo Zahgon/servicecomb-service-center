@@ -19,11 +19,7 @@ package kvstore
 
 import (
 	"context"
-	"fmt"
-	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -34,58 +30,21 @@ type CacheIndexer struct {
 }
 
 func (i *CacheIndexer) Search(_ context.Context, opts ...etcdadpt.OpOption) (resp *Response, _ error) {
-	op := etcdadpt.OpGet(opts...)
-	if op.Prefix {
-		resp = i.searchByPrefix(op)
-	} else {
-		resp = i.search(op)
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (i *CacheIndexer) search(op etcdadpt.OpOptions) *Response {
-	resp := new(Response)
-
-	key := util.BytesToStringWithNoCopy(op.Key)
-
-	kv := i.Cache.Get(key)
-	if kv != nil {
-		resp.Count = 1
-	}
-	if kv == nil || op.CountOnly {
-		return resp
-	}
-
-	resp.Kvs = []*KeyValue{kv}
-	return resp
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (i *CacheIndexer) searchByPrefix(op etcdadpt.OpOptions) *Response {
-	resp := new(Response)
-
-	prefix := util.BytesToStringWithNoCopy(op.Key)
-
-	resp.Count = int64(i.Cache.GetPrefix(prefix, nil))
-	if resp.Count == 0 || op.CountOnly {
-		return resp
-	}
-
-	t := time.Now()
-	kvs := make([]*KeyValue, 0, resp.Count)
-	i.Cache.GetPrefix(prefix, &kvs)
-	log.NilOrWarn(t, fmt.Sprintf("too long to index data[%d] from cache '%s'", len(kvs), i.Cache.Name()))
-
-	resp.Kvs = kvs
-	return resp
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Creditable implements pkg.Indexer.Creditable.
-func (i *CacheIndexer) Creditable() bool {
-	return true
-}
+func (i *CacheIndexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
-func NewCacheIndexer(cache CacheReader) *CacheIndexer {
-	return &CacheIndexer{
-		Cache: cache,
-	}
-}
+func NewCacheIndexer(cache CacheReader) *CacheIndexer { _ = "STUB: not implemented"; return nil }

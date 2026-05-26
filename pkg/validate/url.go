@@ -17,25 +17,9 @@
 
 package validate
 
-import (
-	"strings"
-)
-
 // IsRequestURI check if the string is an URL.
-func IsRequestURI(uri string) bool {
-	if uri == "" || len(uri) >= 2048 {
-		return false
-	}
-	if strings.HasSuffix(uri, ";") ||
-		strings.HasSuffix(uri, "&") ||
-		strings.HasSuffix(uri, "?") ||
-		strings.HasSuffix(uri, "+") ||
-		strings.HasSuffix(uri, "@") ||
-		//
-		strings.HasPrefix(uri, ".") ||
-		//
-		strings.Contains(uri, "//") {
-		return false
-	}
-	return true
-}
+func IsRequestURI(uri string) bool { _ = "STUB: not implemented"; return false }
+
+//
+
+//

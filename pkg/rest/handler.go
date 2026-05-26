@@ -19,7 +19,6 @@ package rest
 
 import (
 	"net/http"
-	"net/url"
 )
 
 type urlPatternHandler struct {
@@ -29,32 +28,6 @@ type urlPatternHandler struct {
 }
 
 func (roa *urlPatternHandler) try(path string) (p string, _ bool) {
-	var i, j int
-	l, sl := len(roa.Path), len(path)
-	for i < sl {
-		switch {
-		case j >= l:
-			if roa.Path != "/" && l > 0 && roa.Path[l-1] == '/' {
-				return p, true
-			}
-			return "", false
-		case roa.Path[j] == ':':
-			var val string
-			var nextc byte
-			o := j
-			_, nextc, j = match(roa.Path, isAlnum, 0, j+1)
-			val, _, i = match(path, matchParticipial, nextc, i)
-
-			p += url.QueryEscape(roa.Path[o:j]) + "=" + url.QueryEscape(val) + "&"
-		case path[i] == roa.Path[j]:
-			i++
-			j++
-		default:
-			return "", false
-		}
-	}
-	if j != l {
-		return "", false
-	}
-	return p, true
+	_ = "STUB: not implemented"
+	return "", false
 }

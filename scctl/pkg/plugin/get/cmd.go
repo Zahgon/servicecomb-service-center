@@ -33,15 +33,4 @@ func init() {
 	RootCmd = NewGetCommand(cmd.RootCmd())
 }
 
-func NewGetCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "get <command> [options]",
-		Short: "Output the resources information of service center",
-	}
-	parent.AddCommand(cmd)
-	cmd.PersistentFlags().StringVarP(&Domain, "domain", "d", "default", "print the information under the specified domain in service center")
-	cmd.PersistentFlags().StringVarP(&Output, "output", "o", "", "output the complete microservice information(e.g., framework, endpoints)")
-	cmd.PersistentFlags().BoolVar(&AllDomains, "all-domains", false, "print the information under all domains in service center")
-
-	return cmd
-}
+func NewGetCommand(parent *cobra.Command) *cobra.Command { _ = "STUB: not implemented"; return nil }

@@ -21,6 +21,4 @@ import (
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 )
 
-func Get(t kvstore.Type) State {
-	return Instance().States(t)
-}
+func Get(t kvstore.Type) State { _ = "STUB: not implemented"; return *new(State) }

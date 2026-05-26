@@ -17,18 +17,4 @@
 
 package validator
 
-import (
-	"errors"
-	"reflect"
-)
-
-func baseCheck(v interface{}) error {
-	if v == nil {
-		return errors.New("data is nil")
-	}
-	sv := reflect.ValueOf(v)
-	if sv.Kind() == reflect.Ptr && sv.IsNil() {
-		return errors.New("pointer is nil")
-	}
-	return nil
-}
+func baseCheck(v interface{}) error { _ = "STUB: not implemented"; return nil }

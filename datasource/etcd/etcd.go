@@ -18,23 +18,8 @@
 package etcd
 
 import (
-	"context"
-	"fmt"
-	"sort"
-	"strings"
-	"time"
-
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/event"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
-	tracer "github.com/apache/servicecomb-service-center/datasource/etcd/tracing"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/go-chassis/cari/dlock"
-	"github.com/go-chassis/foundation/gopool"
-	"github.com/little-cui/etcdadpt"
-	"github.com/little-cui/etcdadpt/middleware/tracing"
 )
 
 const compactLockKey = "/etcd-compact"
@@ -61,135 +46,66 @@ type DataSource struct {
 }
 
 func (ds *DataSource) SystemManager() datasource.SystemManager {
-	return ds.sysManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SystemManager)
 }
 
 func (ds *DataSource) DependencyManager() datasource.DependencyManager {
-	return ds.depManager
+	_ = "STUB: not implemented"
+	return *new(datasource.DependencyManager)
 }
 
 func (ds *DataSource) MetadataManager() datasource.MetadataManager {
-	return ds.metadataManager
+	_ = "STUB: not implemented"
+	return *new(datasource.MetadataManager)
 }
 
 func (ds *DataSource) SCManager() datasource.SCManager {
-	return ds.scManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SCManager)
 }
 
 func (ds *DataSource) MetricsManager() datasource.MetricsManager {
-	return ds.metricsManager
+	_ = "STUB: not implemented"
+	return *new(datasource.MetricsManager)
 }
 
 func (ds *DataSource) SyncManager() datasource.SyncManager {
-	return ds.syncManager
+	_ = "STUB: not implemented"
+	return *new(datasource.SyncManager)
 }
 
 func NewDataSource(opts datasource.Options) (datasource.DataSource, error) {
-	log.Warn("data source enable etcd mode")
-
-	inst := &DataSource{
-		Options: &opts,
-	}
-	if err := inst.initialize(); err != nil {
-		return nil, err
-	}
-	inst.metadataManager = &MetadataManager{
-		InstanceTTL: opts.InstanceTTL,
-	}
-	inst.sysManager = &SysManager{}
-	inst.depManager = &DepManager{}
-	inst.scManager = &SCManager{}
-	inst.metricsManager = &MetricsManager{}
-	inst.syncManager = &SyncManager{}
-	return inst, nil
+	_ = "STUB: not implemented"
+	return *new(datasource.DataSource), nil
 }
 
 func (ds *DataSource) initialize() error {
+	_ = "STUB: not implemented"
 	// Wait for kv store ready
-	ds.initKvStore()
-	// Compact
-	ds.autoCompact()
 	return nil
 }
 
-func (ds *DataSource) initClustersIndex() {
-	clusterMap, err := etcdadpt.ListCluster(context.Background())
-	if err != nil {
-		log.Fatal("init clusters index failed", err)
-	}
-	var clusters []string
-	for name := range clusterMap {
-		clusters = append(clusters, name)
-	}
-	sort.Strings(clusters)
-	for i, name := range clusters {
-		clustersIndex[name] = i
-	}
-}
+// Compact
+
+func (ds *DataSource) initClustersIndex() { _ = "STUB: not implemented"; return }
 
 func (ds *DataSource) initPlugins() {
+	_ = "STUB: not implemented"
 	// registry
-	etcdCfg := Configuration()
-	etcdCfg.Kind = ds.Options.Kind
-	etcdCfg.Logger = ds.Options.Logger
-	isHTTPS := strings.Contains(strings.ToLower(etcdCfg.ClusterAddresses), "https://")
-	etcdCfg.SslEnabled = ds.Options.SslEnabled && isHTTPS
-	etcdCfg.TLSConfig = ds.Options.TLSConfig
-	etcdCfg.ConnectedFunc = ds.Options.ConnectedFunc
-	etcdCfg.ErrorFunc = ds.Options.ErrorFunc
-	tracing.Register(tracer.New())
-	err := etcdadpt.Init(etcdCfg)
-	if err != nil {
-		log.Fatal("client init failed", err)
-	}
-	// clusters
-	ds.initClustersIndex()
-
-	// discovery
-	kind := config.GetString("discovery.kind", "etcd", config.WithStandby("discovery_plugin"))
-	err = state.Init(state.Config{
-		Kind:        kind,
-		ClusterName: etcdCfg.ClusterName,
-		Logger:      ds.Options.Logger,
-		EnableCache: ds.Options.EnableCache,
-	})
-	if err != nil {
-		log.Fatal("sd init failed", err)
-	}
+	return
 }
+
+// clusters
+
+// discovery
 
 func (ds *DataSource) initKvStore() {
+	_ = "STUB: not implemented"
 	// init client/sd plugins
-	ds.initPlugins()
-	// Add events handlers
-	event.Initialize()
+	return
 }
 
-func (ds *DataSource) autoCompact() {
-	delta := ds.Options.CompactIndexDelta
-	interval := ds.Options.CompactInterval
-	if delta <= 0 || interval == 0 {
-		return
-	}
-	gopool.Go(func(ctx context.Context) {
-		log.Info(fmt.Sprintf("enabled the automatic compact mechanism, compact once every %s, reserve %d", interval, delta))
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-time.After(interval):
-				if err := dlock.TryLock(compactLockKey, -1); err != nil {
-					log.Error("can not compact backend by this service center instance now", err)
-					continue
-				}
-				err := etcdadpt.Instance().Compact(ctx, delta)
-				if err != nil {
-					log.Error("", err)
-				}
-				if err := dlock.Unlock(compactLockKey); err != nil {
-					log.Error("unlock failed", err)
-				}
-			}
-		}
-	})
-}
+// Add events handlers
+
+func (ds *DataSource) autoCompact() { _ = "STUB: not implemented"; return }

@@ -17,30 +17,13 @@
 
 package event
 
-import "strconv"
-
 type Type int
 
-func (nt Type) String() string {
-	if nt.IsValid() {
-		return typeNames[nt]
-	}
-	return "Type" + strconv.Itoa(int(nt))
-}
+func (nt Type) String() string { _ = "STUB: not implemented"; return "" }
 
-func (nt Type) QueueSize() (s int) {
-	if nt.IsValid() {
-		s = typeQueues[nt]
-	}
-	if s <= 0 {
-		s = DefaultQueueSize
-	}
-	return
-}
+func (nt Type) QueueSize() (s int) { _ = "STUB: not implemented"; return 0 }
 
-func (nt Type) IsValid() bool {
-	return nt >= 0 && int(nt) < len(typeQueues)
-}
+func (nt Type) IsValid() bool { _ = "STUB: not implemented"; return false }
 
 var typeNames = []string{
 	INNER: "INNER",
@@ -50,16 +33,6 @@ var typeQueues = []int{
 	INNER: 0,
 }
 
-func Types() (ts []Type) {
-	for i := range typeNames {
-		ts = append(ts, Type(i))
-	}
-	return
-}
+func Types() (ts []Type) { _ = "STUB: not implemented"; return nil }
 
-func RegisterType(name string, size int) Type {
-	l := len(typeNames)
-	typeNames = append(typeNames, name)
-	typeQueues = append(typeQueues, size)
-	return Type(l)
-}
+func RegisterType(name string, size int) Type { _ = "STUB: not implemented"; return *new(Type) }

@@ -19,111 +19,35 @@ package etcd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/go-chassis/cari/discovery"
-	"github.com/little-cui/etcdadpt"
 )
 
 type MetricsManager struct {
 }
 
 func (m *MetricsManager) Report(ctx context.Context, r datasource.MetricsReporter) error {
-	reportDomains(ctx, r)
-	reportServices(ctx, r)
-	reportSchemas(ctx, r)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func reportDomains(ctx context.Context, r datasource.MetricsReporter) {
-	key := path.GenerateDomainKey("")
-	domainsResp, err := sd.Domain().Search(ctx,
-		etcdadpt.WithCacheOnly(), etcdadpt.WithCountOnly(),
-		etcdadpt.WithStrKey(key),
-		etcdadpt.WithPrefix())
-	if err != nil {
-		log.Error("query all domains failed", err)
-		return
-	}
-	r.DomainAdd(float64(domainsResp.Count))
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportSchemas(ctx context.Context, r datasource.MetricsReporter) {
-	key := path.GetServiceSchemaSummaryRootKey("")
-	schemaKeysResp, err := sd.SchemaSummary().Search(ctx,
-		etcdadpt.WithCacheOnly(), etcdadpt.WithKeyOnly(),
-		etcdadpt.WithStrKey(key),
-		etcdadpt.WithPrefix())
-	if err != nil {
-		log.Error("query all schemas failed", err)
-		return
-	}
-	for _, keyValue := range schemaKeysResp.Kvs {
-		domainProject, _, _ := path.GetInfoFromSchemaSummaryKV(keyValue.Key)
-		domain, project := path.SplitDomainProject(domainProject)
-		labels := datasource.MetricsLabels{
-			Domain:  domain,
-			Project: project,
-		}
-		r.SchemaAdd(1, labels)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportServices(ctx context.Context, r datasource.MetricsReporter) {
-	key := path.GetServiceRootKey("")
-	servicesResp, err := sd.Service().Search(ctx,
-		etcdadpt.WithCacheOnly(),
-		etcdadpt.WithStrKey(key),
-		etcdadpt.WithPrefix())
-	if err != nil {
-		log.Error("query all microservices failed", err)
-		return
-	}
-	for _, keyValue := range servicesResp.Kvs {
-		service := keyValue.Value.(*discovery.MicroService)
-		_, domainProject := path.GetInfoFromSvcKV(keyValue.Key)
-		if datasource.IsGlobal(discovery.MicroServiceToKey(domainProject, service)) {
-			continue
-		}
-		domain, project := path.SplitDomainProject(domainProject)
-		frameworkName, frameworkVersion := discovery.ToFrameworkLabel(service)
-		labels := datasource.MetricsLabels{
-			Domain:           domain,
-			Project:          project,
-			Framework:        frameworkName,
-			FrameworkVersion: frameworkVersion,
-		}
-		r.ServiceAdd(1, labels)
-
-		reportInstances(ctx, r, domainProject, service)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportInstances(ctx context.Context, r datasource.MetricsReporter, domainProject string, service *discovery.MicroService) {
-	instancesResp, err := sd.Instance().Search(ctx,
-		etcdadpt.WithCacheOnly(), etcdadpt.WithCountOnly(),
-		etcdadpt.WithStrKey(path.GenerateInstanceKey(domainProject, service.ServiceId, "")),
-		etcdadpt.WithPrefix())
-	if err != nil {
-		log.Error(fmt.Sprintf("query microservice %s isntances failed", service.ServiceId), err)
-		return
-	}
-	if instancesResp.Count == 0 {
-		return
-	}
-	count := float64(instancesResp.Count)
-	domain, project := path.SplitDomainProject(domainProject)
-	frameworkName, frameworkVersion := discovery.ToFrameworkLabel(service)
-	labels := datasource.MetricsLabels{
-		Domain:           domain,
-		Project:          project,
-		Framework:        frameworkName,
-		FrameworkVersion: frameworkVersion,
-	}
-	r.FrameworkSet(labels)
-	r.InstanceAdd(count, labels)
+	_ = "STUB: not implemented"
+	return
 }

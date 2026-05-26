@@ -18,8 +18,6 @@
 package v3
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/rest"
 	v4 "github.com/apache/servicecomb-service-center/server/rest/controller/v4"
 )
@@ -28,9 +26,4 @@ type DependencyService struct {
 	v4.DependencyService
 }
 
-func (s *DependencyService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:consumerId/providers", Func: s.ListProviders},
-		{Method: http.MethodGet, Path: "/registry/v3/microservices/:providerId/consumers", Func: s.ListConsumers},
-	}
-}
+func (s *DependencyService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }

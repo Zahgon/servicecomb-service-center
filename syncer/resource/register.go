@@ -17,15 +17,8 @@
 
 package resource
 
-import (
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/syncer/resource/admin"
-)
-
 func init() {
 	initRouter()
 }
 
-func initRouter() {
-	rest.RegisterServant(&admin.Resource{})
-}
+func initRouter() { _ = "STUB: not implemented"; return }

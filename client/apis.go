@@ -19,14 +19,10 @@ package client
 
 import (
 	"context"
-	"encoding/json"
-	"io"
-	"net/http"
 
 	"github.com/apache/servicecomb-service-center/pkg/dump"
 	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/version"
-	"github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/pkg/errsvc"
 	"github.com/little-cui/etcdadpt"
 )
@@ -40,123 +36,32 @@ const (
 	QueryGlobal util.CtxKey = "global"
 )
 
-func (c *Client) toError(body []byte) *errsvc.Error {
-	message := new(errsvc.Error)
-	err := json.Unmarshal(body, message)
-	if err != nil {
-		return discovery.NewError(discovery.ErrInternal, util.BytesToStringWithNoCopy(body))
-	}
-	return message
-}
+func (c *Client) toError(body []byte) *errsvc.Error { _ = "STUB: not implemented"; return nil }
 
-func (c *Client) parseQuery(ctx context.Context) (q string) {
-	switch {
-	case ctx.Value(QueryGlobal) == "1":
-		q += "global=true"
-	default:
-		q += "global=false"
-	}
-	return
-}
+func (c *Client) parseQuery(ctx context.Context) (q string) { _ = "STUB: not implemented"; return "" }
 
 func (c *Client) GetScVersion(ctx context.Context) (*version.Set, *errsvc.Error) {
-	resp, err := c.RestDoWithContext(ctx, http.MethodGet, apiVersionURL, c.CommonHeaders(ctx), nil)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, c.toError(body)
-	}
-
-	v := &version.Set{}
-	err = json.Unmarshal(body, v)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	return v, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *Client) GetScCache(ctx context.Context) (*dump.Cache, *errsvc.Error) {
-	headers := c.CommonHeaders(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
+
 	// only default domain has admin permission
-	headers.Set("X-Domain-Name", "default")
-	resp, err := c.RestDoWithContext(ctx, http.MethodGet, apiDumpURL, headers, nil)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, c.toError(body)
-	}
-
-	dump := &dump.Response{}
-	err = json.Unmarshal(body, dump)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	return dump.Cache, nil
 }
 
 func (c *Client) GetClusters(ctx context.Context) (etcdadpt.Clusters, *errsvc.Error) {
-	headers := c.CommonHeaders(ctx)
-	// only default domain has admin permission
-	headers.Set("X-Domain-Name", "default")
-	resp, err := c.RestDoWithContext(ctx, http.MethodGet, apiClustersURL, headers, nil)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, c.toError(body)
-	}
-
-	clusters := &dump.ClustersResponse{}
-	err = json.Unmarshal(body, clusters)
-	if err != nil {
-		return nil, discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	return clusters.Clusters, nil
+	_ = "STUB: not implemented"
+	return *new(etcdadpt.Clusters), nil
 }
+
+// only default domain has admin permission
 
 func (c *Client) HealthCheck(ctx context.Context) *errsvc.Error {
-	headers := c.CommonHeaders(ctx)
-	// only default domain has admin permission
-	headers.Set("X-Domain-Name", "default")
-	resp, err := c.RestDoWithContext(ctx, http.MethodGet, apiHealthURL, headers, nil)
-	if err != nil {
-		return discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return c.toError(body)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// only default domain has admin permission

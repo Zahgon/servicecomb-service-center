@@ -19,9 +19,6 @@ package app
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
 
 	"github.com/apache/servicecomb-service-center/istio/pkg/bootstrap"
 
@@ -33,64 +30,27 @@ var inputArgs *bootstrap.Args
 var loggingOptions = log.DefaultOptions()
 
 // NewRootCommand creates servicecomb-service-center-istio service cli args
-func NewRootCommand() *cobra.Command {
-	rootCmd := &cobra.Command{
-		Use:   "servicecenter-to-istio",
-		Short: "sc2mesh",
-		Long:  "sc2mesh synchronizes data from servicecomb service center to Istio",
-		Args:  cobra.ExactArgs(0),
-		PreRunE: func(c *cobra.Command, args []string) error {
-			if err := log.Configure(loggingOptions); err != nil {
-				return err
-			}
-			return nil
-		},
-		RunE: func(c *cobra.Command, args []string) error {
-			// Create the stop channel for all of the servers.
-			// ctx, cancelFunc := context.WithCancel(context.Background())
-			ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
-			defer stop()
-			// defer cancelFunc()
-			// Create the server for the servicecomb-service-center-istio service.
-			server, err := bootstrap.NewServer(inputArgs)
-			if err != nil {
-				return fmt.Errorf("failed to create servicecomb-service-center-istio service: %v", err)
-			}
+func NewRootCommand() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-			// Start the server
-			if err := server.Start(ctx, inputArgs); err != nil {
-				return fmt.Errorf("failed to start servicecomb-service-center-istio service: %v", err)
-			}
+// Create the stop channel for all of the servers.
+// ctx, cancelFunc := context.WithCancel(context.Background())
 
-			waitSignal(ctx)
+// defer cancelFunc()
+// Create the server for the servicecomb-service-center-istio service.
 
-			return nil
-		},
-	}
-	addFlags(rootCmd)
-
-	return rootCmd
-}
+// Start the server
 
 // WaitSignal awaits for SIGINT or SIGTERM and closes the channel
-func waitSignal(ctx context.Context) {
-	<-ctx.Done()
-	_ = log.Sync()
-}
+func waitSignal(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-func addFlags(c *cobra.Command) {
-	inputArgs = &bootstrap.Args{}
+func addFlags(c *cobra.Command) { _ = "STUB: not implemented"; return }
 
-	// Process commandline args.
+// Process commandline args.
 
-	// sc-addr is the service center registry centre address
-	c.PersistentFlags().StringVar(&inputArgs.ServiceCenterAddr, "sc-addr", "localhost:30100",
-		"servicecomb service center host ip address")
-	// enable leader-election or not
-	c.PersistentFlags().BoolVar(&inputArgs.HA, "ha", false,
-		"enable k8s leader election or not for high avalibility")
-	// kubectl config file path, if not set, will use in cluster kube config
-	c.PersistentFlags().StringVar(&inputArgs.Kubeconfig, "kube-config", "", "service discovery kube config file")
-	// Attach the Istio logging options to the command.
-	loggingOptions.AttachCobraFlags(c)
-}
+// sc-addr is the service center registry centre address
+
+// enable leader-election or not
+
+// kubectl config file path, if not set, will use in cluster kube config
+
+// Attach the Istio logging options to the command.

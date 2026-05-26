@@ -27,8 +27,4 @@ type Set struct {
 	EventServiceClient v1sync.EventServiceClient
 }
 
-func NewSet(conn *grpc.ClientConn) *Set {
-	return &Set{
-		EventServiceClient: v1sync.NewEventServiceClient(conn),
-	}
-}
+func NewSet(conn *grpc.ClientConn) *Set { _ = "STUB: not implemented"; return nil }

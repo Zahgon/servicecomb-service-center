@@ -19,12 +19,8 @@ package cache
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/pkg/cache"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 // ConsistencyFilter improves consistency.
@@ -34,12 +30,8 @@ type ConsistencyFilter struct {
 }
 
 func (f *ConsistencyFilter) Name(ctx context.Context, parent *cache.Node) string {
-	item := parent.Cache.Get(FindResult).(*VersionRuleCacheItem)
-	requestRev := ctx.Value(CtxRequestRev).(string)
-	if len(requestRev) == 0 || requestRev == item.Rev {
-		return ""
-	}
-	return requestRev
+	_ = "STUB: not implemented"
+	return ""
 }
 
 // Init generates cache.
@@ -50,38 +42,11 @@ func (f *ConsistencyFilter) Name(ctx context.Context, parent *cache.Node) string
 // It's impossible to guarantee consistency if the backend is not creditable,
 // thus in this condition RevisionFilter uses cache only.
 func (f *ConsistencyFilter) Init(ctx context.Context, parent *cache.Node) (node *cache.Node, err error) {
-	pCache := parent.Cache.Get(FindResult).(*VersionRuleCacheItem)
-	requestRev := ctx.Value(CtxRequestRev).(string)
-	// do not need to check consistency between sc instances:
-	// 1. request without rev param
-	// 2. request rev is the same as cache current sc instance
-	// 3. datasource has no cache indexer
-	if len(requestRev) == 0 || requestRev == pCache.Rev ||
-		!(sd.Instance().Creditable()) {
-		node = cache.NewNode()
-		node.Cache.Set(FindResult, pCache)
-		return
-	}
-
-	if pCache.BrokenWait() {
-		node = cache.NewNode()
-		node.Cache.Set(FindResult, pCache)
-		return
-	}
-
-	cloneCtx := util.WithNoCache(util.CloneContext(ctx))
-	insts, rev, err := f.Find(cloneCtx, parent)
-	if err != nil {
-		pCache.InitBrokenQueue()
-		return nil, err
-	}
-
-	log.Warn(fmt.Sprintf("inconsistent rev! %s, req[%s], cache[%s], datasource[%s]",
-		parent.Name, requestRev, pCache.Rev, rev))
-	pCache.Instances, pCache.Rev = insts, rev
-	pCache.Broken()
-
-	node = cache.NewNode()
-	node.Cache.Set(FindResult, pCache)
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// do not need to check consistency between sc instances:
+// 1. request without rev param
+// 2. request rev is the same as cache current sc instance
+// 3. datasource has no cache indexer

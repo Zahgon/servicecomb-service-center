@@ -19,11 +19,8 @@ package etcd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/datasource/sdcommon"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -35,83 +32,27 @@ type innerListWatch struct {
 }
 
 func (lw *innerListWatch) List(op sdcommon.ListWatchConfig) (*sdcommon.ListWatchResp, error) {
-	otCtx, cancel := context.WithTimeout(op.Context, op.Timeout)
-	defer cancel()
-	resp, err := lw.Client.Do(otCtx, etcdadpt.WatchPrefixOpOptions(lw.Prefix)...)
-	if err != nil {
-		log.Error(fmt.Sprintf("list prefix %s failed, current rev: %d", lw.Prefix, lw.Revision()), err)
-		return nil, err
-	}
-	lw.setRevision(resp.Revision)
-
-	lwRsp := lw.doParsePluginRspToLwRsp(resp)
-
-	return lwRsp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (lw *innerListWatch) Revision() int64 {
-	return lw.rev
-}
+func (lw *innerListWatch) Revision() int64 { _ = "STUB: not implemented"; return 0 }
 
-func (lw *innerListWatch) setRevision(rev int64) {
-	lw.rev = rev
-}
+func (lw *innerListWatch) setRevision(rev int64) { _ = "STUB: not implemented"; return }
 
 func (lw *innerListWatch) EventBus(op sdcommon.ListWatchConfig) *sdcommon.EventBus {
-	return sdcommon.NewEventBus(lw, op)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (lw *innerListWatch) DoWatch(ctx context.Context, f func(*sdcommon.ListWatchResp)) error {
-	rev := lw.Revision()
-	opts := append(
-		etcdadpt.WatchPrefixOpOptions(lw.Prefix),
-		etcdadpt.WithRev(rev+1),
-		etcdadpt.WithWatchCallback(
-			func(message string, resp *etcdadpt.Response) error {
-				if resp == nil || len(resp.Kvs) == 0 {
-					return fmt.Errorf("unknown event %s, watch prefix %s", resp, lw.Prefix)
-				}
-
-				lw.setRevision(resp.Revision)
-
-				lwRsp := lw.doParsePluginRspToLwRsp(resp)
-				switch resp.Action {
-				case etcdadpt.ActionPut:
-					lwRsp.Action = sdcommon.ActionPUT
-				case etcdadpt.ActionDelete:
-					lwRsp.Action = sdcommon.ActionDelete
-				default:
-					log.Warn(fmt.Sprintf("unrecognized action::%s", lwRsp.Action))
-				}
-
-				f(lwRsp)
-				return nil
-			}))
-
-	err := lw.Client.Watch(ctx, opts...)
-	if err != nil { // compact可能会导致watch失败 or message body size lager than 4MB
-		log.Error(fmt.Sprintf("watch prefix %s failed, start rev: %d+1->%d->0", lw.Prefix, rev, lw.Revision()), err)
-
-		lw.setRevision(0)
-		f(nil)
-	}
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// compact可能会导致watch失败 or message body size lager than 4MB
+
 func (lw *innerListWatch) doParsePluginRspToLwRsp(pluginRsp *etcdadpt.Response) *sdcommon.ListWatchResp {
-	lwRsp := &sdcommon.ListWatchResp{}
-
-	lwRsp.Revision = pluginRsp.Revision
-
-	for _, kv := range pluginRsp.Kvs {
-		resource := sdcommon.Resource{}
-		resource.Key = util.BytesToStringWithNoCopy(kv.Key)
-		resource.ModRevision = kv.ModRevision
-		resource.CreateRevision = kv.CreateRevision
-		resource.Version = kv.Version
-		resource.Value = kv.Value
-
-		lwRsp.Resources = append(lwRsp.Resources, &resource)
-	}
-	return lwRsp
+	_ = "STUB: not implemented"
+	return nil
 }

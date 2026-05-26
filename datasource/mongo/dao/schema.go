@@ -20,72 +20,35 @@ package dao
 import (
 	"context"
 
-	"github.com/go-chassis/cari/db/mongo"
 	"github.com/go-chassis/cari/discovery"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/util"
 )
 
 func GetSchema(ctx context.Context, filter interface{}) (*model.Schema, error) {
-	result := mongo.GetClient().GetDB().Collection(model.CollectionSchema).FindOne(ctx, filter)
-	if result.Err() != nil {
-		//not get any service,not db err
-		return nil, nil
-	}
-	var schema *model.Schema
-	err := result.Decode(&schema)
-	if err != nil {
-		return nil, err
-	}
-	return schema, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+//not get any service,not db err
+
 func GetSchemas(ctx context.Context, filter interface{}) ([]*discovery.Schema, error) {
-	getRes, err := mongo.GetClient().GetDB().Collection(model.CollectionSchema).Find(ctx, filter)
-	if err != nil {
-		return nil, err
-	}
-	var schemas []*discovery.Schema
-	for getRes.Next(ctx) {
-		var tmp *model.Schema
-		err = getRes.Decode(&tmp)
-		if err != nil {
-			return nil, err
-		}
-		schemas = append(schemas, &discovery.Schema{
-			SchemaId: tmp.SchemaID,
-			Summary:  tmp.SchemaSummary,
-			Schema:   tmp.Schema,
-		})
-	}
-	return schemas, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func SchemaSummaryExist(ctx context.Context, serviceID, schemaID string) (bool, error) {
-	filter := util.NewBasicFilter(ctx, util.ServiceID(serviceID), util.SchemaID(schemaID))
-	res := mongo.GetClient().GetDB().Collection(model.CollectionSchema).FindOne(ctx, filter)
-	if res.Err() != nil {
-		return false, nil
-	}
-	var s model.Schema
-	err := res.Decode(&s)
-	if err != nil {
-		return false, err
-	}
-	return len(s.SchemaSummary) != 0, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func CountSchema(ctx context.Context, serviceID string) (int64, error) {
-	filter := util.NewBasicFilter(ctx, util.ServiceID(serviceID))
-	return mongo.GetClient().GetDB().Collection(model.CollectionSchema).CountDocuments(ctx, filter)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func UpdateSchema(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) error {
-	_, err := mongo.GetClient().GetDB().Collection(model.CollectionSchema).UpdateOne(ctx, filter, update, opts...)
-	if err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

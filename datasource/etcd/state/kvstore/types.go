@@ -18,15 +18,8 @@
 package kvstore
 
 import (
-	"encoding/json"
-	"fmt"
-	"strconv"
-	"time"
-
 	simple "github.com/apache/servicecomb-service-center/pkg/time"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/go-chassis/cari/discovery"
-	"github.com/little-cui/etcdadpt"
 )
 
 var (
@@ -40,26 +33,11 @@ const (
 
 type Type int
 
-func (st Type) String() string {
-	if int(st) < 0 {
-		return "TypeError"
-	}
-	if int(st) < len(typeNames) {
-		return typeNames[st]
-	}
-	return "TYPE" + strconv.Itoa(int(st))
-}
+func (st Type) String() string { _ = "STUB: not implemented"; return "" }
 
 func RegisterType(name string) (newID Type, err error) {
-	for _, n := range Types {
-		if n.String() == name {
-			return TypeError, fmt.Errorf("redeclare store type '%s'", n)
-		}
-	}
-	newID = Type(len(Types))
-	Types = append(Types, newID)
-	typeNames = append(typeNames, name)
-	return
+	_ = "STUB: not implemented"
+	return *new(Type), nil
 }
 
 type KeyValue struct {
@@ -71,15 +49,9 @@ type KeyValue struct {
 	ClusterName    string
 }
 
-func (kv *KeyValue) String() string {
-	b, _ := json.Marshal(kv.Value)
-	return fmt.Sprintf("{key: '%s', value: %s, version: %d, cluster: '%s'}",
-		util.BytesToStringWithNoCopy(kv.Key), util.BytesToStringWithNoCopy(b), kv.Version, kv.ClusterName)
-}
+func (kv *KeyValue) String() string { _ = "STUB: not implemented"; return "" }
 
-func NewKeyValue() *KeyValue {
-	return &KeyValue{ClusterName: etcdadpt.DefaultClusterName}
-}
+func NewKeyValue() *KeyValue { _ = "STUB: not implemented"; return nil }
 
 type Response struct {
 	Kvs   []*KeyValue
@@ -101,5 +73,6 @@ type EventHandler interface {
 }
 
 func NewEvent(action discovery.EventType, kv *KeyValue, rev int64) Event {
-	return Event{Type: action, KV: kv, Revision: rev, CreateAt: simple.FromTime(time.Now())}
+	_ = "STUB: not implemented"
+	return *new(Event)
 }

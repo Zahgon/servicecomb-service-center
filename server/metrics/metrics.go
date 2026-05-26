@@ -17,30 +17,4 @@
 
 package metrics
 
-import (
-	metricsvc "github.com/apache/servicecomb-service-center/pkg/metrics"
-	"github.com/go-chassis/go-chassis/v2/pkg/metrics"
-)
-
-func Init(options Options) error {
-	if err := metrics.Init(); err != nil {
-		return err
-	}
-	if err := metricsvc.Init(metricsvc.Options{
-		Interval:     options.Interval,
-		InstanceName: options.Instance,
-		SysMetrics: []string{
-			"process_resident_memory_bytes",
-			"process_cpu_seconds_total",
-			"go_threads",
-			"go_goroutines",
-		},
-	}); err != nil {
-		return err
-	}
-
-	if err := InitMetaMetrics(); err != nil {
-		return err
-	}
-	return nil
-}
+func Init(options Options) error { _ = "STUB: not implemented"; return nil }

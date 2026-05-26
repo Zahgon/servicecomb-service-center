@@ -19,13 +19,8 @@ package core
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/apache/servicecomb-service-center/version"
 	"github.com/go-chassis/cari/discovery"
 )
 
@@ -44,111 +39,31 @@ const (
 	CtxScSelf util.CtxKey = "_sc_self"
 )
 
-func InitRegistration() {
-	Service = &discovery.MicroService{
-		Environment: discovery.ENV_PROD,
-		AppId:       datasource.RegistryAppID,
-		ServiceName: RegistryServiceName,
-		Alias:       RegistryServiceAlias,
-		Version:     version.Ver().Version,
-		Status:      discovery.MS_UP,
-		Level:       "BACK",
-		Properties: map[string]string{
-			discovery.PropAllowCrossApp: "true",
-		},
-	}
-	if config.GetProfile().IsDev() {
-		Service.Environment = discovery.ENV_DEV
-	}
+func InitRegistration() { _ = "STUB: not implemented"; return }
 
-	Instance = &discovery.MicroServiceInstance{
-		Status:    discovery.MSI_UP,
-		HostName:  util.HostName(),
-		Endpoints: getEndpoints(),
-		HealthCheck: &discovery.HealthCheck{
-			Mode:     discovery.CHECK_BY_HEARTBEAT,
-			Interval: RegistryDefaultLeaseRenewalInterval,
-			Times:    RegistryDefaultLeaseRetryTimes,
-		},
-	}
+func getEndpoints() []string { _ = "STUB: not implemented"; return nil }
 
-	name := config.GetString("registry.instance.datacenter.name", "")
-	region := config.GetString("registry.instance.datacenter.region", "")
-	availableZone := config.GetString("registry.instance.datacenter.availableZone", "")
-	if len(name) > 0 && len(region) > 0 && len(availableZone) > 0 {
-		Instance.DataCenterInfo = &discovery.DataCenterInfo{
-			Name:          name,
-			Region:        region,
-			AvailableZone: availableZone,
-		}
-	}
-}
+func RegisterGlobalServices() { _ = "STUB: not implemented"; return }
 
-func getEndpoints() []string {
-	hostPort := config.GetString("registry.instance.endpoint",
-		config.GetString("server.host", "127.0.0.1", config.WithStandby("httpaddr")))
-	if strings.LastIndex(hostPort, ":") < 0 {
-		hostPort += ":" + config.GetString("server.port", "30100", config.WithStandby("httpport"))
-	}
-	endpoint := fmt.Sprintf("rest://%s/", hostPort)
-	if config.GetSSL().SslEnabled {
-		endpoint += "?sslEnabled=true"
-	}
-	return []string{endpoint}
-}
+func IsSCInstance(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
-func RegisterGlobalServices() {
-	for _, s := range strings.Split(config.GetRegistry().GlobalVisible, ",") {
-		if len(s) > 0 {
-			datasource.RegisterGlobalService(s)
-		}
-	}
-	datasource.RegisterGlobalService(Service.ServiceName)
-}
-
-func IsSCInstance(ctx context.Context) bool {
-	b, _ := ctx.Value(CtxScSelf).(bool)
-	return b
-}
-
-func GetExistenceRequest() *discovery.GetExistenceRequest {
-	return &discovery.GetExistenceRequest{
-		Type:        discovery.ExistenceMicroservice,
-		Environment: Service.Environment,
-		AppId:       Service.AppId,
-		ServiceName: Service.ServiceName,
-		Version:     Service.Version,
-	}
-}
+func GetExistenceRequest() *discovery.GetExistenceRequest { _ = "STUB: not implemented"; return nil }
 
 func GetServiceRequest(serviceID string) *discovery.GetServiceRequest {
-	return &discovery.GetServiceRequest{
-		ServiceId: serviceID,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func CreateServiceRequest() *discovery.CreateServiceRequest {
-	return &discovery.CreateServiceRequest{
-		Service: Service,
-	}
-}
+func CreateServiceRequest() *discovery.CreateServiceRequest { _ = "STUB: not implemented"; return nil }
 
 func RegisterInstanceRequest() *discovery.RegisterInstanceRequest {
-	return &discovery.RegisterInstanceRequest{
-		Instance: Instance,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func UnregisterInstanceRequest() *discovery.UnregisterInstanceRequest {
-	return &discovery.UnregisterInstanceRequest{
-		ServiceId:  Instance.ServiceId,
-		InstanceId: Instance.InstanceId,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func HeartbeatRequest() *discovery.HeartbeatRequest {
-	return &discovery.HeartbeatRequest{
-		ServiceId:  Instance.ServiceId,
-		InstanceId: Instance.InstanceId,
-	}
-}
+func HeartbeatRequest() *discovery.HeartbeatRequest { _ = "STUB: not implemented"; return nil }

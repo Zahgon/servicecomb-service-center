@@ -20,40 +20,20 @@ package pubsub
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	pb "github.com/go-chassis/cari/discovery"
 	"github.com/gorilla/websocket"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/pubsub/ws"
 )
 
 var ErrRequiredServiceID = errors.New("required the serviceID")
 
 // Watch listen the provider instance events by serviceID
 func Watch(ctx context.Context, in *pb.WatchInstanceRequest, conn *websocket.Conn) {
-	log.Info(fmt.Sprintf("new a web socket watch with service[%s]", in.SelfServiceId))
-	if err := ExistService(ctx, in.SelfServiceId); err != nil {
-		ws.SendEstablishError(conn, err)
-		return
-	}
-	ws.Watch(ctx, in.SelfServiceId, conn)
+	_ = "STUB: not implemented"
+	return
 }
+
 func ExistService(ctx context.Context, selfServiceID string) error {
-	if len(selfServiceID) == 0 {
-		return ErrRequiredServiceID
-	}
-	resp, err := datasource.GetMetadataManager().ExistServiceByID(ctx, &pb.GetExistenceByIDRequest{
-		ServiceId: selfServiceID,
-	})
-	if err != nil {
-		log.Error("", err)
-		return err
-	}
-	if !resp.Exist {
-		return datasource.ErrServiceNotExists
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

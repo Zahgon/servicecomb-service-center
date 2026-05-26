@@ -36,32 +36,14 @@ type Config struct {
 	RedirectStdLog bool
 }
 
-func (cfg Config) WithCallerSkip(s int) Config {
-	cfg.CallerSkip = s
-	return cfg
-}
+func (cfg Config) WithCallerSkip(s int) Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func (cfg Config) WithFile(path string) Config {
-	cfg.LoggerFile = path
-	return cfg
-}
+func (cfg Config) WithFile(path string) Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func (cfg Config) WithNoTime(b bool) Config {
-	cfg.NoTime = b
-	return cfg
-}
+func (cfg Config) WithNoTime(b bool) Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func (cfg Config) WithNoLevel(b bool) Config {
-	cfg.NoLevel = b
-	return cfg
-}
+func (cfg Config) WithNoLevel(b bool) Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func (cfg Config) WithReplaceGlobals(b bool) Config {
-	cfg.ReplaceGlobals = b
-	return cfg
-}
+func (cfg Config) WithReplaceGlobals(b bool) Config { _ = "STUB: not implemented"; return *new(Config) }
 
-func (cfg Config) WithRedirectStdLog(b bool) Config {
-	cfg.RedirectStdLog = b
-	return cfg
-}
+func (cfg Config) WithRedirectStdLog(b bool) Config { _ = "STUB: not implemented"; return *new(Config) }

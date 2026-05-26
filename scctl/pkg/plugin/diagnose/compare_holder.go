@@ -18,14 +18,8 @@
 package diagnose
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/parser"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/value"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	pb "github.com/go-chassis/cari/discovery"
-	"github.com/go-chassis/foundation/gopool"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 )
 
@@ -38,14 +32,7 @@ type DataStore struct {
 	DataParser parser.Parser
 }
 
-func (d *DataStore) ForEach(f func(i int, v *dump.KV) bool) {
-	for i, kv := range d.Data {
-		obj, _ := d.DataParser.Unmarshal(kv.Value)
-		if !f(i, &dump.KV{Key: string(kv.Key), Rev: kv.ModRevision, Value: obj}) {
-			return
-		}
-	}
-}
+func (d *DataStore) ForEach(f func(i int, v *dump.KV) bool) { _ = "STUB: not implemented"; return }
 
 type CompareResult struct {
 	Name    string
@@ -59,76 +46,15 @@ type abstractCompareHolder struct {
 }
 
 func (h *abstractCompareHolder) toMap(getter dump.Getter) map[string]*dump.KV {
-	m := make(map[string]*dump.KV)
-	getter.ForEach(func(i int, v *dump.KV) bool {
-		m[v.Key] = v
-		return true
-	})
-	return m
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (h *abstractCompareHolder) Compare() *CompareResult {
-	result := &CompareResult{
-		Results: make(map[int][]string),
-	}
-	leftCh := make(chan map[string]*dump.KV, 2)
-	rightCh := make(chan map[string]*dump.KV, 2)
+func (h *abstractCompareHolder) Compare() *CompareResult { _ = "STUB: not implemented"; return nil }
 
-	var (
-		add    []string
-		update []string
-		del    []string
-	)
+// add or update
 
-	gopool.New(gopool.Configure().Workers(5)).
-		Do(func(_ context.Context) {
-			left := h.toMap(h.Cache)
-			leftCh <- left
-			leftCh <- left
-		}).
-		Do(func(_ context.Context) {
-			right := h.toMap(h.DataStore)
-			rightCh <- right
-			rightCh <- right
-		}).
-		Do(func(_ context.Context) {
-			left := <-leftCh
-			right := <-rightCh
-			// add or update
-			for lk, lkv := range left {
-				rkv, ok := right[lk]
-				if !ok {
-					add = append(add, h.MismatchFunc(lkv))
-					continue
-				}
-				if rkv.Rev != lkv.Rev {
-					update = append(update, h.MismatchFunc(lkv))
-				}
-			}
-		}).
-		Do(func(_ context.Context) {
-			left := <-leftCh
-			right := <-rightCh
-			// delete
-			for rk, rkv := range right {
-				if _, ok := left[rk]; !ok {
-					del = append(del, h.MismatchFunc(rkv))
-				}
-			}
-		}).
-		Done()
-
-	if len(add) > 0 {
-		result.Results[greater] = add
-	}
-	if len(update) > 0 {
-		result.Results[mismatch] = update
-	}
-	if len(del) > 0 {
-		result.Results[less] = del
-	}
-	return result
-}
+// delete
 
 type ServiceCompareHolder struct {
 	*abstractCompareHolder
@@ -136,21 +62,9 @@ type ServiceCompareHolder struct {
 	Kvs   []*mvccpb.KeyValue
 }
 
-func (h *ServiceCompareHolder) Compare() *CompareResult {
-	h.abstractCompareHolder = &abstractCompareHolder{
-		Cache: &h.Cache, DataStore: &DataStore{Data: h.Kvs, DataParser: value.ServiceParser}, MismatchFunc: h.toName,
-	}
-	r := h.abstractCompareHolder.Compare()
-	r.Name = service
-	return r
-}
-func (h *ServiceCompareHolder) toName(kv *dump.KV) string {
-	s, ok := kv.Value.(*pb.MicroService)
-	if !ok {
-		return "unknown"
-	}
-	return fmt.Sprintf("%s/%s/%s(%s)", s.AppId, s.ServiceName, s.Version, s.ServiceId)
-}
+func (h *ServiceCompareHolder) Compare() *CompareResult { _ = "STUB: not implemented"; return nil }
+
+func (h *ServiceCompareHolder) toName(kv *dump.KV) string { _ = "STUB: not implemented"; return "" }
 
 type InstanceCompareHolder struct {
 	*abstractCompareHolder
@@ -158,18 +72,6 @@ type InstanceCompareHolder struct {
 	Kvs   []*mvccpb.KeyValue
 }
 
-func (h *InstanceCompareHolder) Compare() *CompareResult {
-	h.abstractCompareHolder = &abstractCompareHolder{
-		Cache: &h.Cache, DataStore: &DataStore{Data: h.Kvs, DataParser: value.InstanceParser}, MismatchFunc: h.toName,
-	}
-	r := h.abstractCompareHolder.Compare()
-	r.Name = instance
-	return r
-}
-func (h *InstanceCompareHolder) toName(kv *dump.KV) string {
-	s, ok := kv.Value.(*pb.MicroServiceInstance)
-	if !ok {
-		return "unknown"
-	}
-	return fmt.Sprintf("%v(%s/%s)", s.Endpoints, s.ServiceId, s.InstanceId)
-}
+func (h *InstanceCompareHolder) Compare() *CompareResult { _ = "STUB: not implemented"; return nil }
+
+func (h *InstanceCompareHolder) toName(kv *dump.KV) string { _ = "STUB: not implemented"; return "" }

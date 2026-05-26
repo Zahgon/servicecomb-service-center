@@ -18,12 +18,7 @@
 package cluster
 
 import (
-	"context"
-
-	"github.com/apache/servicecomb-service-center/client"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/plugin/get"
-	"github.com/apache/servicecomb-service-center/scctl/pkg/writer"
 	"github.com/spf13/cobra"
 )
 
@@ -31,33 +26,6 @@ func init() {
 	NewClusterCommand(get.RootCmd)
 }
 
-func NewClusterCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "cluster [options]",
-		Short: "Output the registry clusters managed by service center",
-		Run:   CommandFunc,
-	}
+func NewClusterCommand(parent *cobra.Command) *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-	parent.AddCommand(cmd)
-	return cmd
-}
-
-func CommandFunc(_ *cobra.Command, _ []string) {
-	scClient, err := client.NewSCClient(cmd.ScClientConfig)
-	if err != nil {
-		cmd.StopAndExit(cmd.ExitError, err)
-	}
-	clusters, scErr := scClient.GetClusters(context.Background())
-	if scErr != nil {
-		cmd.StopAndExit(cmd.ExitError, scErr)
-	}
-	records := make(map[string]*Record)
-	for name, endpoints := range clusters {
-		records[name] = &Record{
-			Name: name, Endpoints: endpoints,
-		}
-	}
-	sp := &ClustersPrinter{Records: records}
-	sp.SetOutputFormat(get.Output, get.AllDomains)
-	writer.PrintTable(sp)
-}
+func CommandFunc(_ *cobra.Command, _ []string) { _ = "STUB: not implemented"; return }

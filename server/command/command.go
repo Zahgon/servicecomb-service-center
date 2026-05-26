@@ -17,21 +17,5 @@
 
 package command
 
-import (
-	"github.com/apache/servicecomb-service-center/version"
-	"github.com/urfave/cli"
-)
-
 // ParseConfig from cli
-func ParseConfig(args []string) (err error) {
-	app := cli.NewApp()
-	app.Version = version.VERSION
-	app.Usage = "servicecomb service center cmd line."
-	app.Name = "servicecomb service center"
-	app.Action = func(c *cli.Context) error {
-		return nil
-	}
-
-	err = app.Run(args)
-	return
-}
+func ParseConfig(args []string) (err error) { _ = "STUB: not implemented"; return nil }

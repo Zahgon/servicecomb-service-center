@@ -18,42 +18,19 @@
 package state
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 var plugins = make(map[kvstore.Type]Plugin)
 
-func Plugins() map[kvstore.Type]Plugin {
-	return plugins
-}
+func Plugins() map[kvstore.Type]Plugin { _ = "STUB: not implemented"; return nil }
 
 func Register(p Plugin) (id kvstore.Type, err error) {
-	if p == nil || len(p.Name()) == 0 || p.Config() == nil {
-		return kvstore.TypeError, errors.New("invalid parameter")
-	}
-
-	id, err = kvstore.RegisterType(p.Name())
-	if err != nil {
-		return
-	}
-
-	plugins[id] = p
-
-	log.Info(fmt.Sprintf("install new type %d:%s->%s", id, p.Name(), p.Config().Key))
-	return
+	_ = "STUB: not implemented"
+	return *new(kvstore.Type), nil
 }
 
 func MustRegister(name string, prefix string, opts ...Option) kvstore.Type {
-	opts = append(opts, WithPrefix(prefix))
-	options := ToOptions(opts...)
-
-	id, err := Register(NewPlugin(name, &options))
-	if err != nil {
-		panic(err)
-	}
-	return id
+	_ = "STUB: not implemented"
+	return *new(kvstore.Type)
 }

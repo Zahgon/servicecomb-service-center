@@ -19,90 +19,33 @@ package rbac
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/privacy"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/service/validator"
-	"github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/rbac"
 )
 
 func ChangePassword(ctx context.Context, a *rbac.Account) error {
-	err := validator.ValidateChangePWD(a)
-	if err != nil {
-		return discovery.NewError(discovery.ErrInvalidParams, err.Error())
-	}
-
-	changer, err := AccountFromContext(ctx)
-	if err != nil {
-		return discovery.NewError(discovery.ErrInternal, err.Error())
-	}
-
-	// change self password, need to check password mismatch
-	if changer.Name == a.Name {
-		return changePassword(ctx, a.Name, a.CurrentPassword, a.Password)
-	}
-
-	// change other user's password, only admin role can do this and no need
-	// supply current password
-	for _, r := range changer.Roles {
-		if r == rbac.RoleAdmin {
-			return changePasswordForcibly(ctx, a.Name, a.Password)
-		}
-	}
-
-	// other cases, change password is forbidden
-	return discovery.NewError(discovery.ErrForbidden, ErrNoPermChangeAccount.Error())
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// change self password, need to check password mismatch
+
+// change other user's password, only admin role can do this and no need
+// supply current password
+
+// other cases, change password is forbidden
 
 func changePasswordForcibly(ctx context.Context, name, pwd string) error {
-	old, err := GetAccount(ctx, name)
-	if err != nil {
-		log.Error("can not change pwd", err)
-		return err
-	}
-	return doChangePassword(ctx, old, pwd)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func changePassword(ctx context.Context, name, currentPassword, pwd string) error {
-	if currentPassword == "" {
-		log.Error("current pwd is empty", nil)
-		return discovery.NewError(discovery.ErrInvalidParams, ErrEmptyCurrentPassword.Error())
-	}
-	ip := util.GetIPFromContext(ctx)
-	if IsBanned(MakeBanKey(name, ip)) {
-		log.Warn(fmt.Sprintf("ip [%s] is banned, account: %s", ip, name))
-		return ErrAccountBlocked
-	}
-	if currentPassword == pwd {
-		return rbac.NewError(rbac.ErrNewPwdBad, ErrSamePassword.Error())
-	}
-	old, err := GetAccount(ctx, name)
-	if err != nil {
-		log.Error("can not change pwd", err)
-		return err
-	}
-	same := privacy.SamePassword(old.Password, currentPassword)
-	if !same {
-		log.Error("current password is wrong", nil)
-		TryLockAccount(MakeBanKey(name, ip))
-		return ErrOldPwdWrong
-	}
-	return doChangePassword(ctx, old, pwd)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func doChangePassword(ctx context.Context, old *rbac.Account, pwd string) error {
-	var err error
-	old.Password, err = privacy.ScryptPassword(pwd)
-	if err != nil {
-		log.Error("encrypt password failed", err)
-		return err
-	}
-	err = EditAccount(ctx, old)
-	if err != nil {
-		log.Error("can not change pwd", err)
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

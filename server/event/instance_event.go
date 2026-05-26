@@ -35,9 +35,6 @@ type InstanceEvent struct {
 }
 
 func NewInstanceEvent(serviceID string, rev int64, createAt simple.Time, response *pb.WatchInstanceResponse) *InstanceEvent {
-	return &InstanceEvent{
-		Event:    event.NewEventWithTime(INSTANCE, response.Key.Tenant, serviceID, createAt),
-		Revision: rev,
-		Response: response,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

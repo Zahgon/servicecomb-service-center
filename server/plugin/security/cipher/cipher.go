@@ -18,16 +18,11 @@
 package cipher
 
 import (
-	"github.com/go-chassis/cari/security"
-
 	"github.com/apache/servicecomb-service-center/pkg/plugin"
 )
 
 const CIPHER plugin.Kind = "cipher"
 
-func Encrypt(src string) (string, error) {
-	return plugin.Plugins().Instance(CIPHER).(security.Cipher).Encrypt(src)
-}
-func Decrypt(src string) (string, error) {
-	return plugin.Plugins().Instance(CIPHER).(security.Cipher).Decrypt(src)
-}
+func Encrypt(src string) (string, error) { _ = "STUB: not implemented"; return "", nil }
+
+func Decrypt(src string) (string, error) { _ = "STUB: not implemented"; return "", nil }

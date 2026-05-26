@@ -18,53 +18,31 @@
 package interceptor
 
 import (
-	"fmt"
 	"net/http"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var interceptors []*Interception
 
 type Intercept func(http.ResponseWriter, *http.Request) error
 
-func (f Intercept) Name() string {
-	return util.FuncName(f)
-}
+func (f Intercept) Name() string { _ = "STUB: not implemented"; return "" }
 
 type Interception struct {
 	function Intercept
 }
 
 func (i Interception) Invoke(w http.ResponseWriter, req *http.Request) error {
-	return i.function(w, req)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func init() {
 	interceptors = make([]*Interception, 0, 10)
 }
 
-func RegisterInterceptFunc(intc Intercept) {
-	interceptors = append(interceptors, &Interception{
-		function: intc,
-	})
-
-	log.Info(fmt.Sprintf("Intercept %s", intc.Name()))
-}
+func RegisterInterceptFunc(intc Intercept) { _ = "STUB: not implemented"; return }
 
 func InvokeInterceptors(w http.ResponseWriter, req *http.Request) (err error) {
-	var intc *Interception
-	defer func() {
-		if itf := recover(); itf != nil {
-			log.Panic(itf)
-		}
-	}()
-	for _, intc = range interceptors {
-		err = intc.Invoke(w, req)
-		if err != nil {
-			return
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }

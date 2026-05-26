@@ -38,38 +38,15 @@ type APIReporter struct {
 	cache *metrics.Details
 }
 
-func (r *APIReporter) Report() {
-	details := metrics.Gatherer.Records.Get(httpRequestTotal)
-	if details == nil {
-		return
-	}
-
-	defer func() { r.cache = details }()
-
-	if r.cache == nil {
-		return
-	}
-	details.ForEach(func(labels []*dto.LabelPair, v float64) (next bool) {
-		old := r.cache.Get(labels)
-		queryPerSeconds.WithLabelValues(r.toLabels(labels)...).Set((v - old) / metrics.GetOptions().Interval.Seconds())
-		return true
-	})
-}
+func (r *APIReporter) Report() { _ = "STUB: not implemented"; return }
 
 func (r *APIReporter) toLabels(pairs []*dto.LabelPair) (labels []string) {
-	labels = make([]string, len(qpsLabelMap))
-	for _, pair := range pairs {
-		if i, ok := qpsLabelMap[pair.GetName()]; ok {
-			labels[i] = pair.GetValue()
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func init() {
 	metrics.RegisterReporter("rest", NewAPIReporter())
 }
 
-func NewAPIReporter() *APIReporter {
-	return &APIReporter{}
-}
+func NewAPIReporter() *APIReporter { _ = "STUB: not implemented"; return nil }

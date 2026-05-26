@@ -19,9 +19,6 @@ package kvstore
 
 import (
 	"github.com/go-chassis/cari/discovery"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 // CommonCacher implements kvstore.Cacher.
@@ -35,44 +32,22 @@ type CommonCacher struct {
 	ready chan struct{}
 }
 
-func (c *CommonCacher) Cache() CacheReader {
-	return c.cache
-}
+func (c *CommonCacher) Cache() CacheReader { _ = "STUB: not implemented"; return *new(CacheReader) }
 
 func (c *CommonCacher) Notify(action discovery.EventType, key string, kv *KeyValue) {
-	switch action {
-	case discovery.EVT_DELETE:
-		c.cache.Remove(key)
-	default:
-		c.cache.Put(key, kv)
-	}
-	c.OnEvent(NewEvent(action, kv, kv.ModRevision))
+	_ = "STUB: not implemented"
+	return
 }
 
-func (c *CommonCacher) OnEvent(evt Event) {
-	if c.Cfg.OnEvent == nil {
-		return
-	}
+func (c *CommonCacher) OnEvent(evt Event) { _ = "STUB: not implemented"; return }
 
-	defer log.Recover()
-	c.Cfg.OnEvent(evt)
-}
+func (c *CommonCacher) Run() { _ = "STUB: not implemented"; return }
 
-func (c *CommonCacher) Run() {
-	util.SafeCloseChan(c.ready)
-}
+func (c *CommonCacher) Stop() { _ = "STUB: not implemented"; return }
 
-func (c *CommonCacher) Stop() {
-}
-
-func (c *CommonCacher) Ready() <-chan struct{} {
-	return c.ready
-}
+func (c *CommonCacher) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 func NewCommonCacher(cfg *Options, cache Cache) *CommonCacher {
-	return &CommonCacher{
-		Cfg:   cfg,
-		cache: cache,
-		ready: make(chan struct{}),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

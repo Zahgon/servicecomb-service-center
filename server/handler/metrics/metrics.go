@@ -18,36 +18,12 @@
 package metrics
 
 import (
-	"fmt"
-	"net/http"
-	"time"
-
-	"github.com/apache/servicecomb-service-center/server/config"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/metrics"
 )
 
 type Handler struct {
 }
 
-func (h *Handler) Handle(i *chain.Invocation) {
-	i.Next(chain.WithAsyncFunc(func(ret chain.Result) {
-		start, ok := i.Context().Value(rest.CtxStartTimestamp).(time.Time)
-		if !ok {
-			return
-		}
-		w, r := i.Context().Value(rest.CtxResponse).(http.ResponseWriter),
-			i.Context().Value(rest.CtxRequest).(*http.Request)
-		metrics.ReportRequestCompleted(w, r, start)
-		log.NilOrWarn(start, fmt.Sprintf("%s %s", r.Method, r.RequestURI))
-	}))
-}
+func (h *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-func RegisterHandlers() {
-	if config.GetBool("metrics.enable", false) {
-		chain.RegisterHandler(rest.ServerChainName, &Handler{})
-	}
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

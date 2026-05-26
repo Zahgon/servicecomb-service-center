@@ -18,8 +18,6 @@
 package datasource
 
 import (
-	"fmt"
-
 	"github.com/go-chassis/openlog"
 )
 
@@ -30,42 +28,21 @@ var (
 	logger openlog.Logger
 )
 
-func Logger() openlog.Logger {
-	return logger
-}
+func Logger() openlog.Logger { _ = "STUB: not implemented"; return *new(openlog.Logger) }
 
 type dataSourceEngine func() DataSource
 
-func GetDataSource() DataSource {
-	return dataSourceInst
-}
+func GetDataSource() DataSource { _ = "STUB: not implemented"; return *new(DataSource) }
 
-func RegisterPlugin(name string, engineFunc dataSourceEngine) {
-	plugins[name] = engineFunc
-}
+func RegisterPlugin(name string, engineFunc dataSourceEngine) { _ = "STUB: not implemented"; return }
 
 type Config struct {
 	Kind   string
 	Logger openlog.Logger
 }
 
-func Init(c *Config) error {
-	f, ok := plugins[c.Kind]
-	if !ok {
-		return fmt.Errorf("do not support %s", c.Kind)
-	}
-	if c.Logger != nil {
-		logger = c.Logger
-	}
+func Init(c *Config) error { _ = "STUB: not implemented"; return nil }
 
-	dataSourceInst = f()
-	return nil
-}
+func GetTaskDao() TaskDao { _ = "STUB: not implemented"; return *new(TaskDao) }
 
-func GetTaskDao() TaskDao {
-	return dataSourceInst.TaskDao()
-}
-
-func GetTombstoneDao() TombstoneDao {
-	return dataSourceInst.TombstoneDao()
-}
+func GetTombstoneDao() TombstoneDao { _ = "STUB: not implemented"; return *new(TombstoneDao) }

@@ -40,6 +40,4 @@ func init() {
 	versionSet.LoadRuntimeInfo()
 }
 
-func Ver() *version.Set {
-	return &versionSet
-}
+func Ver() *version.Set { _ = "STUB: not implemented"; return nil }

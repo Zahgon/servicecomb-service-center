@@ -38,90 +38,52 @@ type MicroServiceDependencyRuleSlice []*MicroServiceDependencyRule
 type SummarySlice []*Summary
 type InstanceSlice []*Instance
 
-func (s *MicroserviceSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
-}
+func (s *MicroserviceSlice) ForEach(f func(i int, v *KV) bool) { _ = "STUB: not implemented"; return }
+
 func (s *MicroserviceIndexSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
 func (s *MicroserviceAliasSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
-func (s *TagSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
-}
+
+func (s *TagSlice) ForEach(f func(i int, v *KV) bool) { _ = "STUB: not implemented"; return }
+
 func (s *MicroServiceDependencyRuleSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
-}
-func (s *SummarySlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
-}
-func (s *InstanceSlice) ForEach(f func(i int, v *KV) bool) {
-	for i, v := range *s {
-		v.KV.Value = v.Value
-		if !f(i, v.KV) {
-			break
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func (s *MicroserviceSlice) SetValue(v *KV)      { *s = append(*s, NewMicroservice(v)) }
-func (s *MicroserviceIndexSlice) SetValue(v *KV) { *s = append(*s, NewMicroserviceIndex(v)) }
-func (s *MicroserviceAliasSlice) SetValue(v *KV) { *s = append(*s, NewMicroserviceAlias(v)) }
-func (s *TagSlice) SetValue(v *KV)               { *s = append(*s, NewTag(v)) }
-func (s *MicroServiceDependencyRuleSlice) SetValue(v *KV) {
-	*s = append(*s, NewMicroServiceDependencyRule(v))
-}
-func (s *SummarySlice) SetValue(v *KV)  { *s = append(*s, NewSummary(v)) }
-func (s *InstanceSlice) SetValue(v *KV) { *s = append(*s, NewInstance(v)) }
+func (s *SummarySlice) ForEach(f func(i int, v *KV) bool) { _ = "STUB: not implemented"; return }
 
-func NewMicroservice(kv *KV) *Microservice {
-	return &Microservice{kv, kv.Value.(*discovery.MicroService)}
-}
-func NewMicroserviceIndex(kv *KV) *MicroserviceIndex {
-	return &MicroserviceIndex{kv, kv.Value.(string)}
-}
-func NewMicroserviceAlias(kv *KV) *MicroserviceAlias {
-	return &MicroserviceAlias{kv, kv.Value.(string)}
-}
-func NewTag(kv *KV) *Tag { return &Tag{kv, kv.Value.(map[string]string)} }
+func (s *InstanceSlice) ForEach(f func(i int, v *KV) bool) { _ = "STUB: not implemented"; return }
+
+func (s *MicroserviceSlice) SetValue(v *KV)               { _ = "STUB: not implemented"; return }
+func (s *MicroserviceIndexSlice) SetValue(v *KV)          { _ = "STUB: not implemented"; return }
+func (s *MicroserviceAliasSlice) SetValue(v *KV)          { _ = "STUB: not implemented"; return }
+func (s *TagSlice) SetValue(v *KV)                        { _ = "STUB: not implemented"; return }
+func (s *MicroServiceDependencyRuleSlice) SetValue(v *KV) { _ = "STUB: not implemented"; return }
+
+func (s *SummarySlice) SetValue(v *KV)  { _ = "STUB: not implemented"; return }
+func (s *InstanceSlice) SetValue(v *KV) { _ = "STUB: not implemented"; return }
+
+func NewMicroservice(kv *KV) *Microservice { _ = "STUB: not implemented"; return nil }
+
+func NewMicroserviceIndex(kv *KV) *MicroserviceIndex { _ = "STUB: not implemented"; return nil }
+
+func NewMicroserviceAlias(kv *KV) *MicroserviceAlias { _ = "STUB: not implemented"; return nil }
+
+func NewTag(kv *KV) *Tag { _ = "STUB: not implemented"; return nil }
 func NewMicroServiceDependencyRule(kv *KV) *MicroServiceDependencyRule {
-	return &MicroServiceDependencyRule{kv, kv.Value.(*discovery.MicroServiceDependency)}
+	_ = "STUB: not implemented"
+	return nil
 }
-func NewSummary(kv *KV) *Summary { return &Summary{kv, kv.Value.(string)} }
-func NewInstance(kv *KV) *Instance {
-	return &Instance{kv, kv.Value.(*discovery.MicroServiceInstance)}
-}
+
+func NewSummary(kv *KV) *Summary   { _ = "STUB: not implemented"; return nil }
+func NewInstance(kv *KV) *Instance { _ = "STUB: not implemented"; return nil }
 
 type Cache struct {
 	Microservices   MicroserviceSlice               `json:"services,omitempty"`

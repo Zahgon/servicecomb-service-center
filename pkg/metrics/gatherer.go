@@ -19,14 +19,10 @@ package metrics
 
 import (
 	"context"
-	"strings"
 	"sync"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/prometheus"
 	mapset "github.com/deckarep/golang-set"
-	"github.com/go-chassis/foundation/gopool"
 )
 
 const prefixName = FamilyName + "_"
@@ -39,13 +35,7 @@ var EmptyGather = &Gather{
 	closed:  false,
 }
 
-func NewGatherer(opts Options) *Gather {
-	return &Gather{
-		Interval: opts.Interval,
-		Records:  NewMetrics(),
-		closed:   true,
-	}
-}
+func NewGatherer(opts Options) *Gather { _ = "STUB: not implemented"; return nil }
 
 type Gather struct {
 	Records  *Metrics
@@ -55,80 +45,18 @@ type Gather struct {
 	closed bool
 }
 
-func (mm *Gather) Start() {
-	mm.lock.Lock()
-	if !mm.closed {
-		mm.lock.Unlock()
-		return
-	}
-	mm.closed = false
+func (mm *Gather) Start() { _ = "STUB: not implemented"; return }
 
-	gopool.Go(mm.loop)
+func (mm *Gather) loop(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	mm.lock.Unlock()
-}
+func (mm *Gather) Collect() error { _ = "STUB: not implemented"; return nil }
 
-func (mm *Gather) loop(ctx context.Context) {
-	ticker := time.NewTicker(mm.Interval)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			if err := mm.Collect(); err != nil {
-				log.Error("metrics collect failed", err)
-				return
-			}
+// clean the old cache here
 
-			Report()
-		}
-	}
-}
+func RecordName(metricName string) string { _ = "STUB: not implemented"; return "" }
 
-func (mm *Gather) Collect() error {
-	mfs, err := prometheus.Gather()
-	if err != nil {
-		return err
-	}
+// just compatible with sc old metric name without familyName
 
-	records := NewMetrics()
-	for _, mf := range mfs {
-		name := RecordName(mf.GetName())
-		if len(name) == 0 {
-			continue
-		}
-		if d := Calculate(mf); d != nil {
-			records.put(name, d)
-		}
-	}
-	// clean the old cache here
-	mm.Records = records
-	return nil
-}
+func CollectFamily(familyName string) { _ = "STUB: not implemented"; return }
 
-func RecordName(metricName string) string {
-	_, isSys := SysMetrics.Get(metricName)
-	family := ParseFamily(metricName)
-	if !isSys && len(family) == 0 {
-		return ""
-	}
-	if strings.Index(metricName, prefixName) == 0 {
-		// just compatible with sc old metric name without familyName
-		metricName = strings.TrimPrefix(metricName, prefixName)
-	}
-	return metricName
-}
-
-func CollectFamily(familyName string) {
-	families.Add(familyName)
-}
-
-func ParseFamily(metricName string) string {
-	for family := range families.Iter() {
-		s := family.(string)
-		if strings.Index(metricName, s+"_") == 0 {
-			return s
-		}
-	}
-	return ""
-}
+func ParseFamily(metricName string) string { _ = "STUB: not implemented"; return "" }

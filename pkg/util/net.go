@@ -21,9 +21,6 @@ import (
 	"context"
 	"net"
 	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
 )
 
 const CtxRemoteIP CtxKey = "x-remote-ip"
@@ -33,77 +30,18 @@ type IPPort struct {
 	Port uint16
 }
 
-func GetIPFromContext(ctx context.Context) string {
-	v, ok := FromContext(ctx, CtxRemoteIP).(string)
-	if !ok {
-		return "UNKNOWN"
-	}
-	return v
-}
+func GetIPFromContext(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func ParseEndpoint(ep string) (string, error) {
-	u, err := url.Parse(ep)
-	if err != nil {
-		return "", err
-	}
-	return u.Host, nil
-}
+func ParseEndpoint(ep string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func ParseIPPort(addr string) IPPort {
-	idx := strings.LastIndex(addr, ":")
-	if idx == -1 {
-		return IPPort{addr, 0}
-	}
-	p, _ := strconv.Atoi(addr[idx+1:])
-	return IPPort{addr[:idx], uint16(p)}
-}
+func ParseIPPort(addr string) IPPort { _ = "STUB: not implemented"; return *new(IPPort) }
 
-func GetRealIP(r *http.Request) string {
-	for _, h := range [2]string{"X-Forwarded-For", "X-Real-Ip"} {
-		addresses := strings.Split(r.Header.Get(h), ",")
-		for _, ip := range addresses {
-			ip = strings.TrimSpace(ip)
-			realIP := net.ParseIP(ip)
-			if !realIP.IsGlobalUnicast() {
-				continue
-			}
-			return ip
-		}
-	}
-	host, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return ""
-	}
-	return host
-}
+func GetRealIP(r *http.Request) string { _ = "STUB: not implemented"; return "" }
 
-func InetNtoIP(ipnr uint32) net.IP {
-	return net.IPv4(byte(ipnr>>24), byte(ipnr>>16), byte(ipnr>>8), byte(ipnr))
-}
+func InetNtoIP(ipnr uint32) net.IP { _ = "STUB: not implemented"; return *new(net.IP) }
 
-func InetNtoa(ipnr uint32) string {
-	return InetNtoIP(ipnr).String()
-}
+func InetNtoa(ipnr uint32) string { _ = "STUB: not implemented"; return "" }
 
-func InetAton(ip string) (ipnr uint32) {
-	bytes := net.ParseIP(ip).To4()
-	for i := 0; i < len(bytes); i++ {
-		ipnr |= uint32(bytes[i])
-		if i < 3 {
-			ipnr <<= 8
-		}
-	}
-	return
-}
+func InetAton(ip string) (ipnr uint32) { _ = "STUB: not implemented"; return 0 }
 
-func ParseRequestURL(r *http.Request) string {
-	if len(r.URL.Scheme) > 0 {
-		return r.URL.String()
-	}
-
-	scheme := "https://"
-	if r.TLS == nil {
-		scheme = "http://"
-	}
-	return scheme + r.Host + r.RequestURI
-}
+func ParseRequestURL(r *http.Request) string { _ = "STUB: not implemented"; return "" }

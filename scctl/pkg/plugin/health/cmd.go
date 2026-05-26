@@ -18,11 +18,7 @@
 package health
 
 import (
-	"context"
-
-	"github.com/apache/servicecomb-service-center/client"
 	"github.com/apache/servicecomb-service-center/scctl/pkg/cmd"
-	"github.com/go-chassis/cari/discovery"
 	"github.com/spf13/cobra"
 )
 
@@ -36,29 +32,6 @@ func init() {
 	NewHealthCommand(cmd.RootCmd())
 }
 
-func NewHealthCommand(parent *cobra.Command) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "health [options]",
-		Short: "Output the health check result of service center",
-		Run:   CommandFunc,
-	}
+func NewHealthCommand(parent *cobra.Command) *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-	parent.AddCommand(cmd)
-	return cmd
-}
-
-func CommandFunc(_ *cobra.Command, _ []string) {
-	scClient, err := client.NewSCClient(cmd.ScClientConfig)
-	if err != nil {
-		cmd.StopAndExit(ExistInternal, err)
-	}
-	scErr := scClient.HealthCheck(context.Background())
-	if scErr != nil {
-		switch scErr.Code {
-		case discovery.ErrInternal:
-			cmd.StopAndExit(ExistUnavailable, scErr)
-		default:
-			cmd.StopAndExit(ExistAbnormal, scErr)
-		}
-	}
-}
+func CommandFunc(_ *cobra.Command, _ []string) { _ = "STUB: not implemented"; return }

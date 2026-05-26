@@ -20,28 +20,11 @@ package rbac
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	errorsEx "github.com/apache/servicecomb-service-center/pkg/errors"
 	rbacmodel "github.com/go-chassis/cari/rbac"
 )
 
 // ListSelfPerms list the user permission from ctx
 func ListSelfPerms(ctx context.Context) ([]*rbacmodel.Permission, error) {
-	user := UserFromContext(ctx)
-	if len(user) == 0 {
-		return nil, rbacmodel.NewError(rbacmodel.ErrUnauthorized, errorsEx.MsgListSelfPermsFailed)
-	}
-	account, err := rbac.Instance().GetAccount(ctx, user)
-	if err != nil {
-		return nil, err
-	}
-	var perms []*rbacmodel.Permission
-	for _, roleName := range account.Roles {
-		role, err := rbac.Instance().GetRole(ctx, roleName)
-		if err != nil {
-			return nil, err
-		}
-		perms = append(perms, role.Perms...)
-	}
-	return perms, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

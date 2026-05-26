@@ -18,11 +18,7 @@
 package event
 
 import (
-	"errors"
-	"fmt"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 // BusService is the daemon service to manage multiple type Bus
@@ -34,130 +30,23 @@ type BusService struct {
 	isClose bool
 }
 
-func (s *BusService) newBus(t Type) *Bus {
-	s.mux.RLock()
-	p, ok := s.buses[t]
-	if ok {
-		s.mux.RUnlock()
-		return p
-	}
-	s.mux.RUnlock()
+func (s *BusService) newBus(t Type) *Bus { _ = "STUB: not implemented"; return nil }
 
-	s.mux.Lock()
-	p, ok = s.buses[t]
-	if ok {
-		s.mux.Unlock()
-		return p
-	}
-	p = NewBus(t.String(), t.QueueSize())
-	s.buses[t] = p
-	s.mux.Unlock()
+func (s *BusService) Start() { _ = "STUB: not implemented"; return }
 
-	p.Run()
-	return p
-}
+// 错误subscriber清理
 
-func (s *BusService) Start() {
-	if !s.Closed() {
-		log.Warn("notify service is already running")
-		return
-	}
-	s.mux.Lock()
-	s.isClose = false
-	s.mux.Unlock()
+func (s *BusService) AddSubscriber(n Subscriber) error { _ = "STUB: not implemented"; return nil }
 
-	// 错误subscriber清理
-	err := s.AddSubscriber(NewSubscriberHealthChecker())
-	if err != nil {
-		log.Error("", err)
-	}
+func (s *BusService) RemoveSubscriber(n Subscriber) { _ = "STUB: not implemented"; return }
 
-	log.Debug("notify service is started")
-}
-
-func (s *BusService) AddSubscriber(n Subscriber) error {
-	if n == nil {
-		err := errors.New("required Subscriber")
-		log.Error("add subscriber failed", err)
-		return err
-	}
-
-	if !n.Type().IsValid() {
-		err := errors.New("unknown subscribe type")
-		log.Error(fmt.Sprintf("add %s subscriber[%s/%s] failed", n.Type(), n.Subject(), n.Group()), err)
-		return err
-	}
-
-	p := s.newBus(n.Type())
-	n.SetBus(s)
-	n.OnAccept()
-
-	p.AddSubscriber(n)
-	return nil
-}
-
-func (s *BusService) RemoveSubscriber(n Subscriber) {
-	s.mux.RLock()
-	p, ok := s.buses[n.Type()]
-	if !ok {
-		s.mux.RUnlock()
-		return
-	}
-	s.mux.RUnlock()
-
-	p.RemoveSubscriber(n)
-	n.Close()
-}
-
-func (s *BusService) closeBuses() {
-	s.mux.RLock()
-	for _, p := range s.buses {
-		p.Clear()
-		p.Stop()
-	}
-	s.mux.RUnlock()
-}
+func (s *BusService) closeBuses() { _ = "STUB: not implemented"; return }
 
 // 通知内容塞到队列里
-func (s *BusService) Fire(evt Event) error {
-	if s.Closed() {
-		return errors.New("add notify evt failed for server shutdown")
-	}
+func (s *BusService) Fire(evt Event) error { _ = "STUB: not implemented"; return nil }
 
-	s.mux.RLock()
-	bus, ok := s.buses[evt.Type()]
-	if !ok {
-		s.mux.RUnlock()
-		return fmt.Errorf("no %s subscriber on this service center", evt.Type())
-	}
-	s.mux.RUnlock()
-	bus.Fire(evt)
-	return nil
-}
+func (s *BusService) Closed() (b bool) { _ = "STUB: not implemented"; return false }
 
-func (s *BusService) Closed() (b bool) {
-	s.mux.RLock()
-	b = s.isClose
-	s.mux.RUnlock()
-	return
-}
+func (s *BusService) Stop() { _ = "STUB: not implemented"; return }
 
-func (s *BusService) Stop() {
-	if s.Closed() {
-		return
-	}
-	s.mux.Lock()
-	s.isClose = true
-	s.mux.Unlock()
-
-	s.closeBuses()
-
-	log.Debug("notify service stopped")
-}
-
-func NewBusService() *BusService {
-	return &BusService{
-		buses:   make(map[Type]*Bus),
-		isClose: true,
-	}
-}
+func NewBusService() *BusService { _ = "STUB: not implemented"; return nil }

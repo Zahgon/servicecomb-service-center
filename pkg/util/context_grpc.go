@@ -19,17 +19,6 @@ package util
 
 import (
 	"context"
-
-	"google.golang.org/grpc/metadata"
 )
 
-func FromMetadata(ctx context.Context, key CtxKey) string {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return ""
-	}
-	if values, ok := md[string(key)]; ok && len(values) > 0 {
-		return values[0]
-	}
-	return ""
-}
+func FromMetadata(ctx context.Context, key CtxKey) string { _ = "STUB: not implemented"; return "" }

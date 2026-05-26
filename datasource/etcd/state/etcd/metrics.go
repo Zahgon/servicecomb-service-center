@@ -34,13 +34,7 @@ var (
 		}, []string{"instance", "resource", "type"})
 )
 
-func ReportCacheSize(resource, t string, s int) {
-	instance := metrics.InstanceName()
-	if len(instance) == 0 || len(resource) == 0 {
-		// endpoints list will be empty when initializing
-		// resource may be empty when report SCHEMA
-		return
-	}
+func ReportCacheSize(resource, t string, s int) { _ = "STUB: not implemented"; return }
 
-	cacheSizeGauge.WithLabelValues(instance, resource, t).Set(float64(s))
-}
+// endpoints list will be empty when initializing
+// resource may be empty when report SCHEMA

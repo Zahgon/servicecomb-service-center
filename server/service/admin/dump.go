@@ -20,54 +20,18 @@ package admin
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/version"
 	mapset "github.com/deckarep/golang-set"
-	"github.com/go-chassis/cari/discovery"
 )
 
 func Dump(ctx context.Context, in *dump.Request) (*dump.Response, error) {
-	domainProject := util.ParseDomainProject(ctx)
-	if !datasource.IsDefaultDomainProject(domainProject) {
-		return nil, discovery.NewError(discovery.ErrForbidden, "Required admin permission")
-	}
-	resp := &dump.Response{}
-	set := toSet(in.Options)
-	if set.Cardinality() == 0 {
-		appendData(ctx, "cache", resp)
-		return resp, nil
-	}
-	set.Each(func(option interface{}) bool {
-		appendData(ctx, option.(string), resp)
-		return true
-	})
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func toSet(arr []string) mapset.Set {
-	if len(arr) == 0 {
-		return mapset.NewSet()
-	}
-	set := mapset.NewSet()
-	for _, kind := range arr {
-		if kind == "all" {
-			return mapset.NewSet("all")
-		}
-		set.Add(kind)
-	}
-	return set
-}
+func toSet(arr []string) mapset.Set { _ = "STUB: not implemented"; return *new(mapset.Set) }
 
 func appendData(ctx context.Context, option string, resp *dump.Response) {
-	switch option {
-	case "info":
-		resp.Info = version.Ver()
-	case "cache":
-		resp.Cache = datasource.GetSystemManager().DumpCache(ctx)
-	case "all":
-		appendData(ctx, "info", resp)
-		appendData(ctx, "cache", resp)
-	}
+	_ = "STUB: not implemented"
+	return
 }

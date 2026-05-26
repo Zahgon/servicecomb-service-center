@@ -18,15 +18,7 @@
 package event
 
 import (
-	"fmt"
-
-	pb "github.com/go-chassis/cari/discovery"
-
-	"github.com/apache/servicecomb-service-center/datasource/etcd/cache"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 // DependencyRuleEventHandler reset the find instances cache
@@ -35,23 +27,13 @@ type DependencyRuleEventHandler struct {
 }
 
 func (h *DependencyRuleEventHandler) Type() kvstore.Type {
-	return sd.TypeDependencyRule
+	_ = "STUB: not implemented"
+	return *new(kvstore.Type)
 }
 
-func (h *DependencyRuleEventHandler) OnEvent(evt kvstore.Event) {
-	action := evt.Type
-	if action != pb.EVT_UPDATE && action != pb.EVT_DELETE {
-		return
-	}
-	t, providerKey := path.GetInfoFromDependencyRuleKV(evt.KV.Key)
-	if t != path.DepsProvider {
-		return
-	}
-	log.Debug(fmt.Sprintf("caught [%s] provider rule[%s/%s/%s/%s] event",
-		action, providerKey.Environment, providerKey.AppId, providerKey.ServiceName, providerKey.Version))
-	cache.DependencyRule.Remove(providerKey)
-}
+func (h *DependencyRuleEventHandler) OnEvent(evt kvstore.Event) { _ = "STUB: not implemented"; return }
 
 func NewDependencyRuleEventHandler() *DependencyRuleEventHandler {
-	return &DependencyRuleEventHandler{}
+	_ = "STUB: not implemented"
+	return nil
 }

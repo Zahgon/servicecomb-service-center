@@ -20,30 +20,20 @@ package admin
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/alarm"
 )
 
 func Clusters(ctx context.Context, _ *dump.ClustersRequest) (*dump.ClustersResponse, error) {
-	clusters, err := datasource.GetSCManager().GetClusters(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return &dump.ClustersResponse{
-		Clusters: clusters,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func AlarmList(_ context.Context, _ *dump.AlarmListRequest) (*dump.AlarmListResponse, error) {
-	return &dump.AlarmListResponse{
-		Alarms: alarm.ListAll(),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ClearAlarm(_ context.Context, _ *dump.ClearAlarmRequest) (*dump.ClearAlarmResponse, error) {
-	alarm.ClearAll()
-	log.Info("service center alarms are cleared")
-	return &dump.ClearAlarmResponse{}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

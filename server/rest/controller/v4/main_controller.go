@@ -18,11 +18,8 @@
 package v4
 
 import (
-	"encoding/json"
 	"net/http"
 	"sync"
-
-	discosvc "github.com/apache/servicecomb-service-center/server/service/disco"
 
 	"github.com/apache/servicecomb-service-center/pkg/rest"
 	"github.com/apache/servicecomb-service-center/version"
@@ -44,29 +41,14 @@ type MainService struct {
 	//
 }
 
-func (s *MainService) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: "/v4/:project/registry/version", Func: s.GetVersion},
-		{Method: http.MethodGet, Path: "/v4/:project/registry/health", Func: s.ClusterHealth},
-	}
-}
+func (s *MainService) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
 
 func (s *MainService) ClusterHealth(w http.ResponseWriter, r *http.Request) {
-	resp, err := discosvc.ClusterHealth(r.Context())
-	if err != nil {
-		rest.WriteServiceError(w, err)
-		return
-	}
-	rest.WriteResponse(w, r, nil, resp)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *MainService) GetVersion(w http.ResponseWriter, r *http.Request) {
-	parseVersionOnce.Do(func() {
-		result := Result{
-			version.Ver(),
-			APIVersion,
-		}
-		versionJSONCache, _ = json.Marshal(result)
-	})
-	rest.WriteResponse(w, r, nil, versionJSONCache)
+	_ = "STUB: not implemented"
+	return
 }

@@ -17,30 +17,10 @@
 
 package v1
 
-import (
-	"fmt"
-	"time"
+func (x *Event) Flag() string { _ = "STUB: not implemented"; return "" }
 
-	guuid "github.com/gofrs/uuid"
-)
+func (x *EventList) Flag() string { _ = "STUB: not implemented"; return "" }
 
-func (x *Event) Flag() string {
-	return fmt.Sprintf("id: %s,action: %s, subject: %s", x.Id, x.Action, x.Subject)
-}
+func NewEventID() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (x *EventList) Flag() string {
-	return fmt.Sprintf("event count %d", len(x.Events))
-}
-
-func NewEventID() (string, error) {
-	uuid, err := guuid.NewV4()
-	if err != nil {
-		return "", err
-	}
-
-	return uuid.String(), nil
-}
-
-func Timestamp() int64 {
-	return time.Now().UnixNano()
-}
+func Timestamp() int64 { _ = "STUB: not implemented"; return 0 }

@@ -24,16 +24,13 @@ type Option struct {
 
 // get node before level l
 func (op Option) ToLevel(l int) Option {
-	op.Level = l
-	return op
+	_ = "STUB: not implemented"
+	return *
+
+	// get node without cache
+	new(Option)
 }
 
-// get node without cache
-func (op Option) Temporary(b bool) Option {
-	op.NoCache = b
-	return op
-}
+func (op Option) Temporary(b bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func Options() (op Option) {
-	return
-}
+func Options() (op Option) { _ = "STUB: not implemented"; return *new(Option) }

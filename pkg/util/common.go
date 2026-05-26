@@ -17,8 +17,6 @@
 
 package util
 
-import "os"
-
 type CtxKey string
 
 const (
@@ -31,7 +29,4 @@ const (
 	CtxEnableSync       CtxKey = "enableSync"
 )
 
-func GetAppRoot() string {
-	workDir, _ := os.Getwd()
-	return GetEnvString("APP_ROOT", workDir)
-}
+func GetAppRoot() string { _ = "STUB: not implemented"; return "" }

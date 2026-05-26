@@ -29,10 +29,6 @@ type Authenticate interface {
 	Identify(r *http.Request) error
 }
 
-func Auth() Authenticate {
-	return plugin.Plugins().Instance(AUTH).(Authenticate)
-}
+func Auth() Authenticate { _ = "STUB: not implemented"; return *new(Authenticate) }
 
-func Identify(r *http.Request) error {
-	return Auth().Identify(r)
-}
+func Identify(r *http.Request) error { _ = "STUB: not implemented"; return nil }

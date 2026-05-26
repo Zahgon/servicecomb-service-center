@@ -20,10 +20,7 @@ package admin
 import (
 	"net/http"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/syncer/service/admin"
-	"github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/cari/rbac"
 )
 
@@ -39,18 +36,9 @@ type Resource struct {
 }
 
 // URLPatterns 路由
-func (res *Resource) URLPatterns() []rest.Route {
-	return []rest.Route{
-		{Method: http.MethodGet, Path: APIHealth, Func: res.HealthCheck},
-	}
-}
+func (res *Resource) URLPatterns() []rest.Route { _ = "STUB: not implemented"; return nil }
 
 func (res *Resource) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	healthResp, err := admin.Health()
-	if err != nil {
-		log.Error("health check failed", err)
-		rest.WriteError(w, discovery.ErrInternal, err.Error())
-		return
-	}
-	rest.WriteResponse(w, r, nil, healthResp)
+	_ = "STUB: not implemented"
+	return
 }

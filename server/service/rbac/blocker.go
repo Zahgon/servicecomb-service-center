@@ -18,14 +18,9 @@
 package rbac
 
 import (
-	"context"
-	"fmt"
 	"sync"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	accountsvc "github.com/apache/servicecomb-service-center/server/service/account"
 	"golang.org/x/time/rate"
 )
 
@@ -44,39 +39,9 @@ type LoginFailureLimiter struct {
 // TryLockAccount try to lock the account login attempt
 // it use time/rate to allow certainty failure,
 // it will ban client if rate limiter can not accept failures
-func TryLockAccount(key string) {
-	var c interface{}
-	var l *LoginFailureLimiter
-	var ok bool
-	if c, ok = clients.Load(key); !ok {
-		l = &LoginFailureLimiter{
-			Key:     key,
-			limiter: rate.NewLimiter(rate.Every(BlockInterval), MaxAttempts),
-		}
-		clients.Store(key, l)
-	} else {
-		l = c.(*LoginFailureLimiter)
-	}
-
-	allow := l.limiter.AllowN(time.Now(), 1)
-	status := rbac.StatusAttempted
-	if !allow {
-		status = rbac.StatusBanned
-	}
-	err := accountsvc.Lock(context.Background(), key, status)
-	if err != nil {
-		log.Error(fmt.Sprintf("can not ban account %s", key), err)
-	}
-}
+func TryLockAccount(key string) { _ = "STUB: not implemented"; return }
 
 // IsBanned check if a client is banned, and if client ban time expire,
 // it will release the client from banned status
 // use account name plus ip as key will maximum reduce the client conflicts
-func IsBanned(key string) bool {
-	banned, err := accountsvc.IsBanned(context.TODO(), key)
-	if err != nil {
-		log.Error("can not check lock list, so return banned for security concern", err)
-		return true
-	}
-	return banned
-}
+func IsBanned(key string) bool { _ = "STUB: not implemented"; return false }

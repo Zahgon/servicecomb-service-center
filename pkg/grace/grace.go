@@ -19,15 +19,9 @@ package grace
 
 import (
 	"flag"
-	"fmt"
 	"os"
-	"os/exec"
-	"os/signal"
-	"strings"
 	"sync"
 	"syscall"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 const (
@@ -70,148 +64,34 @@ func init() {
 	go handleSignals()
 }
 
-func ParseCommandLine() {
-	if !flag.Parsed() {
-		flag.Parse()
-	}
-}
+func ParseCommandLine() { _ = "STUB: not implemented"; return }
 
-func Before(f func()) {
-	RegisterSignalHook(PreSignal, f, syscall.SIGHUP)
-}
+func Before(f func()) { _ = "STUB: not implemented"; return }
 
-func After(f func()) {
-	RegisterSignalHook(PostSignal, f, registerSignals[1:]...)
-}
+func After(f func()) { _ = "STUB: not implemented"; return }
 
-func RegisterSignalHook(phase int, f func(), sigs ...os.Signal) {
-	for s := range SignalHooks[phase] {
-		for _, sig := range sigs {
-			if s == sig {
-				SignalHooks[phase][sig] = append(SignalHooks[phase][sig], f)
-			}
-		}
-	}
-}
+func RegisterSignalHook(phase int, f func(), sigs ...os.Signal) { _ = "STUB: not implemented"; return }
 
-func RegisterFiles(name string, f *os.File) {
-	if f == nil {
-		return
-	}
-	graceMux.Lock()
-	filesOffsetMap[name] = len(files)
-	files = append(files, f)
-	graceMux.Unlock()
-}
+func RegisterFiles(name string, f *os.File) { _ = "STUB: not implemented"; return }
 
-func fireSignalHook(ppFlag int, sig os.Signal) {
-	if _, notSet := SignalHooks[ppFlag][sig]; !notSet {
-		return
-	}
-	for _, f := range SignalHooks[ppFlag][sig] {
-		f()
-	}
-}
+func fireSignalHook(ppFlag int, sig os.Signal) { _ = "STUB: not implemented"; return }
 
-func handleSignals() {
+func handleSignals() { _ = "STUB: not implemented"; return }
 
-	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh, registerSignals...)
+func fork() (err error) { _ = "STUB: not implemented"; return nil }
 
-	for sig := range sigCh {
-		fireSignalHook(PreSignal, sig)
-		switch sig {
-		case syscall.SIGHUP:
-			log.Debug(fmt.Sprintf("received signal '%v', now forking", sig))
-			err := fork()
-			if err != nil {
-				log.Error("fork a process failed", err)
-			}
-		}
-		fireSignalHook(PostSignal, sig)
-	}
-}
+// add fork and file descriptions order flags
 
-func fork() (err error) {
-	graceMux.Lock()
-	defer graceMux.Unlock()
-	if forked {
-		return
-	}
-	forked = true
+func parseCommandLine() (args []string) { _ = "STUB: not implemented"; return nil }
 
-	var orderArgs = make([]string, len(filesOffsetMap))
-	for name, i := range filesOffsetMap {
-		orderArgs[i] = name
-	}
+// ignore process path
 
-	// add fork and file descriptions order flags
-	args := append(parseCommandLine(), "-fork")
-	if len(filesOffsetMap) > 0 {
-		args = append(args, fmt.Sprintf(`-filesorder=%s`, strings.Join(orderArgs, ",")))
-	}
+// ignore fork flags
 
-	if err = newCommand(args...); err != nil {
-		log.Error(fmt.Sprintf("fork a process failed, %v", args), err)
-		return
-	}
-	log.Warn(fmt.Sprintf("fork process %v", args))
-	return
-}
+func newCommand(args ...string) error { _ = "STUB: not implemented"; return nil }
 
-func parseCommandLine() (args []string) {
-	if len(os.Args) <= 1 {
-		return
-	}
-	// ignore process path
-	for _, arg := range os.Args[1:] {
-		if arg == "-fork" {
-			// ignore fork flags
-			break
-		}
-		args = append(args, arg)
-	}
-	return
-}
+func IsFork() bool { _ = "STUB: not implemented"; return false }
 
-func newCommand(args ...string) error {
-	cmd := exec.Command(os.Args[0], args...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.ExtraFiles = files
-	return cmd.Start()
-}
+func ExtraFileOrder(name string) int { _ = "STUB: not implemented"; return 0 }
 
-func IsFork() bool {
-	return isFork
-}
-
-func ExtraFileOrder(name string) int {
-	if len(filesOrder) == 0 {
-		return -1
-	}
-	orders := strings.Split(filesOrder, ",")
-	for i, f := range orders {
-		if f == name {
-			return i
-		}
-	}
-	return -1
-}
-
-func Done() error {
-	if !IsFork() {
-		return nil
-	}
-
-	ppid := os.Getppid()
-	process, err := os.FindProcess(ppid)
-	if err != nil {
-		return err
-	}
-	err = process.Signal(syscall.SIGTERM)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+func Done() error { _ = "STUB: not implemented"; return nil }

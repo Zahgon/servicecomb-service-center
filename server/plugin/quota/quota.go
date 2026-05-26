@@ -19,12 +19,8 @@ package quota
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/plugin"
-	pb "github.com/go-chassis/cari/discovery"
 )
 
 const QUOTA plugin.Kind = "quota"
@@ -36,37 +32,16 @@ type Manager interface {
 }
 
 func GetQuota(ctx context.Context, resourceType ResourceType) int64 {
-	return plugin.Plugins().Instance(QUOTA).(Manager).GetQuota(ctx, resourceType)
+	_ = "STUB: not implemented"
+	return 0
 }
 
-func Remand(ctx context.Context, resourceType ResourceType) {
-	plugin.Plugins().Instance(QUOTA).(Manager).RemandQuotas(ctx, resourceType)
-}
+func Remand(ctx context.Context, resourceType ResourceType) { _ = "STUB: not implemented"; return }
 
 func Usage(ctx context.Context, req *Request) (int64, error) {
-	return plugin.Plugins().Instance(QUOTA).(Manager).Usage(ctx, req)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Apply 申请配额sourceType serviceinstance servicetype
-func Apply(ctx context.Context, res *Request) error {
-	if res == nil {
-		err := errors.New("invalid parameters")
-		log.Error("quota check failed", err)
-		return pb.NewError(pb.ErrInternal, err.Error())
-	}
-
-	resourceType := res.QuotaType
-	limitQuota := GetQuota(ctx, resourceType)
-	curNum, err := Usage(ctx, res)
-	if err != nil {
-		log.Error(fmt.Sprintf("%s quota check failed", resourceType), err)
-		return err
-	}
-	if curNum+res.QuotaSize > limitQuota {
-		mes := fmt.Sprintf("no quota to create %s, max num is %d, curNum is %d, apply num is %d",
-			resourceType, limitQuota, curNum, res.QuotaSize)
-		log.Error(mes, nil)
-		return pb.NewError(pb.ErrNotEnoughQuota, mes)
-	}
-	return nil
-}
+func Apply(ctx context.Context, res *Request) error { _ = "STUB: not implemented"; return nil }

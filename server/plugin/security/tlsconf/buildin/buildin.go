@@ -29,25 +29,22 @@ func init() {
 }
 
 func New() plugin.Instance {
-	return &DefaultTLS{}
+	_ = "STUB: not implemented"
+	return *
+
+	// DefaultTLS support new the *tls.Config object from certs and private key with password
+	new(plugin.Instance)
 }
 
-// DefaultTLS support new the *tls.Config object from certs and private key with password
 type DefaultTLS struct {
 }
 
 func (c *DefaultTLS) ClientConfig() (*tls.Config, error) {
-	df, ok := plugin.DynamicPluginFunc(tlsconf.TLS, "ClientConfig").(func() (*tls.Config, error))
-	if ok {
-		return df()
-	}
-	return GetClientTLSConfig()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *DefaultTLS) ServerConfig() (*tls.Config, error) {
-	df, ok := plugin.DynamicPluginFunc(tlsconf.TLS, "ServerConfig").(func() (*tls.Config, error))
-	if ok {
-		return df()
-	}
-	return GetServerTLSConfig()
+	_ = "STUB: not implemented"
+	return nil, nil
 }

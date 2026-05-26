@@ -18,25 +18,14 @@
 package model
 
 import (
-	"strconv"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/go-chassis/cari/discovery"
 )
 
 func GetDomainProject(resource interface{}) (domainProject string) {
-	switch r := resource.(type) {
-	case *dump.Microservice:
-		_, domainProject = path.GetInfoFromSvcKV(
-			util.StringToBytesWithNoCopy(r.Key))
-	case *dump.Instance:
-		_, _, domainProject = path.GetInfoFromInstKV(
-			util.StringToBytesWithNoCopy(r.Key))
-	}
-	return
+	_ = "STUB: not implemented"
+	return ""
 }
 
 type Service struct {
@@ -50,39 +39,15 @@ type Service struct {
 	Timestamp     int64 // the seconds from 0 to now
 }
 
-func (s *Service) AppendVersion(v string) {
-	s.Versions = append(s.Versions, v)
-}
+func (s *Service) AppendVersion(v string) { _ = "STUB: not implemented"; return }
 
-func (s *Service) AppendFramework(property *discovery.FrameWork) {
-	if property == nil || property.Name == "" {
-		return
-	}
-	for _, fw := range s.Frameworks {
-		if fw.Name == property.Name && fw.Version == property.Version {
-			return
-		}
-	}
-	s.Frameworks = append(s.Frameworks, property)
-}
+func (s *Service) AppendFramework(property *discovery.FrameWork) { _ = "STUB: not implemented"; return }
 
-func (s *Service) AppendEndpoints(endpoints []string) {
-	s.Endpoints = append(s.Endpoints, endpoints...)
-}
+func (s *Service) AppendEndpoints(endpoints []string) { _ = "STUB: not implemented"; return }
 
-func (s *Service) UpdateTimestamp(t string) {
-	d, err := strconv.ParseInt(t, 10, 64)
-	if err != nil {
-		return
-	}
-	if s.Timestamp == 0 || s.Timestamp > d {
-		s.Timestamp = d
-	}
-}
+func (s *Service) UpdateTimestamp(t string) { _ = "STUB: not implemented"; return }
 
-func (s *Service) Age() time.Duration {
-	return time.Since(time.Unix(s.Timestamp, 0).Local())
-}
+func (s *Service) Age() time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
 type Instance struct {
 	DomainProject string
@@ -97,28 +62,8 @@ type Instance struct {
 	Timestamp     int64 // the seconds from 0 to now
 }
 
-func (s *Instance) SetLease(hc *discovery.HealthCheck) {
-	if hc == nil {
-		s.Lease = -1
-		return
-	}
-	if hc.Mode == discovery.CHECK_BY_PLATFORM {
-		s.Lease = 0
-		return
-	}
-	s.Lease = int64(hc.Interval * (hc.Times + 1))
-}
+func (s *Instance) SetLease(hc *discovery.HealthCheck) { _ = "STUB: not implemented"; return }
 
-func (s *Instance) UpdateTimestamp(t string) {
-	d, err := strconv.ParseInt(t, 10, 64)
-	if err != nil {
-		return
-	}
-	if s.Timestamp == 0 || s.Timestamp > d {
-		s.Timestamp = d
-	}
-}
+func (s *Instance) UpdateTimestamp(t string) { _ = "STUB: not implemented"; return }
 
-func (s *Instance) Age() time.Duration {
-	return time.Since(time.Unix(s.Timestamp, 0).Local())
-}
+func (s *Instance) Age() time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }

@@ -27,10 +27,4 @@ type Options struct {
 	HealthInterval time.Duration
 }
 
-func ToOptions() Options {
-	return Options{
-		ReadTimeout:    ReadTimeout,
-		SendTimeout:    SendTimeout,
-		HealthInterval: HeartbeatInterval,
-	}
-}
+func ToOptions() Options { _ = "STUB: not implemented"; return *new(Options) }

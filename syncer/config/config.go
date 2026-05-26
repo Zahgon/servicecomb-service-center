@@ -17,16 +17,6 @@
 
 package config
 
-import (
-	"fmt"
-	"path/filepath"
-
-	"github.com/go-chassis/go-archaius"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-)
-
 var config Config
 
 type Config struct {
@@ -51,36 +41,17 @@ type Peer struct {
 	Token string `yaml:"token"`
 }
 
-func Init() error {
-	err := archaius.AddFile(filepath.Join(util.GetAppRoot(), "conf", "syncer.yaml"))
-	if err != nil {
-		log.Warn(fmt.Sprintf("can not add syncer config file source, error: %s", err))
-		return err
-	}
-
-	err = Reload()
-	if err != nil {
-		log.Fatal("reload syncer configs failed", err)
-		return err
-	}
-	return nil
-}
+func Init() error { _ = "STUB: not implemented"; return nil }
 
 // Reload all configurations
-func Reload() error {
-	err := archaius.UnmarshalConfig(&config)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+func Reload() error { _ = "STUB: not implemented"; return nil }
 
 // GetConfig return the syncer full configurations
 func GetConfig() Config {
-	return config
+	_ = "STUB: not implemented"
+
+	// SetConfig for UT
+	return *new(Config)
 }
 
-// SetConfig for UT
-func SetConfig(c Config) {
-	config = c
-}
+func SetConfig(c Config) { _ = "STUB: not implemented"; return }

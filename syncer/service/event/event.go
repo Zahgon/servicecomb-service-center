@@ -19,37 +19,9 @@ package event
 
 import (
 	"context"
-	"encoding/json"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	v1sync "github.com/apache/servicecomb-service-center/syncer/api/v1"
 )
 
 func Publish(ctx context.Context, action string, resourceType string, resource interface{}) {
-	eventID, err := v1sync.NewEventID()
-	if err != nil {
-		log.Error("fail to create eventID", err)
-		return
-	}
-	resourceValue, err := json.Marshal(resource)
-	if err != nil {
-		log.Error("fail to marshal the resource", err)
-		return
-	}
-
-	e := &v1sync.Event{
-		Id: eventID,
-		Opts: map[string]string{
-			string(util.CtxDomain):  util.ParseDomain(ctx),
-			string(util.CtxProject): util.ParseProject(ctx),
-		},
-		Subject:   resourceType,
-		Action:    action,
-		Value:     resourceValue,
-		Timestamp: v1sync.Timestamp(),
-	}
-	Send(&Event{
-		Event: e,
-	})
+	_ = "STUB: not implemented"
+	return
 }

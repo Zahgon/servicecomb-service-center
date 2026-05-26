@@ -23,20 +23,13 @@ import (
 	v1sync "github.com/apache/servicecomb-service-center/syncer/api/v1"
 
 	pb "github.com/go-chassis/cari/discovery"
-	"github.com/go-chassis/cari/pkg/errsvc"
 )
 
 const (
 	Microservice = "service"
 )
 
-func NewMicroservice(e *v1sync.Event) Resource {
-	m := &microservice{
-		event: e,
-	}
-	m.manager = new(metadataManage)
-	return m
-}
+func NewMicroservice(e *v1sync.Event) Resource { _ = "STUB: not implemented"; return *new(Resource) }
 
 type microservice struct {
 	event *v1sync.Event
@@ -61,76 +54,31 @@ type serviceManager interface {
 	UnregisterService(ctx context.Context, request *pb.DeleteServiceRequest) error
 }
 
-func (m *microservice) loadInput() error {
-	m.createInput = new(pb.CreateServiceRequest)
-	cre := newInputParam(m.createInput, func() {
-		m.serviceID = m.createInput.Service.ServiceId
-	})
-
-	m.updateInput = new(pb.UpdateServicePropsRequest)
-	upd := newInputParam(m.updateInput, func() {
-		m.serviceID = m.updateInput.ServiceId
-	})
-
-	m.deleteInput = new(pb.DeleteServiceRequest)
-	del := newInputParam(m.deleteInput, func() {
-		m.serviceID = m.deleteInput.ServiceId
-	})
-
-	return newInputLoader(
-		m.event,
-		cre,
-		upd,
-		del,
-	).loadInput()
-}
+func (m *microservice) loadInput() error { _ = "STUB: not implemented"; return nil }
 
 func (m *microservice) LoadCurrentResource(ctx context.Context) *Result {
-	err := m.loadInput()
-	if err != nil {
-		return FailResult(err)
-	}
-
-	cur, err := m.manager.GetService(ctx, &pb.GetServiceRequest{
-		ServiceId: m.serviceID,
-	})
-	if err != nil {
-		if errsvc.IsErrEqualCode(err, pb.ErrServiceNotExists) {
-			return nil
-		}
-
-		return FailResult(err)
-	}
-	m.cur = cur
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *microservice) NeedOperate(ctx context.Context) *Result {
-	c := &checker{
-		curNotNil: m.cur != nil,
-		event:     m.event,
-		updateTime: func() (int64, error) {
-			return formatUpdateTimeSecond(m.cur.ModTimestamp)
-		},
-		resourceID: m.serviceID,
-	}
-	c.tombstoneLoader = c
-	return c.needOperate(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *microservice) CreateHandle(ctx context.Context) error {
-	_, err := m.manager.RegisterService(ctx, m.createInput)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *microservice) UpdateHandle(ctx context.Context) error {
-	return m.manager.PutServiceProperties(ctx, m.updateInput)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *microservice) DeleteHandle(ctx context.Context) error {
-	return m.manager.UnregisterService(ctx, m.deleteInput)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (m *microservice) Operate(ctx context.Context) *Result {
-	return newOperator(m).operate(ctx, m.event.Action)
-}
+func (m *microservice) Operate(ctx context.Context) *Result { _ = "STUB: not implemented"; return nil }

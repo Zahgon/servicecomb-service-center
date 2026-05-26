@@ -20,17 +20,9 @@ package quota
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/plugin/quota"
 )
 
 const TypeRole quota.ResourceType = "ROLE"
 
-func ApplyRole(ctx context.Context, size int64) error {
-	return quota.Apply(ctx, &quota.Request{
-		QuotaType: TypeRole,
-		Domain:    util.ParseDomain(ctx),
-		Project:   util.ParseProject(ctx),
-		QuotaSize: size,
-	})
-}
+func ApplyRole(ctx context.Context, size int64) error { _ = "STUB: not implemented"; return nil }

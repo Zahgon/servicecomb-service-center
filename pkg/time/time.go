@@ -24,19 +24,10 @@ type Time struct {
 	nsec int64
 }
 
-func (t Time) String() string {
-	return t.Local().String()
-}
+func (t Time) String() string { _ = "STUB: not implemented"; return "" }
 
-func (t Time) UTC() time.Time {
-	return time.Unix(t.sec, t.nsec).UTC()
-}
+func (t Time) UTC() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (t Time) Local() time.Time {
-	return time.Unix(t.sec, t.nsec).Local()
-}
+func (t Time) Local() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func FromTime(t time.Time) Time {
-	utc := t.UTC()
-	return Time{utc.Unix(), int64(utc.Nanosecond())}
-}
+func FromTime(t time.Time) Time { _ = "STUB: not implemented"; return *new(Time) }

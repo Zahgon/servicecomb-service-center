@@ -19,46 +19,23 @@ package mongo
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-chassis/cari/discovery"
-
-	"github.com/apache/servicecomb-service-center/datasource/cache"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/dao"
 )
 
 func GetConsumerIDs(ctx context.Context, provider *discovery.MicroService) ([]string, error) {
-	if provider == nil || len(provider.ServiceId) == 0 {
-		return nil, fmt.Errorf("invalid provider")
-	}
-
-	var err error
-	serviceDeps, ok := cache.GetProviderServiceOfDeps(provider)
-	if !ok {
-		serviceDeps, err = dao.GetProviderDeps(ctx, provider)
-		if err != nil {
-			return nil, err
-		}
-	}
-	consumerIDs := make([]string, 0, len(serviceDeps.Dependency))
-	for _, serviceKeys := range serviceDeps.Dependency {
-		id, err := GetServiceID(ctx, serviceKeys)
-		if err != nil {
-			return nil, err
-		}
-		consumerIDs = append(consumerIDs, id)
-	}
-	return consumerIDs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func GetConsumers(ctx context.Context, domainProject string, provider *discovery.MicroService,
 	opts ...DependencyRelationFilterOption) ([]*discovery.MicroService, error) {
-	dr := NewProviderDependencyRelation(ctx, domainProject, provider)
-	return dr.GetDependencyConsumers(opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func GetProviders(ctx context.Context, domainProject string, consumer *discovery.MicroService,
 	opts ...DependencyRelationFilterOption) ([]*discovery.MicroService, error) {
-	dr := NewConsumerDependencyRelation(ctx, domainProject, consumer)
-	return dr.GetDependencyProviders(opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

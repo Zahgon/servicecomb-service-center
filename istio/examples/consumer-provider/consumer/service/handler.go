@@ -18,44 +18,15 @@
 package service
 
 import (
-	"fmt"
-	"io"
 	"net/http"
-	"strconv"
 )
 
 func (s *Server) HandleHealth(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *Server) HandleSqrt(w http.ResponseWriter, r *http.Request) {
-	value := 0
-	var err error
-	keyValue, ok := r.URL.Query()["x"]
-	if ok {
-		value, err = strconv.Atoi(keyValue[0])
-		if err != nil {
-			fmt.Printf("input value error: %s", err.Error())
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-	}
-	fmt.Println("handle request")
-	resp, err := http.Get(fmt.Sprintf("http://provider:8081/sqrt?x=%d", value))
-	if err != nil {
-		fmt.Printf("http get provider error: %s", err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-
-	if err != nil {
-		fmt.Printf("read http body error: %s", err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	io.WriteString(w, fmt.Sprintf("Get result from microservice provider: %s", string(body)))
+	_ = "STUB: not implemented"
+	return
 }

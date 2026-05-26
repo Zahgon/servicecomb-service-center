@@ -20,25 +20,13 @@ package quota
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/plugin/quota"
 )
 
 const TypeService quota.ResourceType = "SERVICE"
 
-func ServiceQuota() int64 {
-	return quota.GetQuota(context.Background(), TypeService)
-}
+func ServiceQuota() int64 { _ = "STUB: not implemented"; return 0 }
 
-func ApplyService(ctx context.Context, size int64) error {
-	return quota.Apply(ctx, &quota.Request{
-		QuotaType: TypeService,
-		Domain:    util.ParseDomain(ctx),
-		Project:   util.ParseProject(ctx),
-		QuotaSize: size,
-	})
-}
+func ApplyService(ctx context.Context, size int64) error { _ = "STUB: not implemented"; return nil }
 
-func RemandService(ctx context.Context) {
-	quota.Remand(ctx, TypeService)
-}
+func RemandService(ctx context.Context) { _ = "STUB: not implemented"; return }

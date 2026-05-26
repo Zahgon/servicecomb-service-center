@@ -26,10 +26,9 @@ import (
 type SCManager struct {
 }
 
-func (ds *SCManager) UpgradeVersion(_ context.Context) error {
-	return nil
-}
+func (ds *SCManager) UpgradeVersion(_ context.Context) error { _ = "STUB: not implemented"; return nil }
 
 func (ds *SCManager) GetClusters(_ context.Context) (etcdadpt.Clusters, error) {
-	return nil, nil
+	_ = "STUB: not implemented"
+	return *new(etcdadpt.Clusters), nil
 }

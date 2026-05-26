@@ -18,20 +18,10 @@
 package adaptor
 
 import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 )
 
 func BuildCacher(t kvstore.Type, cfg *kvstore.Options, cache kvstore.Cache) kvstore.Cacher {
-	kc := kvstore.NewCommonCacher(cfg, cache)
-	switch t {
-	case sd.TypeService:
-		return NewServiceCacher(kc)
-	case sd.TypeServiceIndex:
-		return NewServiceIndexCacher(kc)
-	case sd.TypeInstance:
-		return NewInstanceCacher(kc)
-	default:
-		return kc
-	}
+	_ = "STUB: not implemented"
+	return *new(kvstore.Cacher)
 }

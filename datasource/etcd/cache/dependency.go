@@ -23,7 +23,6 @@ import (
 	pb "github.com/go-chassis/cari/discovery"
 
 	"github.com/apache/servicecomb-service-center/pkg/cache"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var DependencyRule = &DependencyRuleCache{
@@ -45,22 +44,11 @@ type DependencyRuleCache struct {
 }
 
 func (f *DependencyRuleCache) ExistRule(ctx context.Context, consumerID string, provider *pb.MicroServiceKey) bool {
-	cloneCtx := context.WithValue(context.WithValue(ctx,
-		CtxConsumerID, consumerID),
-		CtxProviderKey, provider)
-
-	node, _ := f.Tree.Get(cloneCtx, cache.Options().Temporary(ctx.Value(util.CtxNocache) == "1"))
-	if node == nil {
-		return false
-	}
-	v := node.Cache.Get(DepResult).(*DependencyRuleItem)
-	if !v.Access {
-		v.Access = true
-		return false
-	}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (f *DependencyRuleCache) Remove(provider *pb.MicroServiceKey) {
-	f.Tree.Remove(context.WithValue(context.Background(), CtxProviderKey, provider))
+	_ = "STUB: not implemented"
+	return
 }

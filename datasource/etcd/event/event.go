@@ -17,14 +17,4 @@
 
 package event
 
-import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-)
-
-func Initialize() {
-	kvstore.AddEventHandler(NewServiceEventHandler())
-	kvstore.AddEventHandler(NewInstanceEventHandler())
-	kvstore.AddEventHandler(NewTagEventHandler())
-	kvstore.AddEventHandler(NewDependencyEventHandler())
-	kvstore.AddEventHandler(NewDependencyRuleEventHandler())
-}
+func Initialize() { _ = "STUB: not implemented"; return }

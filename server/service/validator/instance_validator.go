@@ -18,7 +18,6 @@
 package validator
 
 import (
-	"math"
 	"regexp"
 
 	"github.com/apache/servicecomb-service-center/pkg/util"
@@ -49,110 +48,63 @@ var (
 	regionRegex, _               = regexp.Compile(`^[A-Za-z0-9_.-]+$`)
 )
 
-func FindInstanceReqValidator() *validate.Validator {
-	return findInstanceReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ConsumerServiceId", GetInstanceReqValidator().GetRule("ConsumerServiceId"))
-		v.AddRules(MicroServiceSearchKeyValidator().GetRules())
-		v.AddRule("Tags", UpdateTagReqValidator().GetRule("Key"))
-	})
-}
+func FindInstanceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func FindManyInstanceReqValidator() *validate.Validator {
-	return batchFindInstanceReqValidator.Init(func(v *validate.Validator) {
-		var findServiceValidator validate.Validator
-		findServiceValidator.AddRule("Service", &validate.Rule{Min: 1})
-		findServiceValidator.AddSub("Service", MicroServiceSearchKeyValidator())
-		var findInstanceValidator validate.Validator
-		findInstanceValidator.AddRule("Instance", &validate.Rule{Min: 1})
-		findInstanceValidator.AddSub("Instance", HeartbeatReqValidator())
-		v.AddRule("ConsumerServiceId", GetInstanceReqValidator().GetRule("ConsumerServiceId"))
-		v.AddSub("Services", &findServiceValidator)
-		v.AddSub("Instances", &findInstanceValidator)
-	})
-}
+func FindManyInstanceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func GetInstanceReqValidator() *validate.Validator {
-	return getInstanceReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ConsumerServiceId", &validate.Rule{Max: 64, Regexp: serviceIDRegex})
-		v.AddRule("ProviderServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("ProviderInstanceId", HeartbeatReqValidator().GetRule("InstanceId"))
-		v.AddRule("Tags", UpdateTagReqValidator().GetRule("Key"))
-	})
-}
+func GetInstanceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func HeartbeatReqValidator() *validate.Validator {
-	return heartbeatReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		v.AddRule("InstanceId", &validate.Rule{Min: 1, Max: 64, Regexp: simpleNameAllowEmptyRegex})
-	})
-}
+func HeartbeatReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func UpdateInstanceStatusReqValidator() *validate.Validator {
-	return updateInstanceReqValidator.Init(func(v *validate.Validator) {
-		v.AddRules(HeartbeatReqValidator().GetRules())
-		v.AddRule("Status", &validate.Rule{Regexp: updateInstStatusRegex})
-	})
-}
+func UpdateInstanceStatusReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func UpdateInstancePropsReqValidator() *validate.Validator {
-	return updateInstancePropsReqValidator.Init(func(v *validate.Validator) {
-		v.AddRules(HeartbeatReqValidator().GetRules())
-	})
-}
+func UpdateInstancePropsReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-func RegisterInstanceReqValidator() *validate.Validator {
-	return registerInstanceReqValidator.Init(func(v *validate.Validator) {
-		var healthCheckInfoValidator validate.Validator
-		healthCheckInfoValidator.AddRule("Mode", &validate.Rule{Regexp: hbModeRegex})
-		healthCheckInfoValidator.AddRule("Port", &validate.Rule{Max: math.MaxUint16, Min: 0})
-		healthCheckInfoValidator.AddRule("Times", &validate.Rule{Max: math.MaxInt32})
-		healthCheckInfoValidator.AddRule("Interval", &validate.Rule{Min: 1, Max: math.MaxInt32})
-		healthCheckInfoValidator.AddRule("Url", &validate.Rule{Regexp: urlRegex})
+func RegisterInstanceReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-		var dataCenterInfoValidator validate.Validator
-		dataCenterInfoValidator.AddRule("Name", &validate.Rule{Min: 1, Max: 128, Regexp: simpleNameRegex})
-		dataCenterInfoValidator.AddRule("Region", &validate.Rule{Min: 1, Max: 128, Regexp: regionRegex})
-		dataCenterInfoValidator.AddRule("AvailableZone", &validate.Rule{Min: 1, Max: 128, Regexp: regionRegex})
-
-		var microServiceInstanceValidator validate.Validator
-		microServiceInstanceValidator.AddRule("InstanceId", &validate.Rule{Max: 64, Regexp: simpleNameAllowEmptyRegex})
-		microServiceInstanceValidator.AddRule("ServiceId", GetServiceReqValidator().GetRule("ServiceId"))
-		// allow empty endpoint register for client only
-		microServiceInstanceValidator.AddRule("Endpoints", &validate.Rule{Regexp: epRegex})
-		microServiceInstanceValidator.AddRule("HostName", &validate.Rule{Max: 64, Min: 1, Regexp: epRegex})
-		microServiceInstanceValidator.AddSub("HealthCheck", &healthCheckInfoValidator)
-		microServiceInstanceValidator.AddRule("Status", &validate.Rule{Regexp: instStatusRegex})
-		microServiceInstanceValidator.AddSub("DataCenterInfo", &dataCenterInfoValidator)
-
-		v.AddRule("Instance", &validate.Rule{Min: 1})
-		v.AddSub("Instance", &microServiceInstanceValidator)
-	})
-}
+// allow empty endpoint register for client only
 
 func ValidateRegisterInstanceRequest(in *discovery.RegisterInstanceRequest) error {
-	return RegisterInstanceReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUnregisterInstanceRequest(in *discovery.UnregisterInstanceRequest) error {
-	return HeartbeatReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateHeartbeatRequest(in *discovery.HeartbeatRequest) error {
-	return HeartbeatReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetOneInstanceRequest(in *discovery.GetOneInstanceRequest) error {
-	return GetInstanceReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateGetInstancesRequest(in *discovery.GetInstancesRequest) error {
-	return GetInstanceReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateFindInstancesRequest(in *discovery.FindInstancesRequest) error {
-	return FindInstanceReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateFindManyInstancesRequest(in *discovery.BatchFindInstancesRequest) error {
-	return FindManyInstanceReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUpdateInstanceStatusRequest(in *discovery.UpdateInstanceStatusRequest) error {
-	return UpdateInstanceStatusReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateUpdateInstancePropsRequest(in *discovery.UpdateInstancePropsRequest) error {
-	return UpdateInstancePropsReqValidator().Validate(in)
+	_ = "STUB: not implemented"
+	return nil
 }

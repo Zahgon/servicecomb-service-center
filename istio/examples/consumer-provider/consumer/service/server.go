@@ -18,12 +18,9 @@
 package service
 
 import (
-	"fmt"
-	"net/http"
 	"sync"
 
 	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 )
 
 type Server struct {
@@ -31,30 +28,10 @@ type Server struct {
 	muxer *mux.Router
 }
 
-func NewServer(wg *sync.WaitGroup) *Server {
-	s := &Server{
-		wg: wg,
-	}
+func NewServer(wg *sync.WaitGroup) *Server { _ = "STUB: not implemented"; return nil }
 
-	// add one job to wait group
-	s.wg.Add(1)
-	return s
-}
+// add one job to wait group
 
-func (s *Server) WithMuxer() {
-	s.muxer = mux.NewRouter()
-	s.muxer.HandleFunc("/sqrt", s.HandleSqrt).Methods("GET")
-	s.muxer.HandleFunc("/healthz/ready", s.HandleHealth).Methods("GET")
-}
+func (s *Server) WithMuxer() { _ = "STUB: not implemented"; return }
 
-func (s *Server) Start() {
-	s.WithMuxer()
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-	})
-	fmt.Println("Consumer started!!")
-	handler := c.Handler(s.muxer)
-	http.ListenAndServe(fmt.Sprintf("%s:%d", "0.0.0.0", 8080), handler)
-
-	s.wg.Done()
-}
+func (s *Server) Start() { _ = "STUB: not implemented"; return }

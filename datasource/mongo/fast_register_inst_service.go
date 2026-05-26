@@ -25,31 +25,31 @@ type RegisterFastInstanceService struct {
 }
 
 func NewFastRegisterInstanceService() *RegisterFastInstanceService {
-	fastRegisterQueueSize := fastRegConfig.QueueSize
-	return &RegisterFastInstanceService{
-		InstEventCh:  make(chan *InstanceRegisterEvent, fastRegisterQueueSize),
-		FailedInstCh: make(chan *InstanceRegisterEvent, fastRegisterQueueSize),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func GetFastRegisterInstanceService() *RegisterFastInstanceService {
-	return fastRegisterInstanceService
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func SetFastRegisterInstanceService(service *RegisterFastInstanceService) {
-	fastRegisterInstanceService = service
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *RegisterFastInstanceService) AddEvent(event *InstanceRegisterEvent) {
-	s.InstEventCh <- event
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *RegisterFastInstanceService) AddFailedEvent(event *InstanceRegisterEvent) {
-	s.FailedInstCh <- event
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *RegisterFastInstanceService) AddFailedEvents(events []*InstanceRegisterEvent) {
-	for _, event := range events {
-		s.FailedInstCh <- event
-	}
+	_ = "STUB: not implemented"
+	return
 }

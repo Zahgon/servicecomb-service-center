@@ -18,55 +18,13 @@
 package tombstone
 
 import (
-	"context"
-	"fmt"
 	"time"
-
-	"github.com/apache/servicecomb-service-center/eventbase/model"
-	"github.com/apache/servicecomb-service-center/eventbase/service/tombstone"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/config"
 )
 
 const (
 	defaultExpireTime = time.Hour * 24
 )
 
-func DeleteExpireTombStone() error {
-	expireTime := getExpireTime()
-	request := &model.ListTombstoneRequest{
-		BeforeTimestamp: time.Now().Add(-expireTime).UnixNano(),
-	}
-	tombstones, err := tombstone.List(context.Background(), request)
-	if err != nil {
-		log.Error("get tombstone list fail", err)
-		return err
-	}
+func DeleteExpireTombStone() error { _ = "STUB: not implemented"; return nil }
 
-	if len(tombstones) <= 0 {
-		log.Info("expire tombstone data is empty")
-		return nil
-	}
-
-	err = tombstone.Delete(context.Background(), tombstones...)
-	if err != nil {
-		log.Error("delete tombstone data list fail", err)
-		return err
-	}
-	return nil
-}
-
-func getExpireTime() time.Duration {
-	reserve := config.GetString("sync.tombstone.retire.reserve", "")
-	if len(reserve) <= 0 {
-		log.Warn("tombstone reserve is empty")
-		return defaultExpireTime
-	}
-
-	expireTime, err := time.ParseDuration(reserve)
-	if err != nil {
-		log.Error(fmt.Sprintf("tombstone expireTime parseDuration expire:%s", reserve), err)
-		return defaultExpireTime
-	}
-	return expireTime
-}
+func getExpireTime() time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }

@@ -17,10 +17,6 @@
 
 package sdcommon
 
-import (
-	"strconv"
-)
-
 const (
 	ActionCreate ActionType = iota
 	ActionUpdate
@@ -31,20 +27,7 @@ const (
 
 type ActionType int
 
-func (at ActionType) String() string {
-	switch at {
-	case ActionCreate:
-		return "CREATE"
-	case ActionUpdate:
-		return "UPDATE"
-	case ActionDelete:
-		return "DELETE"
-	case ActionPUT:
-		return "PUT"
-	default:
-		return "ACTION" + strconv.Itoa(int(at))
-	}
-}
+func (at ActionType) String() string { _ = "STUB: not implemented"; return "" }
 
 type ListWatchResp struct {
 	Action ActionType

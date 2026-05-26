@@ -19,13 +19,9 @@ package etcd
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/parser"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -37,56 +33,17 @@ type Indexer struct {
 	Root   string
 }
 
-func (i *Indexer) CheckPrefix(key string) error {
-	if strings.Index(key, i.Root) != 0 {
-		return fmt.Errorf("search '%s' mismatch pattern %s", key, i.Root)
-	}
-	return nil
-}
+func (i *Indexer) CheckPrefix(key string) error { _ = "STUB: not implemented"; return nil }
 
 func (i *Indexer) Search(ctx context.Context, opts ...etcdadpt.OpOption) (*kvstore.Response, error) {
-	op := etcdadpt.OpGet(opts...)
-	key := util.BytesToStringWithNoCopy(op.Key)
-
-	log.Debug(fmt.Sprintf("search '%s' match special options, request etcd server, opts: %s", key, op))
-
-	if err := i.CheckPrefix(key); err != nil {
-		return nil, err
-	}
-
-	resp, err := i.Client.Do(ctx, opts...)
-	if err != nil {
-		return nil, err
-	}
-
-	r := new(kvstore.Response)
-	r.Count = resp.Count
-	if len(resp.Kvs) == 0 || op.CountOnly {
-		return r, nil
-	}
-
-	p := i.Parser
-	if op.KeyOnly {
-		p = nil
-	}
-
-	kvs := make([]*kvstore.KeyValue, 0, len(resp.Kvs))
-	for _, src := range resp.Kvs {
-		kv := kvstore.NewKeyValue()
-		if err := FromEtcdKeyValue(kv, src, p); err != nil {
-			continue
-		}
-		kvs = append(kvs, kv)
-	}
-	r.Kvs = kvs
-	return r, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Creditable implements kvstore.Indexer#Creditable.
-func (i *Indexer) Creditable() bool {
-	return true
-}
+func (i *Indexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
 func NewEtcdIndexer(root string, p parser.Parser) (indexer *Indexer) {
-	return &Indexer{Client: etcdadpt.Instance(), Parser: p, Root: root}
+	_ = "STUB: not implemented"
+	return nil
 }

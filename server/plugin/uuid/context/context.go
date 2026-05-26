@@ -19,11 +19,8 @@ package context
 
 import (
 	"context"
-	"crypto/sha1"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/pkg/plugin"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/apache/servicecomb-service-center/server/plugin/uuid"
 	"github.com/apache/servicecomb-service-center/server/plugin/uuid/buildin"
 )
@@ -32,26 +29,12 @@ func init() {
 	plugin.RegisterPlugin(plugin.Plugin{Kind: uuid.UUID, Name: "context", New: New})
 }
 
-func New() plugin.Instance {
-	return &UUID{}
-}
+func New() plugin.Instance { _ = "STUB: not implemented"; return *new(plugin.Instance) }
 
 type UUID struct {
 	buildin.UUID
 }
 
-func (cu *UUID) fromContext(ctx context.Context) string {
-	key, ok := ctx.Value(uuid.ContextKey).(string)
-	if !ok {
-		return ""
-	}
-	return key
-}
+func (cu *UUID) fromContext(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func (cu *UUID) GetServiceID(ctx context.Context) string {
-	content := cu.fromContext(ctx)
-	if len(content) == 0 {
-		return cu.UUID.GetServiceID(ctx)
-	}
-	return fmt.Sprintf("%x", sha1.Sum(util.StringToBytesWithNoCopy(content)))
-}
+func (cu *UUID) GetServiceID(ctx context.Context) string { _ = "STUB: not implemented"; return "" }

@@ -30,9 +30,11 @@ type Repository struct {
 }
 
 func (r *Repository) New(t kvstore.Type, cfg *kvstore.Options) state.State {
-	return NewAggregator(t, cfg)
+	_ = "STUB: not implemented"
+	return *new(state.State)
 }
 
 func NewRepository(_ state.Config) state.Repository {
-	return &Repository{}
+	_ = "STUB: not implemented"
+	return *new(state.Repository)
 }

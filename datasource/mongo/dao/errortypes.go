@@ -17,14 +17,8 @@
 
 package dao
 
-import (
-	"strings"
-)
-
 const (
 	DuplicateKey = "E11000"
 )
 
-func IsDuplicateKey(err error) bool {
-	return strings.Contains(err.Error(), DuplicateKey)
-}
+func IsDuplicateKey(err error) bool { _ = "STUB: not implemented"; return false }

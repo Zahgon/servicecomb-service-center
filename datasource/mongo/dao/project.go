@@ -19,26 +19,16 @@ package dao
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/go-chassis/cari/db/mongo"
 
 	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 func AddProject(ctx context.Context, project model.Project) error {
-	result, err := mongo.GetClient().GetDB().Collection(model.CollectionProject).InsertOne(ctx, project)
-	if err == nil {
-		log.Info(fmt.Sprintf("insert project to mongodb success %s", result.InsertedID))
-	}
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func ExistProject(ctx context.Context, filter interface{}) (bool, error) {
-	result := mongo.GetClient().GetDB().Collection(model.CollectionProject).FindOne(ctx, filter)
-	if result.Err() != nil {
-		return false, nil
-	}
-	return true, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }

@@ -18,110 +18,36 @@
 package adaptor
 
 import (
-	"net/url"
-	"strconv"
-	"strings"
-
 	pb "github.com/go-chassis/cari/discovery"
 	v1 "k8s.io/api/core/v1"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func getLabel(labels map[string]string, key, def string) string {
-	if v, ok := labels[key]; ok {
-		return v
-	}
-	return def
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func getRegionAZ(node *v1.Node) (string, string) {
-	region, exists := node.Labels[LabelNodeRegion]
-	if !exists {
-		return "", ""
-	}
-	zone, exists := node.Labels[LabelNodeAZ]
-	if !exists {
-		return region, ""
-	}
-	return region, zone
-}
+func getRegionAZ(node *v1.Node) (string, string) { _ = "STUB: not implemented"; return "", "" }
 
-func getFullName(namespace, name string) string {
-	if len(namespace) != 0 {
-		return namespace + "/" + name
-	}
-	return name
-}
+func getFullName(namespace, name string) string { _ = "STUB: not implemented"; return "" }
 
-func getProtocol(port v1.EndpointPort) (string, bool) {
-	switch port.Protocol {
-	case SchemaTCP:
-		switch strings.ToUpper(port.Name) {
-		case SchemaHTTPS:
-			return protocolRest, true
-		default:
-			return protocolRest, false
-		}
-	default:
-		return strings.ToLower(string(port.Protocol)), false
-	}
-}
+func getProtocol(port v1.EndpointPort) (string, bool) { _ = "STUB: not implemented"; return "", false }
 
-func generateEndpoint(ip string, port v1.EndpointPort) string {
-	protocol, secure := getProtocol(port)
-	u := url.URL{
-		Scheme: protocol,
-		Host:   ip + ":" + strconv.FormatInt(int64(port.Port), 10),
-	}
-	if secure {
-		u.RawQuery = "sslEnabled=true"
-	}
-	return u.String()
-}
+func generateEndpoint(ip string, port v1.EndpointPort) string { _ = "STUB: not implemented"; return "" }
 
 func generateServiceKey(domainProject string, svc *v1.Service) *pb.MicroServiceKey {
-	return &pb.MicroServiceKey{
-		Tenant:      domainProject,
-		Environment: getLabel(svc.Labels, LabelEnvironment, ""),
-		AppId:       getLabel(svc.Labels, LabelApp, pb.AppID),
-		ServiceName: svc.Name,
-		Version:     getLabel(svc.Labels, LabelVersion, pb.VERSION),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func FromK8sService(domainProject string, svc *v1.Service) (ms *pb.MicroService) {
-	ms = &pb.MicroService{
-		ServiceId:   generateServiceID(domainProject, svc),
-		Environment: getLabel(svc.Labels, LabelEnvironment, ""),
-		AppId:       getLabel(svc.Labels, LabelApp, pb.AppID),
-		ServiceName: svc.Name,
-		Version:     getLabel(svc.Labels, LabelVersion, pb.VERSION),
-		Level:       "BACK",
-		Status:      pb.MS_UP,
-		Framework: &pb.FrameWork{
-			Name: Name,
-		},
-		RegisterBy: pb.REGISTERBY_PLATFORM,
-		Properties: map[string]string{
-			PropNamespace:    svc.Namespace,
-			PropServiceType:  string(svc.Spec.Type),
-			PropExternalName: svc.Spec.ExternalName,
-		},
-	}
-	ms.Timestamp = strconv.FormatInt(svc.CreationTimestamp.Unix(), 10)
-	ms.ModTimestamp = ms.Timestamp
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func AsKeyValue(key string, v interface{}, resourceVersion string) *kvstore.KeyValue {
-	rev, _ := strconv.ParseInt(resourceVersion, 10, 64)
-	kv := kvstore.NewKeyValue()
-	kv.Key = util.StringToBytesWithNoCopy(key)
-	kv.Value = v
-	kv.ModRevision = rev
-	kv.ClusterName = state.Configuration().ClusterName
-	return kv
+	_ = "STUB: not implemented"
+	return nil
 }

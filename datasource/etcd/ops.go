@@ -19,68 +19,26 @@ package etcd
 
 import (
 	"context"
-	"strings"
 
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	serviceUtil "github.com/apache/servicecomb-service-center/datasource/etcd/util"
 	pb "github.com/go-chassis/cari/discovery"
 )
 
 func (ds *MetadataManager) CountService(ctx context.Context, request *pb.GetServiceCountRequest) (*pb.GetServiceCountResponse, error) {
-	domainProject := request.Domain
-	if request.Project != "" {
-		domainProject += path.SPLIT + request.Project
-	}
-	all, err := serviceUtil.GetOneDomainProjectServiceCount(ctx, domainProject)
-	if err != nil {
-		return nil, err
-	}
-	global, err := ds.getGlobalServiceCount(ctx, domainProject)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.GetServiceCountResponse{
-		Count: all - global,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (ds *MetadataManager) getGlobalServiceCount(ctx context.Context, domainProject string) (int64, error) {
-	if strings.Index(datasource.RegistryDomainProject+datasource.SPLIT, domainProject+datasource.SPLIT) != 0 {
-		return 0, nil
-	}
-	global, err := serviceUtil.GetGlobalServiceCount(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return global, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (ds *MetadataManager) CountInstance(ctx context.Context, request *pb.GetServiceCountRequest) (*pb.GetServiceCountResponse, error) {
-	domainProject := request.Domain
-	if request.Project != "" {
-		domainProject += path.SPLIT + request.Project
-	}
-	all, err := serviceUtil.GetOneDomainProjectInstanceCount(ctx, domainProject)
-	if err != nil {
-		return nil, err
-	}
-	global, err := ds.getGlobalInstanceCount(ctx, domainProject)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.GetServiceCountResponse{
-		Count: all - global,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (ds *MetadataManager) getGlobalInstanceCount(ctx context.Context, domainProject string) (int64, error) {
-	if strings.Index(datasource.RegistryDomainProject+path.SPLIT, domainProject+path.SPLIT) != 0 {
-		return 0, nil
-	}
-	global, err := serviceUtil.GetGlobalInstanceCount(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return global, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

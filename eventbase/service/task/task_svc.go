@@ -22,29 +22,14 @@ import (
 
 	"github.com/go-chassis/cari/sync"
 
-	"github.com/apache/servicecomb-service-center/eventbase/datasource"
 	"github.com/apache/servicecomb-service-center/eventbase/model"
 )
 
-func Delete(ctx context.Context, tasks ...*sync.Task) error {
-	return datasource.GetTaskDao().Delete(ctx, tasks...)
-}
+func Delete(ctx context.Context, tasks ...*sync.Task) error { _ = "STUB: not implemented"; return nil }
 
-func Update(ctx context.Context, task *sync.Task) error {
-	return datasource.GetTaskDao().Update(ctx, task)
-}
+func Update(ctx context.Context, task *sync.Task) error { _ = "STUB: not implemented"; return nil }
 
 func List(ctx context.Context, request *model.ListTaskRequest) ([]*sync.Task, error) {
-	opts := []datasource.TaskFindOption{
-		datasource.WithDomain(request.Domain),
-		datasource.WithProject(request.Project),
-		datasource.WithAction(request.Action),
-		datasource.WithDataType(request.ResourceType),
-		datasource.WithStatus(request.Status),
-	}
-	tasks, err := datasource.GetTaskDao().List(ctx, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return tasks, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

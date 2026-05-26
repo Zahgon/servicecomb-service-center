@@ -20,44 +20,22 @@ package dao
 import (
 	"context"
 
-	"github.com/go-chassis/cari/db/mongo"
 	"github.com/go-chassis/cari/discovery"
 
-	"github.com/apache/servicecomb-service-center/datasource"
 	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	mutil "github.com/apache/servicecomb-service-center/datasource/mongo/util"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func GetProviderDeps(ctx context.Context, provider *discovery.MicroService) (*discovery.MicroServiceDependency, error) {
-	return getServiceOfDeps(ctx, datasource.Provider, provider)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func getServiceOfDeps(ctx context.Context, ruleType string, provider *discovery.MicroService) (*discovery.MicroServiceDependency, error) {
-	filter := mutil.NewFilter(
-		mutil.ServiceType(ruleType),
-		mutil.ServiceKeyTenant(util.ParseDomainProject(ctx)),
-		mutil.ServiceKeyAppID(provider.AppId),
-		mutil.ServiceKeyServiceName(provider.ServiceName),
-		mutil.ServiceKeyServiceVersion(provider.Version),
-	)
-	depRule, err := getDeps(ctx, filter)
-	if err != nil {
-		return nil, err
-	}
-	return depRule.Dep, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func getDeps(ctx context.Context, filter interface{}) (*model.DependencyRule, error) {
-	findRes := mongo.GetClient().GetDB().Collection(model.CollectionDep).FindOne(ctx, filter)
-
-	var depRule *model.DependencyRule
-	if findRes.Err() != nil {
-		return nil, datasource.ErrNoData
-	}
-	err := findRes.Decode(&depRule)
-	if err != nil {
-		return nil, err
-	}
-	return depRule, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

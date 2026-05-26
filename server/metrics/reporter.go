@@ -28,6 +28,4 @@ func init() {
 type Reporter struct {
 }
 
-func (r *Reporter) Report() {
-	ReportMetaMetrics()
-}
+func (r *Reporter) Report() { _ = "STUB: not implemented"; return }

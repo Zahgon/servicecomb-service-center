@@ -19,10 +19,8 @@ package etcd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -35,36 +33,14 @@ type CacheIndexer struct {
 }
 
 func (i *CacheIndexer) Search(ctx context.Context, opts ...etcdadpt.OpOption) (*kvstore.Response, error) {
-	op := etcdadpt.OpGet(opts...)
-	key := util.BytesToStringWithNoCopy(op.Key)
-
-	if op.NoCache() {
-		return i.Indexer.Search(ctx, opts...)
-	}
-
-	if err := i.CheckPrefix(key); err != nil {
-		return nil, fmt.Errorf("%s, cache is '%s'", err.Error(), i.Cache.Name())
-	}
-
-	resp, err := i.CacheIndexer.Search(ctx, opts...)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.Count > 0 || op.CacheOnly() {
-		return resp, nil
-	}
-	return i.Indexer.Search(ctx, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Creditable implements kvstore.Indexer#Creditable.
-func (i *CacheIndexer) Creditable() bool {
-	return i.Indexer.Creditable()
-}
+func (i *CacheIndexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
 func NewCacheIndexer(cfg *kvstore.Options, c kvstore.Cache) *CacheIndexer {
-	return &CacheIndexer{
-		Indexer:      NewEtcdIndexer(cfg.Key, cfg.Parser),
-		CacheIndexer: kvstore.NewCacheIndexer(c),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

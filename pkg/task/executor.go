@@ -18,10 +18,6 @@
 package task
 
 import (
-	"context"
-	"errors"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/queue"
 	"github.com/go-chassis/foundation/gopool"
 )
@@ -32,44 +28,10 @@ type Executor struct {
 	latestTask Task
 }
 
-func (s *Executor) AddTask(task Task) (err error) {
-	if task == nil {
-		return errors.New("invalid parameters")
-	}
+func (s *Executor) AddTask(task Task) (err error) { _ = "STUB: not implemented"; return nil }
 
-	err = s.tasks.Put(task)
-	if err != nil {
-		return
-	}
-	return s.latestTask.Err()
-}
+func (s *Executor) Execute() { _ = "STUB: not implemented"; return }
 
-func (s *Executor) Execute() {
-	select {
-	case task, ok := <-s.tasks.Chan():
-		if !ok {
-			return
-		}
-		s.pool.Do(func(ctx context.Context) {
-			at := task.(Task)
-			err := at.Do(ctx)
-			if err != nil {
-				log.Error("", err)
-			}
-			s.latestTask = at
-		})
-	default:
-	}
-}
+func (s *Executor) Close() { _ = "STUB: not implemented"; return }
 
-func (s *Executor) Close() {
-	s.tasks.Close()
-}
-
-func NewExecutor(pool *gopool.Pool, task Task) *Executor {
-	return &Executor{
-		pool:       pool,
-		tasks:      queue.NewUniQueue(),
-		latestTask: task,
-	}
-}
+func NewExecutor(pool *gopool.Pool, task Task) *Executor { _ = "STUB: not implemented"; return nil }

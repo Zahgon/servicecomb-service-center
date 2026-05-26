@@ -18,17 +18,12 @@
 package adaptor
 
 import (
-	"context"
-	"fmt"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/apache/servicecomb-service-center/pkg/goutil"
 	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/alarm"
-	pb "github.com/go-chassis/cari/discovery"
 	"github.com/go-chassis/foundation/gopool"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/informers"
@@ -86,188 +81,57 @@ func (c *K8sClient) init() (err error) {
 }
 
 func (c *K8sClient) newListWatcher(t K8sType, lister cache.SharedIndexInformer) (lw ListWatcher) {
-	lw = NewListWatcher(t, lister, c.getEvent(t))
-	return
+	_ = "STUB: not implemented"
+	return *new(ListWatcher)
 }
 
 func (c *K8sClient) getEvent(t K8sType) OnEventFunc {
-	return func(evt K8sEvent) {
-		fs, ok := c.eventFuncs.Get(t)
-		if !ok {
-			return
-		}
-		for _, f := range fs.([]OnEventFunc) {
-			f(evt)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(OnEventFunc)
 }
 
 // onPodEvent is method to build ipIndex
-func (c *K8sClient) onPodEvent(evt K8sEvent) {
-	pod, ok := evt.Object.(*v1.Pod)
-	if !ok {
-		deletedState, ok := evt.Object.(cache.DeletedFinalStateUnknown)
-		if !ok {
-			log.Warn(fmt.Sprintf("event object is not a pod %#v", evt.Object))
-			return
-		}
-		pod, ok = deletedState.Obj.(*v1.Pod)
-		if !ok {
-			log.Warn(fmt.Sprintf("deletedState is not a pod %#v", evt.Object))
-			return
-		}
-	}
-
-	if len(pod.Status.PodIP) == 0 {
-		return
-	}
-
-	podName := getFullName(pod.Namespace, pod.Name)
-	switch evt.EventType {
-	case pb.EVT_CREATE, pb.EVT_UPDATE:
-		switch pod.Status.Phase {
-		case v1.PodPending, v1.PodRunning:
-			c.ipIndex.Put(pod.Status.PodIP, podName)
-		default:
-		}
-	case pb.EVT_DELETE:
-		c.ipIndex.Remove(pod.Status.PodIP)
-	}
-}
+func (c *K8sClient) onPodEvent(evt K8sEvent) { _ = "STUB: not implemented"; return }
 
 // unsafe
-func (c *K8sClient) AppendEventFunc(t K8sType, f OnEventFunc) {
-	itf, _ := c.eventFuncs.Fetch(t, func() (interface{}, error) {
-		return []OnEventFunc{}, nil
-	})
-	fs := itf.([]OnEventFunc)
-	fs = append(fs, f)
-	c.eventFuncs.Put(t, fs)
-}
+func (c *K8sClient) AppendEventFunc(t K8sType, f OnEventFunc) { _ = "STUB: not implemented"; return }
 
 func (c *K8sClient) waitForSync(lw ListWatcher) ListWatcher {
-	<-c.ready
-	return lw
+	_ = "STUB: not implemented"
+	return *new(ListWatcher)
 }
 
-func (c *K8sClient) Services() ListWatcher {
-	return c.waitForSync(c.services)
-}
+func (c *K8sClient) Services() ListWatcher { _ = "STUB: not implemented"; return *new(ListWatcher) }
 
-func (c *K8sClient) Endpoints() ListWatcher {
-	return c.waitForSync(c.endpoints)
-}
+func (c *K8sClient) Endpoints() ListWatcher { _ = "STUB: not implemented"; return *new(ListWatcher) }
 
-func (c *K8sClient) Pods() ListWatcher {
-	return c.waitForSync(c.pods)
-}
+func (c *K8sClient) Pods() ListWatcher { _ = "STUB: not implemented"; return *new(ListWatcher) }
 
-func (c *K8sClient) Nodes() ListWatcher {
-	return c.waitForSync(c.nodes)
-}
+func (c *K8sClient) Nodes() ListWatcher { _ = "STUB: not implemented"; return *new(ListWatcher) }
 
-func (c *K8sClient) GetDomainProject() string {
-	return defaultDomainProject
-}
+func (c *K8sClient) GetDomainProject() string { _ = "STUB: not implemented"; return "" }
 
 func (c *K8sClient) GetService(namespace, name string) (svc *v1.Service) {
-	obj, ok, err := c.Services().GetStore().GetByKey(getFullName(namespace, name))
-	if err != nil {
-		log.Error(fmt.Sprintf("get k8s service[%s/%s] failed", namespace, name), err)
-		return
-	}
-	if !ok {
-		return
-	}
-	svc = obj.(*v1.Service)
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *K8sClient) GetEndpoints(namespace, name string) (ep *v1.Endpoints) {
-	obj, ok, err := c.Endpoints().GetStore().GetByKey(getFullName(namespace, name))
-	if err != nil {
-		log.Error(fmt.Sprintf("get k8s endpoints[%s/%s] failed", namespace, name), err)
-		return
-	}
-	if !ok {
-		return
-	}
-	ep = obj.(*v1.Endpoints)
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *K8sClient) GetPodByIP(ip string) (pod *v1.Pod) {
-	itf, ok := c.ipIndex.Get(ip)
-	if !ok {
-		return
-	}
-	key := itf.(string)
-	itf, ok, err := c.Pods().GetStore().GetByKey(key)
-	if err != nil {
-		log.Error(fmt.Sprintf("get k8s pod[%s] by ip[%s] failed", key, ip), err)
-	}
-	if !ok {
-		return
-	}
-	pod = itf.(*v1.Pod)
-	return
-}
+func (c *K8sClient) GetPodByIP(ip string) (pod *v1.Pod) { _ = "STUB: not implemented"; return nil }
 
 func (c *K8sClient) GetNodeByPod(pod *v1.Pod) (node *v1.Node) {
-	itf, ok, err := c.Nodes().GetStore().GetByKey(pod.Spec.NodeName)
-	if err != nil {
-		log.Error(fmt.Sprintf("get k8s node[%s] by pod[%s/%s] failed", pod.Spec.NodeName, pod.Namespace, pod.Name), err)
-		return
-	}
-	if !ok {
-		return
-	}
-	node = itf.(*v1.Node)
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *K8sClient) Run() {
-	if err := c.init(); err != nil {
-		err = alarm.Raise(alarm.IDBackendConnectionRefuse,
-			alarm.AdditionalContext("%v", err))
-		if err != nil {
-			log.Error("", err)
-		}
-		return
-	}
-	err := alarm.Clear(alarm.IDBackendConnectionRefuse)
-	if err != nil {
-		log.Error("", err)
-	}
-	c.goroutine.
-		Do(func(_ context.Context) { c.services.Run(c.stopCh) }).
-		Do(func(_ context.Context) { c.endpoints.Run(c.stopCh) }).
-		Do(func(_ context.Context) { c.pods.Run(c.stopCh) }).
-		Do(func(_ context.Context) { c.nodes.Run(c.stopCh) }).
-		Do(func(ctx context.Context) {
-			select {
-			case <-ctx.Done():
-				return
-			case <-time.After(minWaitInterval):
-				util.SafeCloseChan(c.ready)
-			}
-		})
-}
+func (c *K8sClient) Run() { _ = "STUB: not implemented"; return }
 
-func (c *K8sClient) Stop() {
-	close(c.stopCh)
-	c.goroutine.Close(true)
-	log.Debug("kube client is stopped")
-}
+func (c *K8sClient) Stop() { _ = "STUB: not implemented"; return }
 
-func (c *K8sClient) Ready() <-chan struct{} {
-	return c.ready
-}
+func (c *K8sClient) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-func Kubernetes() *K8sClient {
-	clientOnce.Do(func() {
-		client = &K8sClient{}
-		client.Run()
-	})
-	return client
-}
+func Kubernetes() *K8sClient { _ = "STUB: not implemented"; return nil }

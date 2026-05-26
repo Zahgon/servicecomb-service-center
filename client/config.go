@@ -18,8 +18,6 @@
 package client
 
 import (
-	"os"
-	"strings"
 	"time"
 
 	"github.com/apache/servicecomb-service-center/pkg/rest"
@@ -37,15 +35,6 @@ type Config struct {
 }
 
 func (cfg *Config) Merge() rest.URLClientOption {
-	ssl := strings.Contains(cfg.Endpoints[0], "https://")
-	if ssl && len(cfg.CertKeyPWD) == 0 && len(cfg.CertKeyPWDPath) > 0 {
-		content, _ := os.ReadFile(cfg.CertKeyPWDPath)
-		cfg.CertKeyPWD = string(content)
-	}
-	cfg.SSLEnabled = ssl
-	if cfg.RequestTimeout == 0 {
-		cfg.RequestTimeout = defaultRequestTimeout
-	}
-	cfg.Compressed = true
-	return cfg.URLClientOption
+	_ = "STUB: not implemented"
+	return *new(rest.URLClientOption)
 }

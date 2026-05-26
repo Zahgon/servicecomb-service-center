@@ -18,29 +18,12 @@
 package tracing
 
 import (
-	"net/http"
-	"strconv"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/plugin/tracing"
 )
 
 type Handler struct {
 }
 
-func (h *Handler) Handle(i *chain.Invocation) {
-	r, op := i.Context().Value(rest.CtxRequest).(*http.Request),
-		i.Context().Value(rest.CtxMatchFunc).(string)
+func (h *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	span := tracing.ServerBegin(op, r)
-
-	i.Next(chain.WithAsyncFunc(func(ret chain.Result) {
-		statusCode := i.Context().Value(rest.CtxResponseStatus).(int)
-		tracing.ServerEnd(span, statusCode, strconv.Itoa(statusCode))
-	}))
-}
-
-func RegisterHandlers() {
-	chain.RegisterHandler(rest.ServerChainName, &Handler{})
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

@@ -18,11 +18,6 @@
 package util
 
 import (
-	"bytes"
-	"runtime"
-	"strings"
-	"unsafe"
-
 	"github.com/cloudflare/gokey"
 )
 
@@ -37,160 +32,43 @@ var passwordSpec = &gokey.PasswordSpec{
 	AllowedSpecial: "-~!@#$%^&*()_=+|<>{}[]",
 }
 
-func SafeCloseChan(c chan struct{}) {
-	if c == nil {
-		return
-	}
+func SafeCloseChan(c chan struct{}) { _ = "STUB: not implemented"; return }
 
-	select {
-	case _, ok := <-c:
-		if ok {
-			close(c)
-		}
-	default:
-		close(c)
-	}
-}
+func BytesToStringWithNoCopy(bytes []byte) string { _ = "STUB: not implemented"; return "" }
 
-func BytesToStringWithNoCopy(bytes []byte) string {
-	return *(*string)(unsafe.Pointer(&bytes))
-}
+func StringToBytesWithNoCopy(s string) []byte { _ = "STUB: not implemented"; return nil }
 
-func StringToBytesWithNoCopy(s string) []byte {
-	x := (*[2]uintptr)(unsafe.Pointer(&s))
-	h := [3]uintptr{x[0], x[1], x[1]}
-	return *(*[]byte)(unsafe.Pointer(&h))
-}
+func ListToMap(list []string) map[string]struct{} { _ = "STUB: not implemented"; return nil }
 
-func ListToMap(list []string) map[string]struct{} {
-	ret := make(map[string]struct{}, len(list))
-	for _, v := range list {
-		ret[v] = struct{}{}
-	}
-	return ret
-}
+func MapToList(dict map[string]struct{}) []string { _ = "STUB: not implemented"; return nil }
 
-func MapToList(dict map[string]struct{}) []string {
-	ret := make([]string, 0, len(dict))
-	for k := range dict {
-		ret = append(ret, k)
-	}
-	return ret
-}
-
-func StringJoin(args []string, sep string) string {
-	l := len(args)
-	switch l {
-	case 0:
-		return ""
-	case 1:
-		return args[0]
-	case 2:
-		return args[0] + sep + args[1]
-	default:
-		n := len(sep) * (l - 1)
-		for i := 0; i < l; i++ {
-			n += len(args[i])
-		}
-		b := make([]byte, n)
-		sl := copy(b, args[0])
-		for i := 1; i < l; i++ {
-			sl += copy(b[sl:], sep)
-			sl += copy(b[sl:], args[i])
-		}
-		return BytesToStringWithNoCopy(b)
-	}
-}
+func StringJoin(args []string, sep string) string { _ = "STUB: not implemented"; return "" }
 
 func GetCaller(skip int) (string, string, int, bool) {
-	pc, file, line, ok := runtime.Caller(skip + 1)
-	method := FormatFuncName(runtime.FuncForPC(pc).Name())
-	return file, method, line, ok
+	_ = "STUB: not implemented"
+	return "", "", 0, false
 }
 
-func Int16ToInt64(bs []int16) (in int64) {
-	l := len(bs)
-	if l > 4 || l == 0 {
-		return 0
-	}
+func Int16ToInt64(bs []int16) (in int64) { _ = "STUB: not implemented"; return 0 }
 
-	pi := (*[4]int16)(unsafe.Pointer(&in))
-	if IsBigEndian() {
-		for i := range bs {
-			pi[i] = bs[l-i-1]
-		}
-		return
-	}
+func SliceHave(arr []string, str string) bool { _ = "STUB: not implemented"; return false }
 
-	for i := range bs {
-		pi[3-i] = bs[l-i-1]
-	}
-	return
-}
-
-func SliceHave(arr []string, str string) bool {
-	for _, item := range arr {
-		if item == str {
-			return true
-		}
-	}
-	return false
-}
-
-func StringTRUE(s string) bool {
-	s = strings.ToLower(strings.TrimSpace(s))
-	if s == "1" || s == "true" {
-		return true
-	}
-	return false
-}
+func StringTRUE(s string) bool { _ = "STUB: not implemented"; return false }
 
 func FromDomainProject(domainProject string) (domain, project string) {
-	if i := strings.Index(domainProject, "/"); i >= 0 {
-		return domainProject[:i], domainProject[i+1:]
-	}
-	return domainProject, ""
+	_ = "STUB: not implemented"
+	return "", ""
 }
 
 func ToDomainProject(domain, project string) (domainProject string) {
-	domainProject = domain + "/" + project
-	return
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func IsVersionOrHealthPattern(pattern string) bool {
-	return strings.HasSuffix(pattern, "/version") || strings.HasSuffix(pattern, "/health")
-}
+func IsVersionOrHealthPattern(pattern string) bool { _ = "STUB: not implemented"; return false }
 
-func ToSnake(name string) string {
-	if name == "" {
-		return ""
-	}
-	temp := strings.Split(name, "-")
-	var buffer bytes.Buffer
-	for num, v := range temp {
-		vv := []rune(v)
-		if num == 0 {
-			buffer.WriteString(string(vv))
-			continue
-		}
-		if len(vv) > 0 {
-			if vv[0] >= 'a' && vv[0] <= 'z' { //首字母大写
-				vv[0] -= 32
-			}
-			buffer.WriteString(string(vv))
-		}
-	}
-	return buffer.String()
-}
+func ToSnake(name string) string { _ = "STUB: not implemented"; return "" }
 
-func GeneratePassword() (string, error) {
-	seed, err := gokey.GenerateEncryptedKeySeed(TypePass)
-	if err != nil {
-		return "", err
-	}
-	pass, err := gokey.GetPass(TypePass, "", seed, passwordSpec)
-	if err != nil {
-		return "", err
-	}
-	return pass, nil
-}
+//首字母大写
+
+func GeneratePassword() (string, error) { _ = "STUB: not implemented"; return "", nil }

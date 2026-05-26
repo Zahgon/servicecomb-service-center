@@ -18,26 +18,13 @@
 package route
 
 import (
-	"net/http"
-
 	"github.com/apache/servicecomb-service-center/pkg/chain"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
 )
 
 // Handler call the func of matched route
 type Handler struct {
 }
 
-func (l *Handler) Handle(i *chain.Invocation) {
-	w, r := i.Context().Value(rest.CtxResponse).(http.ResponseWriter),
-		i.Context().Value(rest.CtxRequest).(*http.Request)
-	ph := i.Context().Value(rest.CtxRouteHandler).(http.Handler)
+func (l *Handler) Handle(i *chain.Invocation) { _ = "STUB: not implemented"; return }
 
-	ph.ServeHTTP(w, r)
-
-	i.Next()
-}
-
-func RegisterHandlers() {
-	chain.RegisterHandler(rest.ServerChainName, &Handler{})
-}
+func RegisterHandlers() { _ = "STUB: not implemented"; return }

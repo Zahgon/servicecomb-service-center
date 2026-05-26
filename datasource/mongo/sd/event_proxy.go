@@ -18,11 +18,7 @@
 package sd
 
 import (
-	"fmt"
 	"sync"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var (
@@ -34,30 +30,10 @@ type MongoEventProxy struct {
 	lock           sync.RWMutex
 }
 
-func (h *MongoEventProxy) AddHandleFunc(f MongoEventFunc) {
-	h.lock.Lock()
-	h.evtHandleFuncs = append(h.evtHandleFuncs, f)
-	h.lock.Unlock()
-}
+func (h *MongoEventProxy) AddHandleFunc(f MongoEventFunc) { _ = "STUB: not implemented"; return }
 
-func (h *MongoEventProxy) OnEvent(evt MongoEvent) {
-	h.lock.RLock()
-	for _, f := range h.evtHandleFuncs {
-		f(evt)
-	}
-	h.lock.RUnlock()
-}
+func (h *MongoEventProxy) OnEvent(evt MongoEvent) { _ = "STUB: not implemented"; return }
 
-func EventProxy(t string) *MongoEventProxy {
-	proxy, ok := eventProxies.Load(t)
-	if !ok {
-		proxy = &MongoEventProxy{}
-		eventProxies.Store(t, proxy)
-	}
-	return proxy.(*MongoEventProxy)
-}
+func EventProxy(t string) *MongoEventProxy { _ = "STUB: not implemented"; return nil }
 
-func AddEventHandler(h MongoEventHandler) {
-	EventProxy(h.Type()).AddHandleFunc(h.OnEvent)
-	log.Info(fmt.Sprintf("register event handler[%s] %s", h.Type(), util.Reflect(h).Name()))
-}
+func AddEventHandler(h MongoEventHandler) { _ = "STUB: not implemented"; return }

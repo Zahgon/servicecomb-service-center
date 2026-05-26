@@ -19,11 +19,8 @@ package event
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/pkg/event"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/server/metrics"
 )
 
 var errBusy = errors.New("too busy")
@@ -33,73 +30,22 @@ type InstanceSubscriber struct {
 	Job chan *InstanceEvent
 }
 
-func (w *InstanceSubscriber) SetError(err error) {
-	w.Subscriber.SetError(err)
-	// 触发清理job
-	e := w.Bus().Fire(event.NewUnhealthyEvent(w))
-	if e != nil {
-		log.Error("", e)
-	}
-}
+func (w *InstanceSubscriber) SetError(err error) { _ = "STUB: not implemented"; return }
 
-func (w *InstanceSubscriber) OnAccept() {
-	if w.Err() != nil {
-		return
-	}
-	log.Debug(fmt.Sprintf("accepted by event service, %s watcher %s %s", w.Type(), w.Group(), w.Subject()))
-}
+// 触发清理job
+
+func (w *InstanceSubscriber) OnAccept() { _ = "STUB: not implemented"; return }
 
 // 被通知
-func (w *InstanceSubscriber) OnMessage(evt event.Event) {
-	if w.Err() != nil {
-		return
-	}
+func (w *InstanceSubscriber) OnMessage(evt event.Event) { _ = "STUB: not implemented"; return }
 
-	wJob, ok := evt.(*InstanceEvent)
-	if !ok {
-		return
-	}
-	w.sendMessage(wJob)
-}
+func (w *InstanceSubscriber) sendMessage(evt *InstanceEvent) { _ = "STUB: not implemented"; return }
 
-func (w *InstanceSubscriber) sendMessage(evt *InstanceEvent) {
-	defer log.Recover()
+func (w *InstanceSubscriber) cleanup() { _ = "STUB: not implemented"; return }
 
-	metrics.ReportPendingCompleted(evt)
-
-	select {
-	case w.Job <- evt:
-	default:
-		log.Error(fmt.Sprintf("the %s watcher %s %s event queue is full, drop the blocked events",
-			w.Type(), w.Group(), w.Subject()), nil)
-		w.cleanup()
-		w.Job <- evt
-	}
-}
-
-func (w *InstanceSubscriber) cleanup() {
-	for {
-		select {
-		case evt, ok := <-w.Job:
-			if !ok {
-				return
-			}
-			metrics.ReportPublishCompleted(evt, errBusy)
-		default:
-			return
-		}
-	}
-}
-
-func (w *InstanceSubscriber) Close() {
-	w.cleanup()
-	close(w.Job)
-}
+func (w *InstanceSubscriber) Close() { _ = "STUB: not implemented"; return }
 
 func NewInstanceSubscriber(serviceID, domainProject string) *InstanceSubscriber {
-	watcher := &InstanceSubscriber{
-		Subscriber: event.NewSubscriber(INSTANCE, domainProject, serviceID),
-		Job:        make(chan *InstanceEvent, INSTANCE.QueueSize()),
-	}
-	return watcher
+	_ = "STUB: not implemented"
+	return nil
 }

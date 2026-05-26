@@ -18,11 +18,7 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 // The rest middleware design:
@@ -42,29 +38,21 @@ var (
 	}
 )
 
-func RegisterServeMux(name string) {
-	serveMuxMap[name] = http.NewServeMux()
-}
+func RegisterServeMux(name string) { _ = "STUB: not implemented"; return }
 
 func RegisterServeMuxHandleFunc(name, pattern string, f http.HandlerFunc) {
-	serveMuxMap[name].HandleFunc(pattern, f)
-
-	log.Info(fmt.Sprintf("register serve mux '%s' http handle function %s(), pattern %s",
-		name, util.FuncName(f), pattern))
+	_ = "STUB: not implemented"
+	return
 }
 
 func RegisterServeMuxHandler(name, pattern string, h http.Handler) {
-	serveMuxMap[name].Handle(pattern, h)
-
-	t := util.Reflect(h).Type
-	log.Info(fmt.Sprintf("register serve mux '%s' http handler %s/%s, pattern %s",
-		name, t.PkgPath(), t.Name(), pattern))
+	_ = "STUB: not implemented"
+	return
 }
 
 func RegisterServerHandleFunc(pattern string, f http.HandlerFunc) {
-	RegisterServeMuxHandleFunc(defaultServeMux, pattern, f)
+	_ = "STUB: not implemented"
+	return
 }
 
-func RegisterServerHandler(pattern string, h http.Handler) {
-	RegisterServeMuxHandler(defaultServeMux, pattern, h)
-}
+func RegisterServerHandler(pattern string, h http.Handler) { _ = "STUB: not implemented"; return }

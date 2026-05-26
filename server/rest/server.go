@@ -18,53 +18,15 @@
 package rest
 
 import (
-	"crypto/tls"
-	"time"
-
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/apache/servicecomb-service-center/server/plugin/security/tlsconf"
 )
 
 func LoadConfig() (srvCfg *rest.ServerConfig, err error) {
-	srvCfg = rest.DefaultServerConfig()
-	readHeaderTimeout, _ := time.ParseDuration(config.GetServer().ReadHeaderTimeout)
-	readTimeout, _ := time.ParseDuration(config.GetServer().ReadTimeout)
-	idleTimeout, _ := time.ParseDuration(config.GetServer().IdleTimeout)
-	writeTimeout, _ := time.ParseDuration(config.GetServer().WriteTimeout)
-	maxHeaderBytes := int(config.GetServer().MaxHeaderBytes)
-	var tlsConfig *tls.Config
-	if config.GetSSL().SslEnabled {
-		tlsConfig, err = tlsconf.ServerConfig()
-		if err != nil {
-			return
-		}
-	}
-	srvCfg.ReadHeaderTimeout = readHeaderTimeout
-	srvCfg.ReadTimeout = readTimeout
-	srvCfg.IdleTimeout = idleTimeout
-	srvCfg.WriteTimeout = writeTimeout
-	srvCfg.MaxHeaderBytes = maxHeaderBytes
-	srvCfg.TLSConfig = tlsConfig
-	srvCfg.Handler = DefaultServerMux
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewServer(ipAddr string) (srv *rest.Server, err error) {
-	srvCfg, err := LoadConfig()
-	if err != nil {
-		return
-	}
-	srvCfg.Addr = ipAddr
-	srv = rest.NewServer(srvCfg)
-
-	if srvCfg.TLSConfig == nil {
-		err = srv.Listen()
-	} else {
-		err = srv.ListenTLS()
-	}
-	if err != nil {
-		return
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

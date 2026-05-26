@@ -19,8 +19,6 @@ package path
 
 import (
 	"github.com/go-chassis/cari/discovery"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 const (
@@ -48,338 +46,141 @@ const (
 	DepsProvider             = "p"
 )
 
-func GetRootKey() string {
-	return SPLIT + RegistryRootKey
-}
+func GetRootKey() string { _ = "STUB: not implemented"; return "" }
 
-func GenerateDomainKey(domain string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryDomainKey,
-		domain,
-	}, SPLIT)
-}
+func GenerateDomainKey(domain string) string { _ = "STUB: not implemented"; return "" }
 
-func GetProjectRootKey(domain string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryProjectKey,
-		domain,
-	}, SPLIT)
-}
+func GetProjectRootKey(domain string) string { _ = "STUB: not implemented"; return "" }
 
-func GenerateProjectKey(domain, project string) string {
-	return util.StringJoin([]string{
-		GetProjectRootKey(domain),
-		project,
-	}, SPLIT)
-}
+func GenerateProjectKey(domain, project string) string { _ = "STUB: not implemented"; return "" }
 
-func GenerateRBACAccountKey(name string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"accounts",
-		name,
-	}, SPLIT)
-}
+func GenerateRBACAccountKey(name string) string { _ = "STUB: not implemented"; return "" }
 
-func GenerateRBACRoleKey(name string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"roles",
-		name,
-	}, SPLIT)
-}
+func GenerateRBACRoleKey(name string) string { _ = "STUB: not implemented"; return "" }
 
-func GenRoleAccountIdxKey(role, account string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"idx-role-account",
-		role, account,
-	}, SPLIT)
-}
+func GenRoleAccountIdxKey(role, account string) string { _ = "STUB: not implemented"; return "" }
 
-func GenRoleAccountPrefixIdxKey(role string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"idx-role-account",
-		role,
-		"",
-	}, SPLIT)
-}
+func GenRoleAccountPrefixIdxKey(role string) string { _ = "STUB: not implemented"; return "" }
 
-func GetServiceRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryFile,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
 func GenerateServiceKey(domainProject string, serviceID string) string {
-	return util.StringJoin([]string{
-		GetServiceRootKey(domainProject),
-		serviceID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func GetServiceIndexRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryIndex,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceIndexRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
-func GetServiceAliasRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryAliasKey,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceAliasRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
 func GetServiceAppKey(domainProject, env, appID string) string {
-	return util.StringJoin([]string{
-		GetServiceIndexRootKey(domainProject),
-		env,
-		appID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func GetServiceTagRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryTagKey,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceTagRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
-func GetServiceSchemaRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistrySchemaKey,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceSchemaRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
-func GetServiceSchemaRefRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistrySchemaRefKey,
-		domainProject,
-	}, SPLIT)
-}
+func GetServiceSchemaRefRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
 func GetServiceSchemaContentRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistrySchemaContentKey,
-		domainProject,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func GetInstanceRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryInstanceKey,
-		RegistryFile,
-		domainProject,
-	}, SPLIT)
-}
+func GetInstanceRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
-func GetInstanceLeaseRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryInstanceKey,
-		RegistryLeaseKey,
-		domainProject,
-	}, SPLIT)
-}
+func GetInstanceLeaseRootKey(domainProject string) string { _ = "STUB: not implemented"; return "" }
 
 func GenerateServiceIndexKey(key *discovery.MicroServiceKey) string {
-	return util.StringJoin([]string{
-		GetServiceIndexRootKey(key.Tenant),
-		key.Environment,
-		key.AppId,
-		key.ServiceName,
-		key.Version,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceAliasKey(key *discovery.MicroServiceKey) string {
-	return util.StringJoin([]string{
-		GetServiceAliasRootKey(key.Tenant),
-		key.Environment,
-		key.AppId,
-		key.Alias,
-		key.Version,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceTagKey(domainProject string, serviceID string) string {
-	return util.StringJoin([]string{
-		GetServiceTagRootKey(domainProject),
-		serviceID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceSchemaRefKey(domainProject string, serviceID string, schemaID string) string {
-	return util.StringJoin([]string{
-		GetServiceSchemaRefRootKey(domainProject),
-		serviceID,
-		schemaID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceSchemaContentKey(domainProject string, hash string) string {
-	return util.StringJoin([]string{
-		GetServiceSchemaContentRootKey(domainProject),
-		hash,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceSchemaKey(domainProject string, serviceID string, schemaID string) string {
-	return util.StringJoin([]string{
-		GetServiceSchemaRootKey(domainProject),
-		serviceID,
-		schemaID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceSchemaSummaryKey(domainProject string, serviceID string, schemaID string) string {
-	return util.StringJoin([]string{
-		GetServiceSchemaSummaryRootKey(domainProject),
-		serviceID,
-		schemaID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GetServiceSchemaSummaryRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistrySchemaSummaryKey,
-		domainProject,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateInstanceKey(domainProject string, serviceID string, instanceID string) string {
-	return util.StringJoin([]string{
-		GetInstanceRootKey(domainProject),
-		serviceID,
-		instanceID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateInstanceLeaseKey(domainProject string, serviceID string, instanceID string) string {
-	return util.StringJoin([]string{
-		GetInstanceLeaseRootKey(domainProject),
-		serviceID,
-		instanceID,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateServiceDependencyRuleKey(serviceType string, domainProject string, in *discovery.MicroServiceKey) string {
-	if in == nil {
-		return util.StringJoin([]string{
-			GetServiceDependencyRuleRootKey(domainProject),
-			serviceType,
-		}, SPLIT)
-	}
-	return util.StringJoin([]string{
-		GetServiceDependencyRuleRootKey(domainProject),
-		serviceType,
-		in.Environment,
-		in.AppId,
-		in.ServiceName,
-		in.Version,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateConsumerDependencyRuleKey(domainProject string, in *discovery.MicroServiceKey) string {
-	return GenerateServiceDependencyRuleKey(DepsConsumer, domainProject, in)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateProviderDependencyRuleKey(domainProject string, in *discovery.MicroServiceKey) string {
-	return GenerateServiceDependencyRuleKey(DepsProvider, domainProject, in)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GetServiceDependencyRuleRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryDepsRuleKey,
-		domainProject,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GetServiceDependencyQueueRootKey(domainProject string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryServiceKey,
-		RegistryDepsQueueKey,
-		domainProject,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func GenerateConsumerDependencyQueueKey(domainProject, consumerID, uuid string) string {
-	return util.StringJoin([]string{
-		GetServiceDependencyQueueRootKey(domainProject),
-		consumerID,
-		uuid,
-	}, SPLIT)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func GenerateAccountKey(name string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"accounts",
-		name,
-	}, SPLIT)
-}
+func GenerateAccountKey(name string) string { _ = "STUB: not implemented"; return "" }
 
-func GenerateAccountLockKey(key string) string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"account-locks",
-		key,
-	}, SPLIT)
-}
+func GenerateAccountLockKey(key string) string { _ = "STUB: not implemented"; return "" }
 
-func GenerateRBACSecretKey() string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		"rbac/secret",
-	}, SPLIT)
-}
+func GenerateRBACSecretKey() string { _ = "STUB: not implemented"; return "" }
 
-func GetServerInfoKey() string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistrySysKey,
-	}, SPLIT)
-}
+func GetServerInfoKey() string { _ = "STUB: not implemented"; return "" }
 
-func GetMetricsRootKey() string {
-	return util.StringJoin([]string{
-		GetRootKey(),
-		RegistryMetricsKey,
-	}, SPLIT)
-}
+func GetMetricsRootKey() string { _ = "STUB: not implemented"; return "" }
 
-func GenerateMetricsKey(name, utc, domain string) string {
-	return util.StringJoin([]string{
-		GetMetricsRootKey(),
-		name,
-		utc,
-		domain,
-	}, SPLIT)
-}
+func GenerateMetricsKey(name, utc, domain string) string { _ = "STUB: not implemented"; return "" }

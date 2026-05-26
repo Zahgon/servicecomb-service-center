@@ -18,15 +18,9 @@
 package mongo
 
 import (
-	dmongo "github.com/go-chassis/cari/db/mongo"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/x/bsonx"
 
 	"github.com/apache/servicecomb-service-center/eventbase/datasource"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource/mongo/model"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource/mongo/task"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource/mongo/tombstone"
 )
 
 func init() {
@@ -39,54 +33,27 @@ type Datasource struct {
 }
 
 func (d *Datasource) TaskDao() datasource.TaskDao {
-	return d.taskDao
+	_ = "STUB: not implemented"
+	return *new(datasource.TaskDao)
 }
 
 func (d *Datasource) TombstoneDao() datasource.TombstoneDao {
-	return d.tombstoneDao
+	_ = "STUB: not implemented"
+	return *new(datasource.TombstoneDao)
 }
 
 func NewDatasource() datasource.DataSource {
-	ensureDB()
-	return &Datasource{taskDao: &task.Dao{}, tombstoneDao: &tombstone.Dao{}}
+	_ = "STUB: not implemented"
+	return *new(datasource.DataSource)
 }
 
-func ensureDB() {
-	ensureTask()
-	ensureTombstone()
-}
+func ensureDB() { _ = "STUB: not implemented"; return }
 
-func ensureTask() {
-	jsonSchema := bson.M{
-		"bsonType": "object",
-		"required": []string{model.ColumnID, model.ColumnDomain, model.ColumnProject, model.ColumnTimestamp},
-	}
-	validator := bson.M{
-		"$jsonSchema": jsonSchema,
-	}
-	dmongo.EnsureCollection(model.CollectionTask, validator, []mongo.IndexModel{buildIndexDoc(
-		model.ColumnDomain, model.ColumnProject, model.ColumnID, model.ColumnTimestamp)})
-}
+func ensureTask() { _ = "STUB: not implemented"; return }
 
-func ensureTombstone() {
-	jsonSchema := bson.M{
-		"bsonType": "object",
-		"required": []string{model.ColumnResourceID, model.ColumnDomain, model.ColumnProject, model.ColumnResourceType},
-	}
-	validator := bson.M{
-		"$jsonSchema": jsonSchema,
-	}
-	dmongo.EnsureCollection(model.CollectionTombstone, validator, []mongo.IndexModel{buildIndexDoc(
-		model.ColumnDomain, model.ColumnProject, model.ColumnResourceID, model.ColumnResourceType)})
-}
+func ensureTombstone() { _ = "STUB: not implemented"; return }
 
 func buildIndexDoc(keys ...string) mongo.IndexModel {
-	keysDoc := bsonx.Doc{}
-	for _, key := range keys {
-		keysDoc = keysDoc.Append(key, bsonx.Int32(1))
-	}
-	index := mongo.IndexModel{
-		Keys: keysDoc,
-	}
-	return index
+	_ = "STUB: not implemented"
+	return *new(mongo.IndexModel)
 }

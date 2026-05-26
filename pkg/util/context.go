@@ -20,7 +20,6 @@ package util
 import (
 	"context"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,200 +39,119 @@ type StringContext struct {
 }
 
 func (c *StringContext) Deadline() (deadline time.Time, ok bool) {
-	return c.parentCtx.Deadline()
+	_ = "STUB: not implemented"
+	return *new(time.Time), false
 }
 
-func (c *StringContext) Done() <-chan struct{} {
-	return c.parentCtx.Done()
-}
+func (c *StringContext) Done() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-func (c *StringContext) Err() error {
-	return c.parentCtx.Err()
-}
+func (c *StringContext) Err() error { _ = "STUB: not implemented"; return nil }
 
-func (c *StringContext) Value(key interface{}) interface{} {
-	k, ok := key.(CtxKey)
-	if !ok {
-		return c.parentCtx.Value(key)
-	}
-	v, ok := c.kv.Get(k)
-	if !ok {
-		return FromContext(c.parentCtx, k)
-	}
-	return v
-}
+func (c *StringContext) Value(key interface{}) interface{} { _ = "STUB: not implemented"; return nil }
 
-func (c *StringContext) SetKV(key CtxKey, val interface{}) {
-	c.kv.Put(key, val)
-}
+func (c *StringContext) SetKV(key CtxKey, val interface{}) { _ = "STUB: not implemented"; return }
 
-func NewStringContext(ctx context.Context) *StringContext {
-	strCtx, ok := ctx.(*StringContext)
-	if !ok {
-		strCtx = &StringContext{
-			parentCtx: ctx,
-			kv:        NewConcurrentMap(0),
-		}
-	}
-	return strCtx
-}
+func NewStringContext(ctx context.Context) *StringContext { _ = "STUB: not implemented"; return nil }
 
 func SetContext(ctx context.Context, key CtxKey, val interface{}) context.Context {
-	strCtx := NewStringContext(ctx)
-	strCtx.SetKV(key, val)
-	return strCtx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func CloneContext(ctx context.Context) context.Context {
-	old, ok := ctx.(*StringContext)
-	if !ok {
-		return &StringContext{
-			parentCtx: ctx,
-			kv:        NewConcurrentMap(0),
-		}
-	}
-
-	strCtx := &StringContext{
-		parentCtx: ctx,
-		kv:        NewConcurrentMap(0),
-	}
-
-	old.kv.ForEach(func(item MapItem) bool {
-		strCtx.kv.Put(item.Key, item.Value)
-		return true
-	})
-	return strCtx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // FromContext return the value from ctx, return empty STRING if not found
 func FromContext(ctx context.Context, key CtxKey) interface{} {
-	if v := ctx.Value(key); v != nil {
-		return v
-	}
-	return FromMetadata(ctx, key)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func SetRequestContext(r *http.Request, key CtxKey, val interface{}) *http.Request {
-	ctx := r.Context()
-	ctx = SetContext(ctx, key, val)
-	if ctx != r.Context() {
-		nr := r.WithContext(ctx)
-		*r = *nr
-	}
-	return r
-}
-func SetFiberContext(c *fiber.Ctx, key CtxKey, val interface{}) {
-	ctx := c.UserContext()
-	ctx = SetContext(ctx, key, val)
-	if ctx != c.UserContext() {
-		c.SetUserContext(ctx)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func ParseDomainProject(ctx context.Context) string {
-	return ParseDomain(ctx) + SPLIT + ParseProject(ctx)
-}
+func SetFiberContext(c *fiber.Ctx, key CtxKey, val interface{}) { _ = "STUB: not implemented"; return }
 
-func ParseTargetDomainProject(ctx context.Context) string {
-	return ParseTargetDomain(ctx) + SPLIT + ParseTargetProject(ctx)
-}
+func ParseDomainProject(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func ParseDomain(ctx context.Context) string {
-	v, ok := FromContext(ctx, CtxDomain).(string)
-	if !ok {
-		return ""
-	}
-	return v
-}
+func ParseTargetDomainProject(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func ParseTargetDomain(ctx context.Context) string {
-	v, _ := FromContext(ctx, CtxTargetDomain).(string)
-	if len(v) == 0 {
-		return ParseDomain(ctx)
-	}
-	return v
-}
+func ParseDomain(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func ParseProject(ctx context.Context) string {
-	v, ok := FromContext(ctx, CtxProject).(string)
-	if !ok {
-		return ""
-	}
-	return v
-}
+func ParseTargetDomain(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
-func ParseTargetProject(ctx context.Context) string {
-	v, _ := FromContext(ctx, CtxTargetProject).(string)
-	if len(v) == 0 {
-		return ParseProject(ctx)
-	}
-	return v
-}
+func ParseProject(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
+
+func ParseTargetProject(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
 func SetDomain(ctx context.Context, domain string) context.Context {
-	return SetContext(ctx, CtxDomain, domain)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetProject(ctx context.Context, project string) context.Context {
-	return SetContext(ctx, CtxProject, project)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetTargetDomain(ctx context.Context, domain string) context.Context {
-	return SetContext(ctx, CtxTargetDomain, domain)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetTargetProject(ctx context.Context, project string) context.Context {
-	return SetContext(ctx, CtxTargetProject, project)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetDomainProject(ctx context.Context, domain string, project string) context.Context {
-	return SetProject(SetDomain(ctx, domain), project)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetDomainProjectString(ctx context.Context, domainProject string) context.Context {
-	arr := strings.Split(domainProject, SPLIT)
-	if len(arr) != 2 {
-		return ctx
-	}
-	return SetProject(SetDomain(ctx, arr[0]), arr[1])
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func SetTargetDomainProject(ctx context.Context, domain string, project string) context.Context {
-	return SetTargetProject(SetTargetDomain(ctx, domain), project)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func WithNoCache(ctx context.Context) context.Context {
-	return SetContext(ctx, CtxNocache, "1")
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
-func NoCache(ctx context.Context) bool {
-	return ctx.Value(CtxNocache) == "1"
-}
+func NoCache(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
 func WithCacheOnly(ctx context.Context) context.Context {
-	return SetContext(ctx, CtxCacheOnly, "1")
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
-func CacheOnly(ctx context.Context) bool {
-	return ctx.Value(CtxCacheOnly) == "1"
-}
+func CacheOnly(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
 func WithGlobal(ctx context.Context) context.Context {
-	return SetContext(ctx, CtxGlobal, "1")
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
-func Global(ctx context.Context) bool {
-	return ctx.Value(CtxGlobal) == "1"
-}
+func Global(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
-func EnableSync(ctx context.Context) bool {
-	return ctx.Value(CtxEnableSync) == "1"
-}
+func EnableSync(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
 func WithRequestRev(ctx context.Context, rev string) context.Context {
-	return SetContext(ctx, CtxRequestRevision, rev)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func WithResponseRev(ctx context.Context, rev string) context.Context {
-	return SetContext(ctx, CtxResponseRevision, rev)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }

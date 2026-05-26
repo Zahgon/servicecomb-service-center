@@ -22,46 +22,25 @@ import (
 
 	"github.com/go-chassis/cari/discovery"
 
-	"github.com/apache/servicecomb-service-center/datasource/cache"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/dao"
 	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	mutil "github.com/apache/servicecomb-service-center/datasource/mongo/util"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func ExistInstance(ctx context.Context, serviceID string, instanceID string) (bool, error) {
-	inst, ok := cache.GetInstance(ctx, serviceID, instanceID)
-	if ok && inst != nil {
-		return true, nil
-	}
-
-	return dao.ExistInstance(ctx, serviceID, instanceID)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func GetInstances(ctx context.Context) ([]*model.Instance, error) {
-	insts, ok := cache.GetInstances(ctx)
-	if ok {
-		return insts, nil
-	}
-	filter := mutil.NewBasicFilter(ctx)
-	return dao.GetInstances(ctx, filter)
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func CountInstance(ctx context.Context, serviceID string) (int64, error) {
-	count, ok := cache.CountInstances(ctx, serviceID)
-	if ok {
-		return int64(count), nil
-	}
-	filter := mutil.NewDomainProjectFilter(util.ParseDomain(ctx), util.ParseProject(ctx), mutil.InstanceServiceID(serviceID))
-	return dao.CountInstance(ctx, filter)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func GetAllInstancesOfOneService(ctx context.Context, serviceID string) ([]*discovery.MicroServiceInstance, error) {
-	inst, ok := cache.GetMicroServiceInstancesByID(ctx, serviceID)
-	if ok && inst != nil {
-		return inst, nil
-	}
-
-	return dao.GetMicroServiceInstancesByID(ctx, serviceID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

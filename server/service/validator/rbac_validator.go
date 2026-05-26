@@ -48,45 +48,17 @@ func init() {
 	accountLoginValidator.AddRule("TokenExpirationTime", &validate.Rule{Regexp: &validate.TokenExpirationTimeChecker{}})
 }
 
-func ValidateCreateAccount(a *rbac.Account) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return createAccountValidator.Validate(a)
-}
+func ValidateCreateAccount(a *rbac.Account) error { _ = "STUB: not implemented"; return nil }
+
 func ValidateBatchCreateAccountsRequest(a *rbac.BatchCreateAccountsRequest) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return batchCreateAccountsRequestValidator.Validate(a)
+	_ = "STUB: not implemented"
+	return nil
 }
-func ValidateUpdateAccount(a *rbac.Account) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return updateAccountValidator.Validate(a)
-}
-func ValidateCreateRole(a *rbac.Role) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return createRoleValidator.Validate(a)
-}
-func ValidateAccountLogin(a *rbac.Account) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return accountLoginValidator.Validate(a)
-}
-func ValidateChangePWD(a *rbac.Account) error {
-	err := baseCheck(a)
-	if err != nil {
-		return err
-	}
-	return changePWDValidator.Validate(a)
-}
+
+func ValidateUpdateAccount(a *rbac.Account) error { _ = "STUB: not implemented"; return nil }
+
+func ValidateCreateRole(a *rbac.Role) error { _ = "STUB: not implemented"; return nil }
+
+func ValidateAccountLogin(a *rbac.Account) error { _ = "STUB: not implemented"; return nil }
+
+func ValidateChangePWD(a *rbac.Account) error { _ = "STUB: not implemented"; return nil }

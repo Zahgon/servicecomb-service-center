@@ -38,27 +38,12 @@ type AlarmEvent struct {
 	Fields   util.JSONObject `json:"fields,omitempty"`
 }
 
-func (ae *AlarmEvent) FieldBool(key string) bool {
-	v, _ := ae.Fields[key].(bool)
-	return v
-}
+func (ae *AlarmEvent) FieldBool(key string) bool { _ = "STUB: not implemented"; return false }
 
-func (ae *AlarmEvent) FieldString(key string) string {
-	v, _ := ae.Fields[key].(string)
-	return v
-}
+func (ae *AlarmEvent) FieldString(key string) string { _ = "STUB: not implemented"; return "" }
 
-func (ae *AlarmEvent) FieldInt64(key string) int64 {
-	v, _ := ae.Fields[key].(int64)
-	return v
-}
+func (ae *AlarmEvent) FieldInt64(key string) int64 { _ = "STUB: not implemented"; return 0 }
 
-func (ae *AlarmEvent) FieldInt(key string) int {
-	v, _ := ae.Fields[key].(int)
-	return v
-}
+func (ae *AlarmEvent) FieldInt(key string) int { _ = "STUB: not implemented"; return 0 }
 
-func (ae *AlarmEvent) FieldFloat64(key string) float64 {
-	v, _ := ae.Fields[key].(float64)
-	return v
-}
+func (ae *AlarmEvent) FieldFloat64(key string) float64 { _ = "STUB: not implemented"; return 0 }

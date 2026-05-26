@@ -21,12 +21,4 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func PrepareContextFor(c *fiber.Ctx) error {
-	var (
-		v4 v4Context
-	)
-
-	v4.Write(c)
-
-	return c.Next()
-}
+func PrepareContextFor(c *fiber.Ctx) error { _ = "STUB: not implemented"; return nil }

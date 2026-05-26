@@ -17,12 +17,6 @@
 
 package event
 
-import (
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 const (
 	CheckerGroup   = "__HealthChecker__"
 	CheckerSubject = "__NotifyServerHealthCheck__"
@@ -38,30 +32,8 @@ type UnhealthyEvent struct {
 	ErrorSubscriber Subscriber
 }
 
-func (s *SubscriberHealthChecker) OnMessage(evt Event) {
-	j := evt.(*UnhealthyEvent)
-	err := j.ErrorSubscriber.Err()
+func (s *SubscriberHealthChecker) OnMessage(evt Event) { _ = "STUB: not implemented"; return }
 
-	if j.ErrorSubscriber.Type() == INNER {
-		log.Error(fmt.Sprintf("remove %s watcher failed, here cause a dead lock, subject: %s, group: %s",
-			j.ErrorSubscriber.Type(), j.ErrorSubscriber.Subject(), j.ErrorSubscriber.Group()), nil)
-		return
-	}
+func NewSubscriberHealthChecker() *SubscriberHealthChecker { _ = "STUB: not implemented"; return nil }
 
-	log.Debug(fmt.Sprintf("notification service remove %s watcher, error: %v, subject: %s, group: %s",
-		j.ErrorSubscriber.Type(), err, j.ErrorSubscriber.Subject(), j.ErrorSubscriber.Group()))
-	s.Bus().RemoveSubscriber(j.ErrorSubscriber)
-}
-
-func NewSubscriberHealthChecker() *SubscriberHealthChecker {
-	return &SubscriberHealthChecker{
-		Subscriber: NewSubscriber(INNER, CheckerSubject, CheckerGroup),
-	}
-}
-
-func NewUnhealthyEvent(s Subscriber) *UnhealthyEvent {
-	return &UnhealthyEvent{
-		Event:           NewEvent(INNER, CheckerSubject, CheckerGroup),
-		ErrorSubscriber: s,
-	}
-}
+func NewUnhealthyEvent(s Subscriber) *UnhealthyEvent { _ = "STUB: not implemented"; return nil }

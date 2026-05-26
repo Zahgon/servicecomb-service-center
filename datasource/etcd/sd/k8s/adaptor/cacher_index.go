@@ -18,10 +18,7 @@
 package adaptor
 
 import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/go-chassis/cari/discovery"
-	v1 "k8s.io/api/core/v1"
 )
 
 type ServiceIndexCacher struct {
@@ -29,35 +26,9 @@ type ServiceIndexCacher struct {
 }
 
 // onServiceEvent is the method to refresh service cache
-func (c *ServiceIndexCacher) onServiceEvent(evt K8sEvent) {
-	svc := evt.Object.(*v1.Service)
-	domainProject := Kubernetes().GetDomainProject()
-	indexKey := path.GenerateServiceIndexKey(generateServiceKey(domainProject, svc))
-	serviceID := generateServiceID(domainProject, svc)
-
-	if !ShouldRegisterService(svc) {
-		kv := c.Cache().Get(indexKey)
-		if kv != nil {
-			c.Notify(discovery.EVT_DELETE, indexKey, kv)
-		}
-		return
-	}
-
-	switch evt.EventType {
-	case discovery.EVT_CREATE:
-		kv := AsKeyValue(indexKey, serviceID, svc.ResourceVersion)
-		c.Notify(evt.EventType, indexKey, kv)
-	case discovery.EVT_UPDATE:
-	case discovery.EVT_DELETE:
-		kv := c.Cache().Get(indexKey)
-		if kv != nil {
-			c.Notify(evt.EventType, indexKey, kv)
-		}
-	}
-}
+func (c *ServiceIndexCacher) onServiceEvent(evt K8sEvent) { _ = "STUB: not implemented"; return }
 
 func NewServiceIndexCacher(c *kvstore.CommonCacher) (si *ServiceIndexCacher) {
-	si = &ServiceIndexCacher{CommonCacher: c}
-	Kubernetes().AppendEventFunc(TypeService, si.onServiceEvent)
-	return
+	_ = "STUB: not implemented"
+	return nil
 }

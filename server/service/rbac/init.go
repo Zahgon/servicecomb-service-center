@@ -18,13 +18,7 @@
 package rbac
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/go-chassis/cari/pkg/errsvc"
 	"github.com/go-chassis/cari/rbac"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 const ErrUserOrPwdWrongInHalfOpening int32 = 401302
@@ -54,30 +48,6 @@ func init() {
 	}
 }
 
-func initBuildInRole() {
-	for _, r := range roleMap {
-		createBuildInRole(r)
-	}
-}
+func initBuildInRole() { _ = "STUB: not implemented"; return }
 
-func createBuildInRole(r *rbac.Role) {
-	roleExist, err := RoleExist(context.Background(), r.Name)
-	if err != nil {
-		log.Fatal(fmt.Sprintf("check role [%s] exist failed", r.Name), err)
-		return
-	}
-	if roleExist {
-		log.Info(fmt.Sprintf("role [%s] already exists", r.Name))
-		return
-	}
-	err = CreateRole(context.Background(), r)
-	if err == nil {
-		log.Info(fmt.Sprintf("create role [%s] success", r.Name))
-		return
-	}
-	if errsvc.IsErrEqualCode(err, rbac.ErrRoleConflict) {
-		log.Info(fmt.Sprintf("role [%s] already exists", r.Name))
-		return
-	}
-	log.Fatal(fmt.Sprintf("create role [%s] failed", r.Name), err)
-}
+func createBuildInRole(r *rbac.Role) { _ = "STUB: not implemented"; return }

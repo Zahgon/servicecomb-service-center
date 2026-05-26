@@ -18,10 +18,7 @@
 package plugin
 
 import (
-	"fmt"
 	pg "plugin"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 const (
@@ -32,13 +29,6 @@ const (
 
 // DynamicPluginFunc should be called in buildin implement
 func DynamicPluginFunc(pn Kind, funcName string) pg.Symbol {
-	if !Plugins().IsDynamicPlugin(pn) {
-		return nil
-	}
-
-	f, err := FindFunc(pn.String(), funcName)
-	if err != nil {
-		log.Error(fmt.Sprintf("plugin '%s': not implemented function '%s'", pn, funcName), err)
-	}
-	return f
+	_ = "STUB: not implemented"
+	return *new(pg.Symbol)
 }

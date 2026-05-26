@@ -19,82 +19,32 @@ package aggregate
 
 import (
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 // Cache implements kvstore.CacheReader.
 // Cache is a multi-CacheReader, it reads cache from all CacheReaders.
 type Cache []kvstore.CacheReader
 
-func (c Cache) Name() string {
-	if len(c) == 0 {
-		return ""
-	}
-	return c[0].Name()
-}
+func (c Cache) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (c Cache) Size() (s int) {
-	for _, cache := range c {
-		s += cache.Size()
-	}
-	return s
-}
-func (c Cache) Get(k string) (kv *kvstore.KeyValue) {
-	for _, cache := range c {
-		if kv = cache.Get(k); kv != nil {
-			return
-		}
-	}
-	return
-}
-func (c Cache) GetAll(arr *[]*kvstore.KeyValue) (s int) {
-	exists := make(map[string]struct{})
-	for _, item := range c {
-		var tmp []*kvstore.KeyValue
-		if l := item.GetAll(&tmp); l == 0 {
-			continue
-		}
-		s += c.append(tmp, arr, exists)
-	}
-	return
-}
+func (c Cache) Size() (s int) { _ = "STUB: not implemented"; return 0 }
+
+func (c Cache) Get(k string) (kv *kvstore.KeyValue) { _ = "STUB: not implemented"; return nil }
+
+func (c Cache) GetAll(arr *[]*kvstore.KeyValue) (s int) { _ = "STUB: not implemented"; return 0 }
+
 func (c Cache) GetPrefix(prefix string, arr *[]*kvstore.KeyValue) (s int) {
-	exists := make(map[string]struct{})
-	for _, item := range c {
-		var tmp []*kvstore.KeyValue
-		if l := item.GetPrefix(prefix, &tmp); l == 0 {
-			continue
-		}
-		s += c.append(tmp, arr, exists)
-	}
-	return
+	_ = "STUB: not implemented"
+	return 0
 }
 
 func (c Cache) append(tmp []*kvstore.KeyValue, arr *[]*kvstore.KeyValue,
 	exists map[string]struct{}) (s int) {
-	for _, kv := range tmp {
-		key := util.BytesToStringWithNoCopy(kv.Key)
-		if _, ok := exists[key]; ok {
-			continue
-		}
-		exists[key] = struct{}{}
-		if arr != nil {
-			*arr = append(*arr, kv)
-		}
-		s++
-	}
-	return
+	_ = "STUB: not implemented"
+	return 0
 }
 
 func (c Cache) ForEach(iter func(k string, v *kvstore.KeyValue) (next bool)) {
-	exists := make(map[string]struct{})
-	for _, item := range c {
-		item.ForEach(func(k string, v *kvstore.KeyValue) bool {
-			if _, ok := exists[k]; ok {
-				return true
-			}
-			exists[k] = struct{}{}
-			return iter(k, v)
-		})
-	}
+	_ = "STUB: not implemented"
+	return
 }

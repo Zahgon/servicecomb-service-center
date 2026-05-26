@@ -24,22 +24,8 @@ type Options struct {
 
 type Option func(options *Options)
 
-func WithENV(env string) Option {
-	return func(options *Options) {
-		options.ENV = env
-	}
-}
+func WithENV(env string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithStandby(key string) Option {
-	return func(options *Options) {
-		options.Standby = key
-	}
-}
+func WithStandby(key string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func NewOptions(opts ...Option) *Options {
-	o := &Options{}
-	for _, opt := range opts {
-		opt(o)
-	}
-	return o
-}
+func NewOptions(opts ...Option) *Options { _ = "STUB: not implemented"; return nil }

@@ -19,17 +19,10 @@ package task
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"sync"
-	"sync/atomic"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/goutil"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/go-chassis/foundation/gopool"
-	"github.com/go-chassis/foundation/timeutil"
 )
 
 const (
@@ -54,172 +47,34 @@ type AsyncTaskService struct {
 }
 
 func (lat *AsyncTaskService) getOrNewExecutor(task Task) (s *Executor, isNew bool) {
-	var (
-		ok  bool
-		key = task.Key()
-	)
-
-	lat.lock.RLock()
-	se, ok := lat.executors[key]
-	lat.lock.RUnlock()
-	if !ok {
-		lat.lock.Lock()
-		se, ok = lat.executors[key]
-		if !ok {
-			isNew = true
-			se = &executorWithTTL{
-				Executor: NewExecutor(lat.goroutine, task),
-				TTL:      initExecutorTTL,
-			}
-			lat.executors[key] = se
-		}
-		lat.lock.Unlock()
-	}
-	atomic.StoreInt64(&se.TTL, initExecutorTTL)
-	return se.Executor, isNew
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (lat *AsyncTaskService) Add(ctx context.Context, task Task) error {
-	if task == nil || ctx == nil {
-		return errors.New("invalid parameters")
-	}
-
-	s, isNew := lat.getOrNewExecutor(task)
-	if isNew {
-		// do immediately at first time
-		return task.Do(ctx)
-	}
-	return s.AddTask(task)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (lat *AsyncTaskService) removeExecutor(key string) {
-	if s, ok := lat.executors[key]; ok {
-		s.Close()
-		delete(lat.executors, key)
-	}
-}
+// do immediately at first time
+
+func (lat *AsyncTaskService) removeExecutor(key string) { _ = "STUB: not implemented"; return }
 
 func (lat *AsyncTaskService) LatestHandled(key string) (Task, error) {
-	lat.lock.RLock()
-	s, ok := lat.executors[key]
-	lat.lock.RUnlock()
-	if !ok {
-		return nil, errors.New("expired behavior")
-	}
-	return s.latestTask, nil
+	_ = "STUB: not implemented"
+	return *new(Task), nil
 }
 
-func (lat *AsyncTaskService) daemon(ctx context.Context) {
-	util.SafeCloseChan(lat.ready)
-	ticker := time.NewTicker(removeExecutorInterval)
-	max := 0
-	timer := time.NewTimer(executeInterval)
-	defer timer.Stop()
-	for {
-		select {
-		case <-ctx.Done():
-			log.Debug("daemon thread exited for AsyncTaskService stopped")
-			return
-		case <-timer.C:
-			lat.lock.RLock()
-			l := len(lat.executors)
-			slice := make([]*executorWithTTL, 0, l)
-			for _, s := range lat.executors {
-				slice = append(slice, s)
-			}
-			lat.lock.RUnlock()
+func (lat *AsyncTaskService) daemon(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-			for _, s := range slice {
-				s.Execute() // non-blocked
-			}
+// non-blocked
 
-			timer.Reset(executeInterval)
-		case <-ticker.C:
-			timeutil.ResetTimer(timer, executeInterval)
+func (lat *AsyncTaskService) Run() { _ = "STUB: not implemented"; return }
 
-			lat.lock.RLock()
-			l := len(lat.executors)
-			if l > max {
-				max = l
-			}
+func (lat *AsyncTaskService) Stop() { _ = "STUB: not implemented"; return }
 
-			removes := make([]string, 0, l)
-			for key, se := range lat.executors {
-				if atomic.AddInt64(&se.TTL, -1) == 0 {
-					removes = append(removes, key)
-				}
-			}
-			lat.lock.RUnlock()
+func (lat *AsyncTaskService) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-			if len(removes) == 0 {
-				continue
-			}
+func (lat *AsyncTaskService) renew() { _ = "STUB: not implemented"; return }
 
-			lat.lock.Lock()
-			for _, key := range removes {
-				lat.removeExecutor(key)
-			}
-
-			l = len(lat.executors)
-			if max > initExecutorCount && max > l*compactTimes {
-				lat.renew()
-				max = l
-			}
-			lat.lock.Unlock()
-
-			log.Debug(fmt.Sprintf("daemon thread completed, %d executor(s) removed", len(removes)))
-		}
-	}
-}
-
-func (lat *AsyncTaskService) Run() {
-	lat.lock.Lock()
-	if !lat.isClose {
-		lat.lock.Unlock()
-		return
-	}
-	lat.isClose = false
-	lat.lock.Unlock()
-	lat.goroutine.Do(lat.daemon)
-}
-
-func (lat *AsyncTaskService) Stop() {
-	lat.lock.Lock()
-	if lat.isClose {
-		lat.lock.Unlock()
-		return
-	}
-	lat.isClose = true
-
-	for key := range lat.executors {
-		lat.removeExecutor(key)
-	}
-
-	lat.lock.Unlock()
-
-	lat.goroutine.Close(true)
-
-	util.SafeCloseChan(lat.ready)
-}
-
-func (lat *AsyncTaskService) Ready() <-chan struct{} {
-	return lat.ready
-}
-
-func (lat *AsyncTaskService) renew() {
-	newExecutor := make(map[string]*executorWithTTL)
-	for k, e := range lat.executors {
-		newExecutor[k] = e
-	}
-	lat.executors = newExecutor
-}
-
-func NewTaskService() Service {
-	lat := &AsyncTaskService{
-		goroutine: goutil.New(gopool.Configure()),
-		ready:     make(chan struct{}),
-		isClose:   true,
-	}
-	lat.renew()
-	return lat
-}
+func NewTaskService() Service { _ = "STUB: not implemented"; return *new(Service) }

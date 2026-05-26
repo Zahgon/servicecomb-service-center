@@ -19,65 +19,19 @@ package cache
 
 import (
 	"context"
-	"fmt"
-	"sort"
-	"strings"
 
-	pb "github.com/go-chassis/cari/discovery"
-
-	serviceUtil "github.com/apache/servicecomb-service-center/datasource/etcd/util"
 	"github.com/apache/servicecomb-service-center/pkg/cache"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type TagsFilter struct {
 }
 
 func (f *TagsFilter) Name(ctx context.Context, _ *cache.Node) string {
-	tags, _ := ctx.Value(CtxTags).([]string)
-	sort.Strings(tags)
-	return strings.Join(tags, ",")
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (f *TagsFilter) Init(ctx context.Context, parent *cache.Node) (node *cache.Node, err error) {
-	tags, _ := ctx.Value(CtxTags).([]string)
-	if len(tags) == 0 {
-		node = cache.NewNode()
-		node.Cache = parent.Cache
-		return
-	}
-
-	var ids []string
-
-	targetDomainProject := util.ParseTargetDomainProject(ctx)
-	pCopy := *parent.Cache.Get(FindResult).(*VersionRuleCacheItem)
-
-loopProviderIds:
-	for _, providerServiceID := range pCopy.ServiceIds {
-		tagsFromETCD, err := serviceUtil.GetTagsUtils(ctx, targetDomainProject, providerServiceID)
-		if err != nil {
-			consumer := ctx.Value(CtxConsumerID).(*pb.MicroService)
-			provider := ctx.Value(CtxProviderKey).(*pb.MicroServiceKey)
-			findFlag := fmt.Sprintf("consumer '%s' find provider %s/%s/%s", consumer.ServiceId,
-				provider.AppId, provider.ServiceName, provider.Version)
-			log.Error(fmt.Sprintf("TagsFilter failed, %s", findFlag), err)
-			return nil, err
-		}
-		if len(tagsFromETCD) == 0 {
-			continue
-		}
-		for _, tag := range tags {
-			if _, ok := tagsFromETCD[tag]; !ok {
-				continue loopProviderIds
-			}
-		}
-		ids = append(ids, providerServiceID)
-	}
-
-	pCopy.ServiceIds = ids
-
-	node = cache.NewNode()
-	node.Cache.Set(FindResult, &pCopy)
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

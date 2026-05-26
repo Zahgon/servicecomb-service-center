@@ -17,16 +17,8 @@
 
 package v4
 
-import (
-	roa "github.com/apache/servicecomb-service-center/pkg/rest"
-)
-
 func init() {
 	initRouter()
 }
 
-func initRouter() {
-	roa.RegisterServant(&MainService{})
-	roa.RegisterServant(&DependencyService{})
-	roa.RegisterServant(&WatchService{})
-}
+func initRouter() { _ = "STUB: not implemented"; return }

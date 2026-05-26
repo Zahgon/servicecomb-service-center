@@ -21,9 +21,6 @@ package plugin
 type DefaultConfigurator struct {
 }
 
-func (c *DefaultConfigurator) GetImplName(_ Kind) string {
-	return Buildin
-}
-func (c *DefaultConfigurator) GetPluginDir() string {
-	return ""
-}
+func (c *DefaultConfigurator) GetImplName(_ Kind) string { _ = "STUB: not implemented"; return "" }
+
+func (c *DefaultConfigurator) GetPluginDir() string { _ = "STUB: not implemented"; return "" }

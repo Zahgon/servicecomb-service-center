@@ -27,8 +27,4 @@ type Config struct {
 	EnableCache bool
 }
 
-func (c *Config) Init() {
-	if c.Logger == nil {
-		c.Logger = openlog.GetLogger()
-	}
-}
+func (c *Config) Init() { _ = "STUB: not implemented"; return }

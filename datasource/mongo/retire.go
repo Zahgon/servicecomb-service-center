@@ -24,5 +24,6 @@ import (
 )
 
 func (ds *MetadataManager) RetireService(_ context.Context, _ *datasource.RetirePlan) error {
+	_ = "STUB: not implemented"
 	return nil
 }

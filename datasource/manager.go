@@ -17,18 +17,6 @@
 
 package datasource
 
-import (
-	"context"
-	"fmt"
-
-	"github.com/go-chassis/cari/dlock"
-
-	"github.com/apache/servicecomb-service-center/datasource/rbac"
-	"github.com/apache/servicecomb-service-center/datasource/schema"
-	"github.com/apache/servicecomb-service-center/eventbase/datasource"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-)
-
 type dataSourceEngine func(opts Options) (DataSource, error)
 
 var (
@@ -37,74 +25,27 @@ var (
 )
 
 // load plugins configuration into plugins
-func Install(pluginImplName string, engineFunc dataSourceEngine) {
-	plugins[pluginImplName] = engineFunc
-}
+func Install(pluginImplName string, engineFunc dataSourceEngine) { _ = "STUB: not implemented"; return }
 
 // Init construct storage plugin instance
 // invoked by sc main process
-func Init(opts Options) error {
-	if opts.Kind == "" {
-		return nil
-	}
+func Init(opts Options) error { _ = "STUB: not implemented"; return nil }
 
-	err := initDatasource(opts)
-	if err != nil {
-		return err
-	}
-	err = GetSyncManager().SyncAll(context.Background())
-	if err != nil && err != ErrSyncAllKeyExists {
-		return err
-	}
-	err = schema.Init(schema.Options{Kind: opts.Kind})
-	if err != nil {
-		return err
-	}
-	err = rbac.Init(rbac.Options{Kind: opts.Kind})
-	if err != nil {
-		return err
-	}
-	err = dlock.Init(dlock.Options{Kind: opts.Kind})
-	if err != nil {
-		return err
-	}
-	// init eventbase
-	err = datasource.Init(&datasource.Config{
-		Kind:   opts.Kind,
-		Logger: log.Logger,
-	})
-	return err
-}
+// init eventbase
 
-func initDatasource(opts Options) error {
-	dataSourceEngine, ok := plugins[opts.Kind]
-	if !ok {
-		return fmt.Errorf("plugin implement not supported [%s]", opts.Kind)
-	}
-	var err error
-	dataSourceInst, err = dataSourceEngine(opts)
-	if err != nil {
-		return err
-	}
-	log.Info(fmt.Sprintf("datasource plugin [%s] enabled", opts.Kind))
-	return nil
-}
+func initDatasource(opts Options) error { _ = "STUB: not implemented"; return nil }
 
-func GetSCManager() SCManager {
-	return dataSourceInst.SCManager()
-}
-func GetMetadataManager() MetadataManager {
-	return dataSourceInst.MetadataManager()
-}
-func GetSystemManager() SystemManager {
-	return dataSourceInst.SystemManager()
-}
+func GetSCManager() SCManager { _ = "STUB: not implemented"; return *new(SCManager) }
+
+func GetMetadataManager() MetadataManager { _ = "STUB: not implemented"; return *new(MetadataManager) }
+
+func GetSystemManager() SystemManager { _ = "STUB: not implemented"; return *new(SystemManager) }
+
 func GetDependencyManager() DependencyManager {
-	return dataSourceInst.DependencyManager()
+	_ = "STUB: not implemented"
+	return *new(DependencyManager)
 }
-func GetMetricsManager() MetricsManager {
-	return dataSourceInst.MetricsManager()
-}
-func GetSyncManager() SyncManager {
-	return dataSourceInst.SyncManager()
-}
+
+func GetMetricsManager() MetricsManager { _ = "STUB: not implemented"; return *new(MetricsManager) }
+
+func GetSyncManager() SyncManager { _ = "STUB: not implemented"; return *new(SyncManager) }

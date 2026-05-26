@@ -19,39 +19,12 @@ package client
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/gorilla/websocket"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func (c *LBClient) WebsocketDial(_ context.Context, api string, headers http.Header) (conn *websocket.Conn, err error) {
-	dialer := &websocket.Dialer{TLSClientConfig: c.TLS}
-	var errs []string
-	for i := 0; i < c.Retries; i++ {
-		var addr *url.URL
-		addr, err = url.Parse(c.Next())
-		if err != nil {
-			errs = append(errs, fmt.Sprintf("[%s]: %s", addr, err.Error()))
-			continue
-		}
-		if addr.Scheme == "https" {
-			addr.Scheme = "wss"
-		} else {
-			addr.Scheme = "ws"
-		}
-		conn, _, err = dialer.Dial(addr.String()+api, headers)
-		if err == nil {
-			break
-		}
-		errs = append(errs, fmt.Sprintf("[%s]: %s", addr, err.Error()))
-	}
-	if err != nil {
-		err = errors.New(util.StringJoin(errs, ", "))
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

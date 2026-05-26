@@ -19,11 +19,8 @@ package rest
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/interceptor"
 )
 
 func init() {
@@ -32,11 +29,7 @@ func init() {
 }
 
 // NewServerHandler news a ServerHandler
-func NewServerHandler(h http.Handler) *ServerHandler {
-	return &ServerHandler{
-		Handler: h,
-	}
-}
+func NewServerHandler(h http.Handler) *ServerHandler { _ = "STUB: not implemented"; return nil }
 
 // ServerHandler is a http handler for service-center api
 type ServerHandler struct {
@@ -45,15 +38,9 @@ type ServerHandler struct {
 
 // ServeHTTP implements http.Handler
 func (s *ServerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	util.SetRequestContext(r, rest.CtxStartTimestamp, time.Now())
-
-	err := interceptor.InvokeInterceptors(w, r)
-	if err != nil {
-		return
-	}
-
-	s.Handler.ServeHTTP(w, r)
-
-	// CAUTION: There will be cause a concurrent problem,
-	// if here get/set the HTTP request headers.
+	_ = "STUB: not implemented"
+	return
 }
+
+// CAUTION: There will be cause a concurrent problem,
+// if here get/set the HTTP request headers.

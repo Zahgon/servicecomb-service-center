@@ -19,13 +19,9 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	simple "github.com/apache/servicecomb-service-center/pkg/time"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/metrics"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -42,60 +38,18 @@ type LeaseTask struct {
 	err      error
 }
 
-func (lat *LeaseTask) Key() string {
-	return lat.key
-}
+func (lat *LeaseTask) Key() string { _ = "STUB: not implemented"; return "" }
 
-func (lat *LeaseTask) Do(ctx context.Context) (err error) {
-	recv, start := lat.ReceiveTime(), time.Now()
-	lat.TTL, err = lat.Client.LeaseRenew(ctx, lat.LeaseID)
-	metrics.ReportHeartbeatCompleted(err, recv)
-	if err != nil {
-		log.Error(fmt.Sprintf("[%s]task[%s] renew lease[%d] failed(recv: %s, send: %s)",
-			time.Since(recv),
-			lat.Key(),
-			lat.LeaseID,
-			recv.Format(leaseProfTimeFmt),
-			start.Format(leaseProfTimeFmt)), err)
-		if err == etcdadpt.ErrLeaseNotFound {
-			// it means instance is deleted
-			lat.err = err
-			return
-		}
-	}
+func (lat *LeaseTask) Do(ctx context.Context) (err error) { _ = "STUB: not implemented"; return nil }
 
-	// DON'T care about other errors, so client should send heartbeat in next interval
-	lat.err, err = nil, nil
+// it means instance is deleted
 
-	cost := time.Since(recv)
-	if cost >= 2*time.Second {
-		log.Warn(fmt.Sprintf("[%s]task[%s] renew lease[%d](recv: %s, send: %s)",
-			cost,
-			lat.Key(),
-			lat.LeaseID,
-			recv.Format(leaseProfTimeFmt),
-			start.Format(leaseProfTimeFmt)))
-	}
-	return
-}
+// DON'T care about other errors, so client should send heartbeat in next interval
 
-func (lat *LeaseTask) Err() error {
-	return lat.err
-}
+func (lat *LeaseTask) Err() error { _ = "STUB: not implemented"; return nil }
 
-func (lat *LeaseTask) ReceiveTime() time.Time {
-	return lat.recvTime.Local()
-}
+func (lat *LeaseTask) ReceiveTime() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func NewLeaseAsyncTask(op etcdadpt.OpOptions) *LeaseTask {
-	return &LeaseTask{
-		Client:   etcdadpt.Instance(),
-		key:      ToLeaseAsyncTaskKey(util.BytesToStringWithNoCopy(op.Key)),
-		LeaseID:  op.Lease,
-		recvTime: simple.FromTime(time.Now()),
-	}
-}
+func NewLeaseAsyncTask(op etcdadpt.OpOptions) *LeaseTask { _ = "STUB: not implemented"; return nil }
 
-func ToLeaseAsyncTaskKey(key string) string {
-	return "LeaseAsyncTask_" + key
-}
+func ToLeaseAsyncTaskKey(key string) string { _ = "STUB: not implemented"; return "" }

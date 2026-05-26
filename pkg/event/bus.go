@@ -32,72 +32,26 @@ type Bus struct {
 	subjects *util.ConcurrentMap
 }
 
-func (bus *Bus) Name() string {
-	return bus.name
-}
+func (bus *Bus) Name() string { _ = "STUB: not implemented"; return "" }
 
 func (bus *Bus) Fire(evt Event) {
+	_ = "STUB: not implemented"
 	// TODO add option if queue is full
-	bus.Add(queue.Task{Payload: evt})
+	return
 }
 
-func (bus *Bus) Handle(_ context.Context, payload interface{}) {
-	bus.fireAtOnce(payload.(Event))
-}
+func (bus *Bus) Handle(_ context.Context, payload interface{}) { _ = "STUB: not implemented"; return }
 
-func (bus *Bus) fireAtOnce(evt Event) {
-	if itf, ok := bus.subjects.Get(evt.Subject()); ok {
-		itf.(*Poster).Post(evt)
-	} // else the evt will be discard
-}
+func (bus *Bus) fireAtOnce(evt Event) { _ = "STUB: not implemented"; return }
 
-func (bus *Bus) Subjects(name string) *Poster {
-	itf, ok := bus.subjects.Get(name)
-	if !ok {
-		return nil
-	}
-	return itf.(*Poster)
-}
+// else the evt will be discard
 
-func (bus *Bus) AddSubscriber(n Subscriber) {
-	item, _ := bus.subjects.Fetch(n.Subject(), func() (interface{}, error) {
-		return NewPoster(n.Subject()), nil
-	})
-	item.(*Poster).GetOrNewGroup(n.Group()).AddMember(n)
-}
+func (bus *Bus) Subjects(name string) *Poster { _ = "STUB: not implemented"; return nil }
 
-func (bus *Bus) RemoveSubscriber(n Subscriber) {
-	itf, ok := bus.subjects.Get(n.Subject())
-	if !ok {
-		return
-	}
+func (bus *Bus) AddSubscriber(n Subscriber) { _ = "STUB: not implemented"; return }
 
-	s := itf.(*Poster)
-	g := s.Groups(n.Group())
-	if g == nil {
-		return
-	}
+func (bus *Bus) RemoveSubscriber(n Subscriber) { _ = "STUB: not implemented"; return }
 
-	g.RemoveMember(n.ID())
+func (bus *Bus) Clear() { _ = "STUB: not implemented"; return }
 
-	if g.Size() == 0 {
-		s.RemoveGroup(g.Name())
-	}
-	if s.Size() == 0 {
-		bus.subjects.Remove(s.Subject())
-	}
-}
-
-func (bus *Bus) Clear() {
-	bus.subjects.Clear()
-}
-
-func NewBus(name string, queueSize int) *Bus {
-	p := &Bus{
-		TaskQueue: queue.NewTaskQueue(queueSize),
-		name:      name,
-		subjects:  util.NewConcurrentMap(0),
-	}
-	p.AddWorker(p)
-	return p
-}
+func NewBus(name string, queueSize int) *Bus { _ = "STUB: not implemented"; return nil }

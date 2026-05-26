@@ -18,7 +18,6 @@
 package servicecenter
 
 import (
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
 )
 
@@ -30,35 +29,13 @@ type Adaptor struct {
 	kvstore.Indexer
 }
 
-func (se *Adaptor) Run() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Run()
-	}
-}
+func (se *Adaptor) Run() { _ = "STUB: not implemented"; return }
 
-func (se *Adaptor) Stop() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Stop()
-	}
-}
+func (se *Adaptor) Stop() { _ = "STUB: not implemented"; return }
 
-func (se *Adaptor) Ready() <-chan struct{} {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		return r.Ready()
-	}
-	return closedCh
-}
+func (se *Adaptor) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 func NewServiceCenterAdaptor(t kvstore.Type, cfg *kvstore.Options) *Adaptor {
-	if t == sd.TypeSchema {
-		return &Adaptor{
-			Indexer: NewClusterIndexer(t, kvstore.NullCache),
-			Cacher:  kvstore.NullCacher,
-		}
-	}
-	cache := kvstore.NewKvCache(t.String(), cfg)
-	return &Adaptor{
-		Indexer: NewClusterIndexer(t, cache),
-		Cacher:  BuildCacher(t, cfg, cache),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

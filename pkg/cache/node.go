@@ -29,17 +29,6 @@ type Node struct {
 	Level  int
 }
 
-func (n *Node) ChildNodes() (nodes []*Node) {
-	n.Childs.ForEach(func(item util.MapItem) (next bool) {
-		nodes = append(nodes, item.Value.(*Node))
-		return true
-	})
-	return
-}
+func (n *Node) ChildNodes() (nodes []*Node) { _ = "STUB: not implemented"; return nil }
 
-func NewNode() *Node {
-	return &Node{
-		Cache:  NewCache(),
-		Childs: util.NewConcurrentMap(0),
-	}
-}
+func NewNode() *Node { _ = "STUB: not implemented"; return nil }

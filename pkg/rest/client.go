@@ -18,23 +18,11 @@
 package rest
 
 import (
-	"bytes"
 	"compress/gzip"
 	"crypto/tls"
-	"fmt"
 	"io"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
-	"os"
-	"strings"
 	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-
-	"github.com/apache/servicecomb-service-center/pkg/buffer"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/foundation/tlsutil"
 
 	"context"
 )
@@ -69,17 +57,11 @@ type gzipBodyReader struct {
 	Body io.ReadCloser
 }
 
-func (w *gzipBodyReader) Close() error {
-	w.Reader.Close()
-	return w.Body.Close()
-}
+func (w *gzipBodyReader) Close() error { _ = "STUB: not implemented"; return nil }
 
 func NewGZipBodyReader(body io.ReadCloser) (io.ReadCloser, error) {
-	reader, err := gzip.NewReader(body)
-	if err != nil {
-		return nil, err
-	}
-	return &gzipBodyReader{reader, body}, nil
+	_ = "STUB: not implemented"
+	return *new(io.ReadCloser), nil
 }
 
 type URLClient struct {
@@ -91,151 +73,30 @@ type URLClient struct {
 }
 
 func (client *URLClient) HTTPDoWithContext(ctx context.Context, method string, rawURL string, headers http.Header, body []byte) (resp *http.Response, err error) {
-	if strings.HasPrefix(rawURL, "https") {
-		if transport, ok := client.Client.Transport.(*http.Transport); ok {
-			transport.TLSClientConfig = client.TLS
-		}
-	}
-
-	if headers == nil {
-		headers = make(http.Header)
-	}
-
-	if _, ok := headers[HeaderHost]; !ok {
-		parsedURL, err := url.Parse(rawURL)
-		if err != nil {
-			return nil, err
-		}
-		headers.Set(HeaderHost, parsedURL.Host)
-	}
-	if _, ok := headers[HeaderAccept]; !ok {
-		headers.Set(HeaderAccept, AcceptAny)
-	}
-	if _, ok := headers[HeaderAcceptEncoding]; !ok && client.Cfg.Compressed {
-		headers.Set(HeaderAcceptEncoding, "deflate, gzip")
-	}
-
-	req, err := http.NewRequest(method, rawURL, bytes.NewBuffer(body))
-	if err != nil {
-		return nil, fmt.Errorf("create request failed: %s", err.Error())
-	}
-	req = req.WithContext(ctx)
-	req.Header = headers
-
-	DumpRequestOut(req)
-
-	resp, err = client.Client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	DumpResponse(resp)
-
-	switch resp.Header.Get(HeaderContentEncoding) {
-	case "gzip":
-		reader, err := NewGZipBodyReader(resp.Body)
-		if err != nil {
-			_, err = io.Copy(io.Discard, resp.Body)
-			if err != nil {
-				log.Error("", err)
-				resp.Body.Close()
-				return nil, err
-			}
-			resp.Body.Close()
-			return nil, err
-		}
-		resp.Body = reader
-	}
-
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func DumpRequestOut(req *http.Request) {
-	if req == nil || !util.StringTRUE(os.Getenv("DEBUG_MODE")) {
-		return
-	}
+func DumpRequestOut(req *http.Request) { _ = "STUB: not implemented"; return }
 
-	fmt.Println(">", req.URL.String())
-	b, _ := httputil.DumpRequestOut(req, true)
-	err := buffer.ReadLine(bytes.NewBuffer(b), func(line string) bool {
-		fmt.Println(">", line)
-		return true
-	})
-	if err != nil {
-		log.Error("", err)
-	}
-}
-
-func DumpResponse(resp *http.Response) {
-	if resp == nil || !util.StringTRUE(os.Getenv("DEBUG_MODE")) {
-		return
-	}
-
-	b, _ := httputil.DumpResponse(resp, true)
-	err := buffer.ReadLine(bytes.NewBuffer(b), func(line string) bool {
-		fmt.Println("<", line)
-		return true
-	})
-	if err != nil {
-		log.Error("", err)
-	}
-}
+func DumpResponse(resp *http.Response) { _ = "STUB: not implemented"; return }
 
 func (client *URLClient) HTTPDo(method string, rawURL string, headers http.Header, body []byte) (resp *http.Response, err error) {
-	return client.HTTPDoWithContext(context.Background(), method, rawURL, headers, body)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func DefaultURLClientOption() URLClientOption {
-	return defaultURLClientOption
+	_ = "STUB: not implemented"
+	return *new(URLClientOption)
 }
 
 func setOptionDefaultValue(o *URLClientOption) URLClientOption {
-	if o == nil {
-		return defaultURLClientOption
-	}
-
-	option := *o
-	if option.RequestTimeout <= 0 {
-		option.RequestTimeout = defaultURLClientOption.RequestTimeout
-	}
-	if option.HandshakeTimeout <= 0 {
-		option.HandshakeTimeout = defaultURLClientOption.HandshakeTimeout
-	}
-	if option.ResponseHeaderTimeout <= 0 {
-		option.ResponseHeaderTimeout = defaultURLClientOption.ResponseHeaderTimeout
-	}
-	if option.SSLVersion == 0 {
-		option.SSLVersion = defaultURLClientOption.SSLVersion
-	}
-	return option
+	_ = "STUB: not implemented"
+	return *new(URLClientOption)
 }
 
 func GetURLClient(o URLClientOption) (client *URLClient, err error) {
-	option := setOptionDefaultValue(&o)
-	client = &URLClient{
-		Client: &http.Client{
-			Transport: &http.Transport{
-				MaxIdleConnsPerHost:   option.ConnsPerHost,
-				TLSHandshakeTimeout:   option.HandshakeTimeout,
-				ResponseHeaderTimeout: option.ResponseHeaderTimeout,
-				DisableCompression:    !option.Compressed,
-			},
-			Timeout: option.RequestTimeout,
-		},
-		Cfg: option,
-	}
-
-	if option.SSLEnabled {
-		opts := append(tlsutil.DefaultClientTLSOptions(),
-			tlsutil.WithVerifyPeer(option.VerifyPeer),
-			tlsutil.WithCA(option.CAFile),
-			tlsutil.WithCert(option.CertFile),
-			tlsutil.WithKey(option.CertKeyFile),
-			tlsutil.WithKeyPass(option.CertKeyPWD))
-
-		client.TLS, err = tlsutil.GetClientTLSConfig(opts...)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -20,15 +20,9 @@ package state
 
 import (
 	"context"
-	"fmt"
 	"sync"
-	"time"
 
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/goutil"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/config"
 	"github.com/go-chassis/foundation/gopool"
 )
 
@@ -45,133 +39,36 @@ type Manager struct {
 	isClose bool
 }
 
-func (s *Manager) Initialize() {
-	s.states = make(map[kvstore.Type]State)
-	s.ready = make(chan struct{})
-	s.goroutine = goutil.New()
-}
+func (s *Manager) Initialize() { _ = "STUB: not implemented"; return }
 
-func (s *Manager) OnCacheEvent(evt kvstore.Event) {
-	if s.Rev < evt.Revision {
-		s.Rev = evt.Revision
-	}
-}
+func (s *Manager) OnCacheEvent(evt kvstore.Event) { _ = "STUB: not implemented"; return }
 
 func (s *Manager) InjectConfig(cfg *kvstore.Options) *kvstore.Options {
-	if !Configuration().EnableCache {
-		cfg.WithInitSize(0)
-	}
-	cfg.AppendEventFunc(s.OnCacheEvent)
-	return cfg
-}
-
-func (s *Manager) repo() Repository {
-	return s.Repository
-}
-
-func (s *Manager) getOrCreateState(t kvstore.Type) State {
-	s.statesLock.RLock()
-	v, ok := s.states[t]
-	if ok {
-		s.statesLock.RUnlock()
-		return v
-	}
-	s.statesLock.RUnlock()
-
-	s.statesLock.Lock()
-	p, ok := Plugins()[t]
-	if ok {
-		cfg := p.Config()
-		kvstore.EventProxy(t).InjectConfig(cfg)
-		s.InjectConfig(cfg)
-
-		state := s.repo().New(t, cfg)
-		state.Run()
-
-		s.states[t] = state
-		s.statesLock.Unlock()
-		return state
-	}
-	s.statesLock.Unlock()
-
-	log.Warn(fmt.Sprintf("type '%s' not found", t))
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (s *Manager) stopStates() {
-	s.statesLock.RLock()
-	for _, state := range s.states {
-		state.Stop()
-	}
-	s.statesLock.RUnlock()
+func (s *Manager) repo() Repository { _ = "STUB: not implemented"; return *new(Repository) }
+
+func (s *Manager) getOrCreateState(t kvstore.Type) State {
+	_ = "STUB: not implemented"
+	return *new(State)
 }
 
-func (s *Manager) Run() {
-	s.goroutine.Do(s.store)
-	s.goroutine.Do(s.autoClearCache)
-}
+func (s *Manager) stopStates() { _ = "STUB: not implemented"; return }
+
+func (s *Manager) Run() { _ = "STUB: not implemented"; return }
 
 func (s *Manager) store(ctx context.Context) {
+	_ = "STUB: not implemented"
 	// new all types
-	for _, t := range kvstore.Types {
-		state := s.getOrCreateState(t)
-		if state == nil {
-			continue
-		}
-		select {
-		case <-ctx.Done():
-			return
-		case <-state.Ready():
-		}
-	}
-
-	util.SafeCloseChan(s.ready)
-
-	log.Debug("all states are ready")
+	return
 }
 
-func (s *Manager) autoClearCache(ctx context.Context) {
-	ttl := config.GetRegistry().CacheTTL
-	if ttl == 0 {
-		return
-	}
+func (s *Manager) autoClearCache(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	log.Info(fmt.Sprintf("start auto clear cache in %v", ttl))
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-time.After(ttl):
-			for _, t := range kvstore.Types {
-				cache, ok := s.getOrCreateState(t).Cache().(kvstore.Cache)
-				if !ok {
-					log.Error("the discovery adaptor does not implement the Cache", nil)
-					continue
-				}
-				cache.MarkDirty()
-			}
-			log.Warn("caches are marked dirty!")
-		}
-	}
-}
+func (s *Manager) Stop() { _ = "STUB: not implemented"; return }
 
-func (s *Manager) Stop() {
-	if s.isClose {
-		return
-	}
-	s.isClose = true
+func (s *Manager) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-	s.stopStates()
-
-	s.goroutine.Close(true)
-
-	util.SafeCloseChan(s.ready)
-
-	log.Debug("store daemon stopped")
-}
-
-func (s *Manager) Ready() <-chan struct{} {
-	return s.ready
-}
-
-func (s *Manager) States(id kvstore.Type) State { return s.getOrCreateState(id) }
+func (s *Manager) States(id kvstore.Type) State { _ = "STUB: not implemented"; return *new(State) }

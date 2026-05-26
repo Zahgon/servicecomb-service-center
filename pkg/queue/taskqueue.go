@@ -20,7 +20,6 @@ package queue
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/pkg/goutil"
 	"github.com/go-chassis/foundation/gopool"
 )
 
@@ -47,59 +46,24 @@ type TaskQueue struct {
 }
 
 // AddWorker is the method to add Worker
-func (q *TaskQueue) AddWorker(w Worker) {
-	q.Workers = append(q.Workers, w)
-}
+func (q *TaskQueue) AddWorker(w Worker) { _ = "STUB: not implemented"; return }
 
 // Add is the method to add task in queue, one task will be handled by all workers
-func (q *TaskQueue) Add(t Task) {
-	q.taskCh <- t
-}
+func (q *TaskQueue) Add(t Task) { _ = "STUB: not implemented"; return }
 
 func (q *TaskQueue) dispatch(ctx context.Context, w Worker, obj interface{}) {
-	w.Handle(ctx, obj)
+	_ = "STUB: not implemented"
+	return
+
+	// Do is the method to trigger workers handle the task immediately
 }
 
-// Do is the method to trigger workers handle the task immediately
-func (q *TaskQueue) Do(ctx context.Context, task Task) {
-	if task.Async {
-		for _, w := range q.Workers {
-			q.goroutine.Do(func(ctx context.Context) {
-				q.dispatch(ctx, w, task.Payload)
-			})
-		}
-		return
-	}
-	for _, w := range q.Workers {
-		q.dispatch(ctx, w, task.Payload)
-	}
-}
+func (q *TaskQueue) Do(ctx context.Context, task Task) { _ = "STUB: not implemented"; return }
 
 // Run is the method to start a goroutine to pull and handle tasks from queue
-func (q *TaskQueue) Run() {
-	q.goroutine.Do(func(ctx context.Context) {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case task := <-q.taskCh:
-				q.Do(ctx, task)
-			}
-		}
-	})
-}
+func (q *TaskQueue) Run() { _ = "STUB: not implemented"; return }
 
 // Stop is the method to stop the workers gracefully
-func (q *TaskQueue) Stop() {
-	q.goroutine.Close(true)
-}
+func (q *TaskQueue) Stop() { _ = "STUB: not implemented"; return }
 
-func NewTaskQueue(size int) *TaskQueue {
-	if size <= 0 {
-		size = eventQueueSize
-	}
-	return &TaskQueue{
-		taskCh:    make(chan Task, size),
-		goroutine: goutil.New(gopool.Configure()),
-	}
-}
+func NewTaskQueue(size int) *TaskQueue { _ = "STUB: not implemented"; return nil }

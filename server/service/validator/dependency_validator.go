@@ -31,51 +31,23 @@ var (
 
 var versionAllowEmptyRegex, _ = regexp.Compile(`^(^\d+(\.\d+){0,2}\+?$|^\d+(\.\d+){0,2}-\d+(\.\d+){0,2}$|^latest$)?$`)
 
-func defaultDependencyValidator() *validate.Validator {
-	appIDRule := *(MicroServiceKeyValidator().GetRule("AppId"))
-	appIDRule.Min = 0
-	versionRule := &validate.Rule{Max: 128, Regexp: &validate.VersionRegexp{Fuzzy: true, Regex: versionAllowEmptyRegex}}
+func defaultDependencyValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-	var (
-		consumerMsValidator validate.Validator
-		providerMsValidator validate.Validator
-	)
-	consumerMsValidator.AddRules(MicroServiceKeyValidator().GetRules())
+func AddDependenciesReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
-	providerMsValidator.AddRules(MicroServiceKeyValidator().GetRules())
-	providerMsValidator.AddRule("AppId", &appIDRule)
-	providerMsValidator.AddRule("Version", versionRule)
-
-	var dependenciesValidator validate.Validator
-	dependenciesValidator.AddRule("Consumer", &validate.Rule{Min: 1})
-	dependenciesValidator.AddSub("Consumer", &consumerMsValidator)
-	dependenciesValidator.AddSub("Providers", &providerMsValidator)
-
-	return &dependenciesValidator
-}
-
-func AddDependenciesReqValidator() *validate.Validator {
-	return addDependenciesReqValidator.Init(func(v *validate.Validator) {
-		dep := defaultDependencyValidator()
-		dep.AddRule("Providers", &validate.Rule{Min: 1})
-		v.AddRule("Dependencies", &validate.Rule{Min: 1, Max: 100})
-		v.AddSub("Dependencies", dep)
-	})
-}
-
-func CreateDependenciesReqValidator() *validate.Validator {
-	return overwriteDependenciesReqValidator.Init(func(v *validate.Validator) {
-		v.AddRule("Dependencies", &validate.Rule{Min: 1, Max: 100})
-		v.AddSub("Dependencies", defaultDependencyValidator())
-	})
-}
+func CreateDependenciesReqValidator() *validate.Validator { _ = "STUB: not implemented"; return nil }
 
 func ValidateGetDependenciesRequest(v *discovery.GetDependenciesRequest) error {
-	return GetServiceReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateCreateDependenciesRequest(v *discovery.CreateDependenciesRequest) error {
-	return CreateDependenciesReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func ValidateAddDependenciesRequest(v *discovery.AddDependenciesRequest) error {
-	return AddDependenciesReqValidator().Validate(v)
+	_ = "STUB: not implemented"
+	return nil
 }

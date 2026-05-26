@@ -22,56 +22,20 @@ import (
 )
 
 func getValue(name string, labels map[string]string, getV func(m *dto.Metric) float64) float64 {
-	f := Family(name)
-	if f == nil {
-		return 0
-	}
-	matchAll := len(labels) == 0
-	var sum float64
-	for _, m := range f.Metric {
-		if !matchAll && !MatchLabels(m, labels) {
-			continue
-		}
-		sum += getV(m)
-	}
-	return sum
+	_ = "STUB: not implemented"
+	return 0
 }
 
-func GaugeValue(name string, labels map[string]string) float64 {
-	return getValue(name, labels, func(m *dto.Metric) float64 {
-		return m.GetGauge().GetValue()
-	})
-}
+func GaugeValue(name string, labels map[string]string) float64 { _ = "STUB: not implemented"; return 0 }
 
 func CounterValue(name string, labels map[string]string) float64 {
-	return getValue(name, labels, func(m *dto.Metric) float64 {
-		return m.GetCounter().GetValue()
-	})
+	_ = "STUB: not implemented"
+	return 0
 }
 
 func MatchLabels(m *dto.Metric, labels map[string]string) bool {
-	count := 0
-	for _, label := range m.GetLabel() {
-		v, ok := labels[label.GetName()]
-		if ok && v != label.GetValue() {
-			return false
-		}
-		if ok {
-			count++
-		}
-	}
-	return count == len(labels)
+	_ = "STUB: not implemented"
+	return false
 }
 
-func Family(name string) *dto.MetricFamily {
-	families, err := Gather()
-	if err != nil {
-		return nil
-	}
-	for _, f := range families {
-		if f.GetName() == name {
-			return f
-		}
-	}
-	return nil
-}
+func Family(name string) *dto.MetricFamily { _ = "STUB: not implemented"; return nil }

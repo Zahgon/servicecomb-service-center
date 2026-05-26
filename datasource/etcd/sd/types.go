@@ -20,11 +20,7 @@ package sd
 import (
 	"time"
 
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/state/parser"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/value"
 )
 
 const (
@@ -48,36 +44,4 @@ var (
 	TypeLease           kvstore.Type
 )
 
-func RegisterInnerTypes() {
-	TypeService = state.MustRegister("SERVICE", path.GetServiceRootKey(""),
-		state.WithInitSize(500),
-		state.WithParser(value.ServiceParser))
-	TypeInstance = state.MustRegister("INSTANCE", path.GetInstanceRootKey(""),
-		state.WithInitSize(1000),
-		state.WithParser(value.InstanceParser),
-		state.WithDeferHandler(NewInstanceEventDeferHandler()))
-	TypeDomain = state.MustRegister("DOMAIN", path.GenerateDomainKey(""),
-		state.WithInitSize(100),
-		state.WithParser(parser.StringParser))
-	TypeLease = state.MustRegister("LEASE", path.GetInstanceLeaseRootKey(""),
-		state.WithInitSize(1000),
-		state.WithParser(parser.StringParser))
-	TypeServiceIndex = state.MustRegister("SERVICE_INDEX", path.GetServiceIndexRootKey(""),
-		state.WithInitSize(500),
-		state.WithParser(parser.StringParser))
-	TypeServiceAlias = state.MustRegister("SERVICE_ALIAS", path.GetServiceAliasRootKey(""),
-		state.WithInitSize(100),
-		state.WithParser(parser.StringParser))
-	TypeServiceTag = state.MustRegister("SERVICE_TAG", path.GetServiceTagRootKey(""),
-		state.WithInitSize(100),
-		state.WithParser(parser.MapParser))
-	TypeDependencyRule = state.MustRegister("DEPENDENCY_RULE", path.GetServiceDependencyRuleRootKey(""),
-		state.WithInitSize(100),
-		state.WithParser(value.DependencyRuleParser))
-	TypeDependencyQueue = state.MustRegister("DEPENDENCY_QUEUE", path.GetServiceDependencyQueueRootKey(""),
-		state.WithInitSize(100),
-		state.WithParser(value.DependencyQueueParser))
-	TypeProject = state.MustRegister("PROJECT", path.GetProjectRootKey(""),
-		state.WithInitSize(100),
-		state.WithParser(parser.StringParser))
-}
+func RegisterInnerTypes() { _ = "STUB: not implemented"; return }

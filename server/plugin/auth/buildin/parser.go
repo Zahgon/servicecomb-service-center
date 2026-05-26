@@ -20,14 +20,8 @@ package buildin
 import (
 	"errors"
 	"net/http"
-	"strings"
 
-	rbacmodel "github.com/go-chassis/cari/rbac"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
 	"github.com/apache/servicecomb-service-center/server/plugin/auth"
-	"github.com/apache/servicecomb-service-center/server/service/rbac"
 )
 
 var ErrCtxMatchPatternNotFound = errors.New("CtxMatchPattern not found")
@@ -38,50 +32,17 @@ type ParseFunc func(r *http.Request) (*auth.ResourceScope, error)
 
 // ApplyAll work when no api registered by RegisterParseFunc matched
 func ApplyAll(r *http.Request) (*auth.ResourceScope, error) {
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		log.Error("CtxMatchPattern not found", nil)
-		return nil, ErrCtxMatchPatternNotFound
-	}
-	return &auth.ResourceScope{
-		Type: rbacmodel.GetResource(apiPath),
-		Verb: rbac.MethodToVerbs[r.Method],
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // FromRequest return the scope parsed from request
 // return nil mean apply all resources
-func FromRequest(r *http.Request) *auth.ResourceScope {
-	apiPath, ok := r.Context().Value(rest.CtxMatchPattern).(string)
-	if !ok {
-		log.Error("CtxMatchPattern not found", nil)
-		return nil
-	}
-
-	resource, err := GetAPIParseFunc(apiPath)(r)
-	if err != nil {
-		log.Error("parse from request failed", err)
-	}
-	return resource
-}
+func FromRequest(r *http.Request) *auth.ResourceScope { _ = "STUB: not implemented"; return nil }
 
 func GetAPIParseFunc(apiPattern string) ParseFunc {
-	var (
-		pf      ParseFunc = ApplyAll
-		matched string
-	)
-	for pattern, f := range APIMapping {
-		if apiPattern == pattern {
-			return f
-		}
-		if len(matched) < len(pattern) && strings.Index(apiPattern, pattern) == 0 {
-			pf = f
-			matched = pattern
-		}
-	}
-	return pf
+	_ = "STUB: not implemented"
+	return *new(ParseFunc)
 }
 
-func RegisterParseFunc(apiPathPrefix string, f ParseFunc) {
-	APIMapping[apiPathPrefix] = f
-}
+func RegisterParseFunc(apiPathPrefix string, f ParseFunc) { _ = "STUB: not implemented"; return }

@@ -29,51 +29,12 @@ type IndexCache struct {
 	store map[string]cmp.ConcurrentMap
 }
 
-func NewIndexCache() IndexCache {
-	return IndexCache{
-		store: make(map[string]cmp.ConcurrentMap),
-	}
-}
+func NewIndexCache() IndexCache { _ = "STUB: not implemented"; return *new(IndexCache) }
 
-func (m *IndexCache) Get(key string) []string {
-	m.l.RLock()
-	defer m.l.RUnlock()
-	cmap, exist := m.store[key]
-	if !exist {
-		return []string{}
-	}
-	return cmap.Keys()
-}
+func (m *IndexCache) Get(key string) []string { _ = "STUB: not implemented"; return nil }
 
-func (m *IndexCache) Put(key string, value string) {
-	m.l.Lock()
-	defer m.l.Unlock()
-	cmap, exist := m.store[key]
-	if !exist {
-		cmap = cmp.New()
-		m.store[key] = cmap
-	}
-	cmap.Set(value, nil)
-}
+func (m *IndexCache) Put(key string, value string) { _ = "STUB: not implemented"; return }
 
-func (m *IndexCache) Delete(key string, value string) {
-	m.l.Lock()
-	defer m.l.Unlock()
-	cmap, exist := m.store[key]
-	if !exist {
-		return
-	}
-	cmap.Remove(value)
-	if cmap.Count() == 0 {
-		delete(m.store, key)
-	}
-}
+func (m *IndexCache) Delete(key string, value string) { _ = "STUB: not implemented"; return }
 
-func (m *IndexCache) Clear() {
-	m.l.Lock()
-	defer m.l.Unlock()
-	for k, v := range m.store {
-		v.Clear()
-		delete(m.store, k)
-	}
-}
+func (m *IndexCache) Clear() { _ = "STUB: not implemented"; return }

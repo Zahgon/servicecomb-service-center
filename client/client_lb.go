@@ -19,25 +19,15 @@ package client
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/apache/servicecomb-service-center/pkg/lb"
 	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 func NewLBClient(endpoints []string, options rest.URLClientOption) (*LBClient, error) {
-	client, err := rest.GetURLClient(options)
-	if err != nil {
-		return nil, err
-	}
-	return &LBClient{
-		Retries:   len(endpoints),
-		LB:        lb.NewRoundRobinLB(endpoints),
-		URLClient: client,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type LBClient struct {
@@ -46,23 +36,9 @@ type LBClient struct {
 	LB      lb.LoadBalancer
 }
 
-func (c *LBClient) Next() string {
-	return c.LB.Next()
-}
+func (c *LBClient) Next() string { _ = "STUB: not implemented"; return "" }
 
 func (c *LBClient) RestDoWithContext(ctx context.Context, method string, api string, headers http.Header, body []byte) (resp *http.Response, err error) {
-	var errs []string
-	for i := 0; i < c.Retries; i++ {
-		addr := c.Next()
-		resp, err = c.HTTPDoWithContext(ctx, method, addr+api, headers, body)
-		if err != nil {
-			errs = append(errs, fmt.Sprintf("[%s]: %s", addr, err.Error()))
-			continue
-		}
-		break
-	}
-	if err != nil {
-		err = errors.New(util.StringJoin(errs, ", "))
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }

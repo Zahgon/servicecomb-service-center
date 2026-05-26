@@ -19,16 +19,9 @@ package mongo
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/go-chassis/cari/discovery"
 
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/dao"
 	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
-	mutil "github.com/apache/servicecomb-service-center/datasource/mongo/util"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 var globalServiceNames []string
@@ -43,67 +36,26 @@ type MetricsManager struct {
 }
 
 func (m *MetricsManager) Report(ctx context.Context, r datasource.MetricsReporter) error {
-	reportDomains(ctx, r)
-	reportServices(ctx, r)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func reportDomains(ctx context.Context, r datasource.MetricsReporter) {
-	count, err := dao.CountDomain(ctx)
-	if err != nil {
-		log.Error("count domains failed", err)
-		return
-	}
-	r.DomainAdd(float64(count))
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportServices(ctx context.Context, r datasource.MetricsReporter) {
-	services, err := dao.GetServices(ctx, mutil.NewFilter(mutil.NotGlobal()))
-	if err != nil {
-		log.Error("query all services failed", err)
-		return
-	}
-	for _, service := range services {
-		frameworkName, frameworkVersion := discovery.ToFrameworkLabel(service.Service)
-		labels := datasource.MetricsLabels{
-			Domain:           service.Domain,
-			Project:          service.Project,
-			Framework:        frameworkName,
-			FrameworkVersion: frameworkVersion,
-		}
-		r.ServiceAdd(1, labels)
-		r.FrameworkSet(labels)
-
-		reportInstances(ctx, r, service)
-		reportSchemas(ctx, r, service)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportInstances(ctx context.Context, r datasource.MetricsReporter, service *model.Service) {
-	serviceID := service.Service.ServiceId
-	count, err := dao.CountInstance(ctx, mutil.NewFilter(mutil.InstanceServiceID(serviceID)))
-	if err != nil {
-		log.Error(fmt.Sprintf("count service %s instance failed", serviceID), err)
-		return
-	}
-	frameworkName, frameworkVersion := discovery.ToFrameworkLabel(service.Service)
-	r.InstanceAdd(float64(count), datasource.MetricsLabels{
-		Domain:           service.Domain,
-		Project:          service.Project,
-		Framework:        frameworkName,
-		FrameworkVersion: frameworkVersion,
-	})
+	_ = "STUB: not implemented"
+	return
 }
 
 func reportSchemas(ctx context.Context, r datasource.MetricsReporter, service *model.Service) {
-	serviceID := service.Service.ServiceId
-	count, err := dao.CountSchema(util.SetDomainProject(ctx, service.Domain, service.Project), serviceID)
-	if err != nil {
-		log.Error(fmt.Sprintf("count service %s schema failed", serviceID), err)
-		return
-	}
-	r.SchemaAdd(float64(count), datasource.MetricsLabels{
-		Domain:  service.Domain,
-		Project: service.Project,
-	})
+	_ = "STUB: not implemented"
+	return
 }

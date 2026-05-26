@@ -28,20 +28,11 @@ var InstIndexCols *IndexCols
 var ServiceIndexCols *IndexCols
 var RuleIndexCols *IndexCols
 
-func NewIndexCols() *IndexCols {
-	return &IndexCols{indexFuncs: make([]IndexFunc, 0)}
-}
+func NewIndexCols() *IndexCols { _ = "STUB: not implemented"; return nil }
 
-func (i *IndexCols) AddIndexFunc(f IndexFunc) {
-	i.indexFuncs = append(i.indexFuncs, f)
-}
+func (i *IndexCols) AddIndexFunc(f IndexFunc) { _ = "STUB: not implemented"; return }
 
 func (i *IndexCols) GetIndexes(data interface{}) (res []string) {
-	for _, f := range i.indexFuncs {
-		index := f(data)
-		if len(index) != 0 {
-			res = append(res, index)
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }

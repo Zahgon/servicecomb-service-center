@@ -20,16 +20,8 @@ package rbac
 import (
 	"context"
 	"crypto/rsa"
-	"fmt"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/privacy"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/cari/pkg/errsvc"
-	"github.com/go-chassis/cari/rbac"
 	"github.com/go-chassis/go-chassis/v2/security/authr"
-	"github.com/go-chassis/go-chassis/v2/security/token"
-	"github.com/golang-jwt/jwt"
 )
 
 // EmbeddedAuthenticator is sc default auth plugin, RBAC data is persisted in etcd
@@ -37,95 +29,35 @@ type EmbeddedAuthenticator struct {
 }
 
 func newEmbeddedAuthenticator(_ *authr.Options) (authr.Authenticator, error) {
-	return &EmbeddedAuthenticator{}, nil
+	_ = "STUB: not implemented"
+	return *new(authr.Authenticator), nil
 }
 
 // Login check db user and password,will verify and return token for valid account
 func (a *EmbeddedAuthenticator) Login(ctx context.Context, user string, password string, opts ...authr.LoginOption) (string, error) {
-	ip := util.GetIPFromContext(ctx)
-	if IsBanned(MakeBanKey(user, ip)) {
-		log.Warn(fmt.Sprintf("ip [%s] is banned, account: %s", ip, user))
-		return "", ErrAccountBlocked
-	}
-	opt := &authr.LoginOptions{}
-	for _, o := range opts {
-		o(opt)
-	}
-	account, err := GetAccount(ctx, user)
-	if err != nil {
-		if errsvc.IsErrEqualCode(err, rbac.ErrAccountNotExist) {
-			TryLockAccount(MakeBanKey(user, ip))
-			return "", UserOrPwdWrongError()
-		}
-		return "", err
-	}
-	same := privacy.SamePassword(account.Password, password)
-	if !same {
-		TryLockAccount(MakeBanKey(user, ip))
-		return "", UserOrPwdWrongError()
-	}
-
-	secret, err := GetPrivateKey()
-	if err != nil {
-		return "", err
-	}
-	tokenStr, err := token.Sign(map[string]interface{}{
-		rbac.ClaimsUser:  user,
-		rbac.ClaimsRoles: account.Roles,
-	},
-		secret,
-		token.WithExpTime(opt.ExpireAfter),
-		token.WithSigningMethod(token.RS512)) //TODO config for each user
-	if err != nil {
-		log.Error("can not sign a token", err)
-		return "", err
-	}
-	return tokenStr, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
+
+//TODO config for each user
 
 // Authenticate parse a token to claims
 func (a *EmbeddedAuthenticator) Authenticate(_ context.Context, tokenStr string) (interface{}, error) {
-	p, err := jwt.ParseRSAPublicKeyFromPEM([]byte(PublicKey()))
-	if err != nil {
-		log.Error("can not parse public key", err)
-		return nil, err
-	}
-	claims, err := a.authToken(tokenStr, p)
-	if err != nil {
-		if a.isTokenExpiredError(err) {
-			return nil, ErrTokenExpired
-		}
-		return nil, err
-	}
-	return claims, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (a *EmbeddedAuthenticator) isTokenExpiredError(err error) bool {
-	if err == nil {
-		return false
-	}
-	vErr, ok := err.(*jwt.ValidationError)
-	if !ok {
-		return false
-	}
-	if vErr.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
-		return true
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
 func (a *EmbeddedAuthenticator) authToken(tokenStr string, pub *rsa.PublicKey) (map[string]interface{}, error) {
-	return token.Verify(tokenStr, func(claims interface{}, method token.SigningMethod) (interface{}, error) {
-		return pub, nil
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func UserOrPwdWrongError() error {
-	if AuthResource(ResourceService) {
-		return ErrUserOrPwdWrong
-	}
-	return ErrUserOrPwdWrongEx
-}
+func UserOrPwdWrongError() error { _ = "STUB: not implemented"; return nil }
 
 func init() {
 	authr.Install("default", newEmbeddedAuthenticator)

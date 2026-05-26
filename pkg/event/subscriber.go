@@ -17,12 +17,6 @@
 
 package event
 
-import (
-	"errors"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
-)
-
 type Subscriber interface {
 	ID() string
 	Subject() string
@@ -52,25 +46,19 @@ type baseSubscriber struct {
 	err     error
 }
 
-func (s *baseSubscriber) ID() string             { return s.id }
-func (s *baseSubscriber) Subject() string        { return s.subject }
-func (s *baseSubscriber) Group() string          { return s.group }
-func (s *baseSubscriber) Type() Type             { return s.nType }
-func (s *baseSubscriber) Bus() *BusService       { return s.service }
-func (s *baseSubscriber) SetBus(svc *BusService) { s.service = svc }
-func (s *baseSubscriber) Err() error             { return s.err }
-func (s *baseSubscriber) SetError(err error)     { s.err = err }
-func (s *baseSubscriber) Close()                 {}
-func (s *baseSubscriber) OnAccept()              {}
-func (s *baseSubscriber) OnMessage(_ Event) {
-	s.SetError(errors.New("do not call base notifier OnMessage method"))
-}
+func (s *baseSubscriber) ID() string             { _ = "STUB: not implemented"; return "" }
+func (s *baseSubscriber) Subject() string        { _ = "STUB: not implemented"; return "" }
+func (s *baseSubscriber) Group() string          { _ = "STUB: not implemented"; return "" }
+func (s *baseSubscriber) Type() Type             { _ = "STUB: not implemented"; return *new(Type) }
+func (s *baseSubscriber) Bus() *BusService       { _ = "STUB: not implemented"; return nil }
+func (s *baseSubscriber) SetBus(svc *BusService) { _ = "STUB: not implemented"; return }
+func (s *baseSubscriber) Err() error             { _ = "STUB: not implemented"; return nil }
+func (s *baseSubscriber) SetError(err error)     { _ = "STUB: not implemented"; return }
+func (s *baseSubscriber) Close()                 { _ = "STUB: not implemented"; return }
+func (s *baseSubscriber) OnAccept()              { _ = "STUB: not implemented"; return }
+func (s *baseSubscriber) OnMessage(_ Event)      { _ = "STUB: not implemented"; return }
 
 func NewSubscriber(nType Type, subject, group string) Subscriber {
-	return &baseSubscriber{
-		id:      util.GenerateUUID(),
-		group:   group,
-		subject: subject,
-		nType:   nType,
-	}
+	_ = "STUB: not implemented"
+	return *new(Subscriber)
 }

@@ -18,11 +18,7 @@
 package util
 
 import (
-	"os"
-	"strconv"
 	"unsafe"
-
-	"github.com/prometheus/procfs"
 )
 
 const intSize = int(unsafe.Sizeof(0))
@@ -34,56 +30,16 @@ func init() {
 	bs = (*[intSize]byte)(unsafe.Pointer(&i))
 }
 
-func IsBigEndian() bool {
-	return !IsLittleEndian()
-}
+func IsBigEndian() bool { _ = "STUB: not implemented"; return false }
 
-func IsLittleEndian() bool {
-	return bs[0] == 0
-}
+func IsLittleEndian() bool { _ = "STUB: not implemented"; return false }
 
-func PathExist(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil || os.IsExist(err)
-}
+func PathExist(path string) bool { _ = "STUB: not implemented"; return false }
 
-func HostName() (hostname string) {
-	var err error
-	hostname, err = os.Hostname()
-	if err != nil {
-		hostname = "UNKNOWN"
-	}
-	return
-}
+func HostName() (hostname string) { _ = "STUB: not implemented"; return "" }
 
-func GetEnvInt(name string, def int) int {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		i64, err := strconv.ParseInt(env, 10, 0)
-		if err != nil {
-			return def
-		}
-		return int(i64)
-	}
-	return def
-}
+func GetEnvInt(name string, def int) int { _ = "STUB: not implemented"; return 0 }
 
-func GetEnvString(name string, def string) string {
-	env, ok := os.LookupEnv(name)
-	if ok {
-		return env
-	}
-	return def
-}
+func GetEnvString(name string, def string) string { _ = "STUB: not implemented"; return "" }
 
-func GetProcCPUUsage() (pt float64, ct float64) {
-	p, _ := procfs.NewProc(os.Getpid())
-	fs, _ := procfs.NewDefaultFS()
-	stat, _ := fs.Stat()
-	pstat, _ := p.Stat()
-	ct = stat.CPUTotal.User + stat.CPUTotal.Nice + stat.CPUTotal.System +
-		stat.CPUTotal.Idle + stat.CPUTotal.Iowait + stat.CPUTotal.IRQ +
-		stat.CPUTotal.SoftIRQ + stat.CPUTotal.Steal + stat.CPUTotal.Guest
-	pt = float64(pstat.UTime+pstat.STime+uint(pstat.CUTime)+uint(pstat.CSTime)) / 100
-	return
-}
+func GetProcCPUUsage() (pt float64, ct float64) { _ = "STUB: not implemented"; return 0, 0 }

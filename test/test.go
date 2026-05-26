@@ -74,10 +74,4 @@ func init() {
 	_ = registry.SelfRegister(context.Background())
 }
 
-func IsETCD() bool {
-	t := archaius.Get("TEST_MODE")
-	if t == nil {
-		t = "etcd"
-	}
-	return t == "etcd"
-}
+func IsETCD() bool { _ = "STUB: not implemented"; return false }

@@ -18,15 +18,11 @@
 package cmd
 
 import (
-	"bytes"
-	"fmt"
 	"io"
-	"os"
 	"strings"
 	"text/tabwriter"
 	"text/template"
 
-	"github.com/apache/servicecomb-service-center/scctl/pkg/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -103,71 +99,12 @@ GLOBAL OPTIONS:
 	commandUsageTemplate = template.Must(template.New("command_usage").Funcs(templFuncs).Parse(strings.Replace(commandUsage, "\\\n", "", -1)))
 }
 
-func toolFlagUsages(flagSet *pflag.FlagSet) string {
-	x := new(bytes.Buffer)
+func toolFlagUsages(flagSet *pflag.FlagSet) string { _ = "STUB: not implemented"; return "" }
 
-	flagSet.VisitAll(func(flag *pflag.Flag) {
-		if len(flag.Deprecated) > 0 {
-			return
-		}
-		format := ""
-		if len(flag.Shorthand) > 0 {
-			format = "  -%s, --%s"
-		} else {
-			format = "   %s   --%s"
-		}
-		if len(flag.NoOptDefVal) > 0 {
-			format = format + "["
-		}
-		if flag.Value.Type() == "string" {
-			// put quotes on the value
-			format = format + "=%q"
-		} else {
-			format = format + "=%s"
-		}
-		if len(flag.NoOptDefVal) > 0 {
-			format = format + "]"
-		}
-		format = format + "\t%s\n"
-		shorthand := flag.Shorthand
-		fmt.Fprintf(x, format, shorthand, flag.Name, flag.DefValue, flag.Usage)
-	})
+// put quotes on the value
 
-	return x.String()
-}
+func getSubCommands(cmd *cobra.Command) []*cobra.Command { _ = "STUB: not implemented"; return nil }
 
-func getSubCommands(cmd *cobra.Command) []*cobra.Command {
-	var subCommands []*cobra.Command
-	for _, subCmd := range cmd.Commands() {
-		subCommands = append(subCommands, subCmd)
-		subCommands = append(subCommands, getSubCommands(subCmd)...)
-	}
-	return subCommands
-}
+func UsageFunc(cmd *cobra.Command) error { _ = "STUB: not implemented"; return nil }
 
-func UsageFunc(cmd *cobra.Command) error {
-	subCommands := getSubCommands(cmd)
-	tabOut := getTabOutWithWriter(os.Stdout)
-	if err := commandUsageTemplate.Execute(tabOut, struct {
-		Cmd         *cobra.Command
-		LocalFlags  string
-		GlobalFlags string
-		SubCommands []*cobra.Command
-		Version     string
-	}{
-		cmd,
-		toolFlagUsages(cmd.LocalFlags()),
-		toolFlagUsages(cmd.InheritedFlags()),
-		subCommands,
-		version.Ver().Version,
-	}); err != nil {
-		return err
-	}
-	return tabOut.Flush()
-}
-
-func getTabOutWithWriter(writer io.Writer) *tabwriter.Writer {
-	aTabOut := new(tabwriter.Writer)
-	aTabOut.Init(writer, 0, 8, 1, '\t', 0)
-	return aTabOut
-}
+func getTabOutWithWriter(writer io.Writer) *tabwriter.Writer { _ = "STUB: not implemented"; return nil }

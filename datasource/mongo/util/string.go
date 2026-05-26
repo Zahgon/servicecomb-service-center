@@ -17,16 +17,4 @@
 
 package util
 
-import "strings"
-
-func ConnectWithDot(data []string) string {
-	var str strings.Builder
-	for index, value := range data {
-		if index == 0 {
-			str.WriteString(value)
-		} else {
-			str.WriteString("." + value)
-		}
-	}
-	return str.String()
-}
+func ConnectWithDot(data []string) string { _ = "STUB: not implemented"; return "" }

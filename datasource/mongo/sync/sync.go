@@ -19,10 +19,6 @@ package sync
 
 import (
 	"context"
-
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/cari/db/mongo"
-	"github.com/go-chassis/cari/sync"
 )
 
 const (
@@ -37,68 +33,38 @@ type Options struct {
 
 type Option func(options *Options)
 
-func NewSyncOption() Options {
-	return Options{}
-}
+func NewSyncOption() Options { _ = "STUB: not implemented"; return *new(Options) }
 
-func WithResourceID(resourceID string) Option {
-	return func(options *Options) {
-		options.ResourceID = resourceID
-	}
-}
+func WithResourceID(resourceID string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithOpts(opts map[string]string) Option {
-	return func(options *Options) {
-		options.Opts = opts
-	}
-}
+func WithOpts(opts map[string]string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func DoCreateOpts(ctx context.Context, resourceType string, resource interface{}, options ...Option) error {
-	return doOpts(ctx, sync.CreateAction, resourceType, resource, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func DoUpdateOpts(ctx context.Context, resourceType string, resource interface{}, options ...Option) error {
-	return doOpts(ctx, sync.UpdateAction, resourceType, resource, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func DoDeleteOpts(ctx context.Context, resourceType, resourceID string, resource interface{}, options ...Option) error {
-	options = append(options, WithResourceID(resourceID))
-	return doOpts(ctx, sync.DeleteAction, resourceType, resource, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func doOpts(ctx context.Context, action string, resourceType string, resource interface{}, options ...Option) error {
-	if !util.EnableSync(ctx) {
-		return nil
-	}
-	syncOpts := NewSyncOption()
-	for _, option := range options {
-		option(&syncOpts)
-	}
-	err := doTaskOpt(ctx, action, resourceType, resource, &syncOpts)
-	if err != nil || action != sync.DeleteAction {
-		return err
-	}
-	return doTombstoneOpt(ctx, resourceType, syncOpts.ResourceID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func doTaskOpt(ctx context.Context, action string, resourceType string, resource interface{}, syncOpts *Options) error {
-	domain := util.ParseDomain(ctx)
-	project := util.ParseProject(ctx)
-	task, err := sync.NewTask(domain, project, action, resourceType, resource)
-	if err != nil {
-		return err
-	}
-	if syncOpts != nil {
-		task.Opts = syncOpts.Opts
-	}
-	_, err = mongo.GetClient().GetDB().Collection(CollectionTask).InsertOne(ctx, task)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func doTombstoneOpt(ctx context.Context, resourceType, resourceID string) error {
-	domain := util.ParseDomain(ctx)
-	project := util.ParseProject(ctx)
-	tombstone := sync.NewTombstone(domain, project, resourceType, resourceID)
-	_, err := mongo.GetClient().GetDB().Collection(CollectionTombstone).InsertOne(ctx, tombstone)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

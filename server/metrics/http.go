@@ -21,14 +21,10 @@ package metrics
 
 import (
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/apache/servicecomb-service-center/pkg/metrics"
 	helper "github.com/apache/servicecomb-service-center/pkg/prometheus"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -68,28 +64,8 @@ var (
 )
 
 func ReportRequestCompleted(_ http.ResponseWriter, r *http.Request, start time.Time) {
-	instance := metrics.InstanceName()
-	elapsed := float64(time.Since(start).Nanoseconds()) / float64(time.Microsecond)
-	route, _ := r.Context().Value(rest.CtxMatchFunc).(string)
-	domain := util.ParseDomain(r.Context())
-
-	if strings.Index(r.Method, "WATCH") != 0 {
-		reqDurations.WithLabelValues(r.Method, instance, route, domain).Observe(elapsed)
-	}
-
-	success, code := parseStatus(r.Context().Value(rest.CtxResponseStatus).(int))
-
-	incomingRequests.WithLabelValues(r.Method, code, instance, route, domain).Inc()
-
-	if success {
-		successfulRequests.WithLabelValues(r.Method, code, instance, route, domain).Inc()
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func parseStatus(code int) (bool, string) {
-	sz := strconv.Itoa(code)
-	if code < http.StatusInternalServerError {
-		return true, sz
-	}
-	return false, sz
-}
+func parseStatus(code int) (bool, string) { _ = "STUB: not implemented"; return false, "" }

@@ -17,16 +17,6 @@
 
 package metrics
 
-import (
-	"net"
-	"time"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	metricsvc "github.com/apache/servicecomb-service-center/pkg/metrics"
-	"github.com/apache/servicecomb-service-center/server/config"
-	"github.com/go-chassis/go-chassis/v2/pkg/metrics"
-)
-
 const (
 	FamilyName        = "syncer"
 	KeyPendingEvent   = FamilyName + "_pending_event"
@@ -39,105 +29,18 @@ const (
 
 var Instance string
 
-func Init() error {
-	if !config.GetBool("metrics.enable", false) {
-		return nil
-	}
+func Init() error { _ = "STUB: not implemented"; return nil }
 
-	Instance = net.JoinHostPort(config.GetString("server.host", "", config.WithStandby("httpaddr")),
-		config.GetString("server.port", "", config.WithStandby("httpport")))
+//TODO should call metrics.Init()
 
-	metricsvc.CollectFamily(FamilyName)
-	//TODO should call metrics.Init()
+func PendingEventSet(n int64) { _ = "STUB: not implemented"; return }
 
-	if err := metrics.CreateGauge(metrics.GaugeOpts{
-		Key:    KeyPendingEvent,
-		Help:   "The number of events pending to send",
-		Labels: []string{"instance"},
-	}); err != nil {
-		return err
-	}
+func AbandonEventAdd() { _ = "STUB: not implemented"; return }
 
-	if err := metrics.CreateCounter(metrics.CounterOpts{
-		Key:    KeyAbandonEvent,
-		Help:   "The number of abandon events",
-		Labels: []string{"instance"},
-	}); err != nil {
-		return err
-	}
+func PendingTaskSet(n int64) { _ = "STUB: not implemented"; return }
 
-	if err := metrics.CreateGauge(metrics.GaugeOpts{
-		Key:    KeyPendingTask,
-		Help:   "The number of tasks pending to dispatch",
-		Labels: []string{"instance"},
-	}); err != nil {
-		return err
-	}
+func ConnectedPeersSet(n int64) { _ = "STUB: not implemented"; return }
 
-	if err := metrics.CreateGauge(metrics.GaugeOpts{
-		Key:    KeyConnectedPeers,
-		Help:   "The number of connected peers",
-		Labels: []string{"instance"},
-	}); err != nil {
-		return err
-	}
+func PeersTotalSet(n int64) { _ = "STUB: not implemented"; return }
 
-	if err := metrics.CreateGauge(metrics.GaugeOpts{
-		Key:    KeyPeersTotal,
-		Help:   "The number of peers",
-		Labels: []string{"instance"},
-	}); err != nil {
-		return err
-	}
-
-	if err := metrics.CreateGauge(metrics.GaugeOpts{
-		Key:    KeyPeersClockDiff,
-		Help:   "The diff milliseconds of peers",
-		Labels: []string{"instance", "peer"},
-	}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func PendingEventSet(n int64) {
-	labels := map[string]string{"instance": Instance}
-	if err := metrics.GaugeSet(KeyPendingEvent, float64(n), labels); err != nil {
-		log.Error("gauge set failed", err)
-	}
-}
-
-func AbandonEventAdd() {
-	labels := map[string]string{"instance": Instance}
-	if err := metrics.CounterAdd(KeyAbandonEvent, 1, labels); err != nil {
-		log.Error("counter add failed", err)
-	}
-}
-
-func PendingTaskSet(n int64) {
-	labels := map[string]string{"instance": Instance}
-	if err := metrics.GaugeSet(KeyPendingTask, float64(n), labels); err != nil {
-		log.Error("gauge set failed", err)
-	}
-}
-
-func ConnectedPeersSet(n int64) {
-	labels := map[string]string{"instance": Instance}
-	if err := metrics.GaugeSet(KeyConnectedPeers, float64(n), labels); err != nil {
-		log.Error("gauge set failed", err)
-	}
-}
-
-func PeersTotalSet(n int64) {
-	labels := map[string]string{"instance": Instance}
-	if err := metrics.GaugeSet(KeyPeersTotal, float64(n), labels); err != nil {
-		log.Error("gauge set failed", err)
-	}
-}
-
-func PeersClockDiffSet(peerName string, n int64) {
-	labels := map[string]string{"instance": Instance, "peer": peerName}
-	if err := metrics.GaugeSet(KeyPeersClockDiff, float64(n/time.Millisecond.Nanoseconds()), labels); err != nil {
-		log.Error("gauge set failed", err)
-	}
-}
+func PeersClockDiffSet(peerName string, n int64) { _ = "STUB: not implemented"; return }

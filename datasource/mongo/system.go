@@ -20,49 +20,18 @@ package mongo
 import (
 	"context"
 
-	"github.com/go-chassis/foundation/gopool"
-	"github.com/patrickmn/go-cache"
-
-	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/mongo/model"
 	"github.com/apache/servicecomb-service-center/datasource/mongo/sd"
 	"github.com/apache/servicecomb-service-center/pkg/dump"
-	"github.com/apache/servicecomb-service-center/pkg/goutil"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 type SysManager struct {
 }
 
 func (ds *SysManager) DumpCache(ctx context.Context) *dump.Cache {
-	var cache dump.Cache
-	goutil.New(gopool.Configure().Workers(2).WithContext(ctx)).
-		Do(func(_ context.Context) { setServiceValue(sd.Store().Service(), &cache.Microservices) }).
-		Do(func(_ context.Context) { setInstanceValue(sd.Store().Instance(), &cache.Instances) }).
-		Done()
-	return &cache
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func setServiceValue(e *sd.MongoCacher, setter dump.Setter) {
-	e.Cache().ForEach(func(k string, kv interface{}) (next bool) {
-		service := kv.(cache.Item).Object.(model.Service)
-		setter.SetValue(&dump.KV{
-			Key: util.StringJoin([]string{datasource.ServiceKeyPrefix, service.Domain, service.Project, k},
-				datasource.SPLIT),
-			Value: service.Service,
-		})
-		return true
-	})
-}
+func setServiceValue(e *sd.MongoCacher, setter dump.Setter) { _ = "STUB: not implemented"; return }
 
-func setInstanceValue(e *sd.MongoCacher, setter dump.Setter) {
-	e.Cache().ForEach(func(k string, kv interface{}) (next bool) {
-		instance := kv.(cache.Item).Object.(model.Instance)
-		setter.SetValue(&dump.KV{
-			Key: util.StringJoin([]string{datasource.InstanceKeyPrefix, instance.Domain, instance.Project,
-				instance.Instance.ServiceId, k}, datasource.SPLIT),
-			Value: instance.Instance,
-		})
-		return true
-	})
-}
+func setInstanceValue(e *sd.MongoCacher, setter dump.Setter) { _ = "STUB: not implemented"; return }

@@ -19,16 +19,8 @@ package servicecenter
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	"github.com/apache/servicecomb-service-center/client"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/path"
-	"github.com/apache/servicecomb-service-center/datasource/etcd/sd"
 	"github.com/apache/servicecomb-service-center/datasource/etcd/state/kvstore"
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/go-chassis/cari/pkg/errsvc"
 	"github.com/little-cui/etcdadpt"
 )
 
@@ -42,87 +34,31 @@ type ClusterIndexer struct {
 }
 
 func (i *ClusterIndexer) Search(ctx context.Context, opts ...etcdadpt.OpOption) (resp *kvstore.Response, err error) {
-	op := etcdadpt.OpGet(opts...)
-
-	if op.NoCache() {
-		return i.search(ctx, opts...)
-	}
-
-	resp, err = i.CacheIndexer.Search(ctx, opts...)
-	if err != nil {
-		return
-	}
-
-	if resp.Count > 0 || op.CacheOnly() {
-		return resp, nil
-	}
-
-	return i.search(ctx, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (i *ClusterIndexer) search(ctx context.Context, opts ...etcdadpt.OpOption) (r *kvstore.Response, err error) {
-	op := etcdadpt.OpGet(opts...)
-	key := util.BytesToStringWithNoCopy(op.Key)
-
-	ctx = context.WithValue(ctx, client.QueryGlobal, "0")
-	switch i.Type {
-	case sd.TypeSchema:
-		r, err = i.searchSchemas(ctx, op)
-	case sd.TypeInstance:
-		r, err = i.searchInstances(ctx, op)
-	default:
-		return &kvstore.Response{}, nil
-	}
-	log.Debug(fmt.Sprintf("search '%s' match special options, request sc server, opts: %s", key, op))
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (i *ClusterIndexer) searchSchemas(ctx context.Context, op etcdadpt.OpOptions) (*kvstore.Response, error) {
-	var (
-		resp  *kvstore.Response
-		scErr *errsvc.Error
-	)
-	domainProject, serviceID, schemaID := path.GetInfoFromSchemaKV(op.Key)
-	if op.Prefix && len(schemaID) == 0 {
-		resp, scErr = i.Client.GetSchemasByServiceID(ctx, domainProject, serviceID)
-	} else {
-		resp, scErr = i.Client.GetSchemaBySchemaID(ctx, domainProject, serviceID, schemaID)
-	}
-	if scErr != nil {
-		return nil, scErr
-	}
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (i *ClusterIndexer) searchInstances(ctx context.Context, op etcdadpt.OpOptions) (r *kvstore.Response, err error) {
-	var (
-		resp  *kvstore.Response
-		scErr *errsvc.Error
-	)
-	serviceID, instanceID, domainProject := path.GetInfoFromInstKV(op.Key)
-	dp := strings.Split(domainProject, "/")
-	if op.Prefix && len(instanceID) == 0 {
-		resp, scErr = i.Client.GetInstancesByServiceID(ctx, dp[0], dp[1], serviceID, "")
-	} else {
-		resp, scErr = i.Client.GetInstanceByInstanceID(ctx, dp[0], dp[1], serviceID, instanceID, "")
-	}
-	if scErr != nil {
-		return nil, scErr
-	}
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Creditable implements kvstore.Indexer#Creditable.
 // ClusterIndexer's search result's are not creditable as SCClientAggregate
 // ignores sc clients' errors.
-func (i *ClusterIndexer) Creditable() bool {
-	return false
-}
+func (i *ClusterIndexer) Creditable() bool { _ = "STUB: not implemented"; return false }
 
 func NewClusterIndexer(t kvstore.Type, cache kvstore.Cache) *ClusterIndexer {
-	return &ClusterIndexer{
-		CacheIndexer: kvstore.NewCacheIndexer(cache),
-		Client:       GetOrCreateSCClient(),
-		Type:         t,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

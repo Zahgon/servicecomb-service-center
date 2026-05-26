@@ -19,63 +19,18 @@ package queue
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 type UniQueue struct {
 	queue chan interface{}
 }
 
-func (uq *UniQueue) Get(ctx context.Context) interface{} {
-	select {
-	case <-ctx.Done():
-		return nil
-	case item := <-uq.queue:
-		return item
-	}
-}
+func (uq *UniQueue) Get(ctx context.Context) interface{} { _ = "STUB: not implemented"; return nil }
 
-func (uq *UniQueue) Chan() <-chan interface{} {
-	return uq.queue
-}
+func (uq *UniQueue) Chan() <-chan interface{} { _ = "STUB: not implemented"; return nil }
 
-func (uq *UniQueue) Put(value interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Panic(r)
-		}
-	}()
+func (uq *UniQueue) Put(value interface{}) (e error) { _ = "STUB: not implemented"; return nil }
 
-	select {
-	case _, ok := <-uq.queue:
-		if !ok {
-			return fmt.Errorf("channel is closed")
-		}
-	default:
-	}
+func (uq *UniQueue) Close() { _ = "STUB: not implemented"; return }
 
-	select {
-	case uq.queue <- value:
-	default:
-	}
-	return
-}
-
-func (uq *UniQueue) Close() {
-	select {
-	case _, ok := <-uq.queue:
-		if !ok {
-			return
-		}
-	default:
-	}
-	close(uq.queue)
-}
-
-func NewUniQueue() (uq *UniQueue) {
-	return &UniQueue{
-		queue: make(chan interface{}, 1),
-	}
-}
+func NewUniQueue() (uq *UniQueue) { _ = "STUB: not implemented"; return nil }

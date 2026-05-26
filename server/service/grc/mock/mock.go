@@ -19,11 +19,6 @@ package mock
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"log"
-
-	"github.com/gofrs/uuid"
 
 	"github.com/apache/servicecomb-service-center/pkg/gov"
 	"github.com/apache/servicecomb-service-center/server/config"
@@ -38,92 +33,49 @@ type Distributor struct {
 const MatchGroup = "match-group"
 
 func (d *Distributor) Create(_ context.Context, kind, _ string, p *gov.Policy) ([]byte, error) {
-	id, _ := uuid.NewV4()
-	p.ID = id.String()
-	p.Kind = kind
-	log.Printf("create %v", &p)
-	d.lbPolicies[p.GovernancePolicy.ID] = p
-	return []byte(p.ID), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (d *Distributor) Update(_ context.Context, kind, id, _ string, p *gov.Policy) error {
-	if d.lbPolicies[id] == nil {
-		return fmt.Errorf("id not exsit")
-	}
-	p.ID = id
-	p.Kind = kind
-	log.Println("update ", p)
-	d.lbPolicies[p.GovernancePolicy.ID] = p
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (d *Distributor) Delete(_ context.Context, _, id, _ string) error {
-	delete(d.lbPolicies, id)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (d *Distributor) Display(_ context.Context, _, app, env string) ([]byte, error) {
-	list := make([]*gov.Policy, 0)
-	for _, g := range d.lbPolicies {
-		if checkPolicy(g, MatchGroup, app, env) {
-			list = append(list, g)
-		}
-	}
-	policyMap := make(map[string]*gov.Policy)
-	for _, g := range d.lbPolicies {
-		for _, kind := range grcsvc.PolicyNames {
-			if checkPolicy(g, kind, app, env) {
-				policyMap[g.Name+kind] = g
-			}
-		}
-	}
-	r := make([]*gov.DisplayData, 0, len(list))
-	for _, g := range list {
-		policies := make([]*gov.Policy, 0)
-		for _, kind := range grcsvc.PolicyNames {
-			policies = append(policies, policyMap[g.Name+kind])
-		}
-		r = append(r, &gov.DisplayData{
-			MatchGroup: g,
-			Policies:   policies,
-		})
-	}
-	b, _ := json.MarshalIndent(r, "", "  ")
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (d *Distributor) List(_ context.Context, kind, _, app, env string) ([]byte, error) {
-	r := make([]*gov.Policy, 0, len(d.lbPolicies))
-	for _, g := range d.lbPolicies {
-		if checkPolicy(g, kind, app, env) {
-			r = append(r, g)
-		}
-	}
-	b, _ := json.MarshalIndent(r, "", "  ")
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func checkPolicy(g *gov.Policy, kind, app, env string) bool {
-	return g.Kind == kind && g.Selector != nil && g.Selector["app"] == app && g.Selector["environment"] == env
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (d *Distributor) Get(_ context.Context, _, id, _ string) ([]byte, error) {
-	r := d.lbPolicies[id]
-	if r == nil {
-		return nil, nil
-	}
-	b, _ := json.MarshalIndent(r, "", "  ")
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (d *Distributor) Type() string {
-	return grcsvc.ConfigDistributorMock
-}
-func (d *Distributor) Name() string {
-	return d.name
-}
+func (d *Distributor) Type() string { _ = "STUB: not implemented"; return "" }
+
+func (d *Distributor) Name() string { _ = "STUB: not implemented"; return "" }
+
 func newMock(opts config.DistributorOptions) (grcsvc.ConfigDistributor, error) {
-	return &Distributor{name: opts.Name, lbPolicies: map[string]*gov.Policy{}}, nil
+	_ = "STUB: not implemented"
+	return *new(grcsvc.ConfigDistributor), nil
 }
+
 func init() {
 	grcsvc.InstallDistributor(grcsvc.ConfigDistributorMock, newMock)
 }

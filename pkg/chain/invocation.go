@@ -20,7 +20,6 @@ package chain
 import (
 	"context"
 
-	"github.com/apache/servicecomb-service-center/pkg/log"
 	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
@@ -33,12 +32,14 @@ type InvocationOp struct {
 
 // WithFunc append a func to the begin of invocation callback list
 func WithFunc(f func(r Result)) InvocationOption {
-	return func(op InvocationOp) InvocationOp { op.Func = f; return op }
+	_ = "STUB: not implemented"
+	return *new(InvocationOption)
 }
 
 // WithAsyncFunc called concurrently after all WithFunc finish
 func WithAsyncFunc(f func(r Result)) InvocationOption {
-	return func(op InvocationOp) InvocationOp { op.Func = f; op.Async = true; return op }
+	_ = "STUB: not implemented"
+	return *new(InvocationOption)
 }
 
 type Invocation struct {
@@ -47,18 +48,16 @@ type Invocation struct {
 	chain   Chain
 }
 
-func (i *Invocation) Init(ctx context.Context, ch Chain) {
-	i.context = util.NewStringContext(ctx)
-	i.chain = ch
-}
+func (i *Invocation) Init(ctx context.Context, ch Chain) { _ = "STUB: not implemented"; return }
 
 func (i *Invocation) Context() context.Context {
-	return i.context
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func (i *Invocation) WithContext(key util.CtxKey, val interface{}) *Invocation {
-	i.context.SetKV(key, val)
-	return i
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Next is the method to go next step in handler chain
@@ -68,64 +67,24 @@ func (i *Invocation) WithContext(key util.CtxKey, val interface{}) *Invocation {
 // then i.Success/Fail() -> CB3 -> CB1 -> CB0(invoke)             goroutine 0
 //
 //	\-> CB2(async)    goroutine 1
-func (i *Invocation) Next(opts ...InvocationOption) {
-	var op InvocationOp
-	for _, opt := range opts {
-		op = opt(op)
-	}
+func (i *Invocation) Next(opts ...InvocationOption) { _ = "STUB: not implemented"; return }
 
-	i.setCallback(op.Func, op.Async)
-	i.chain.Next(i)
-}
-
-func (i *Invocation) setCallback(f CallbackFunc, async bool) {
-	if f == nil {
-		return
-	}
-
-	if i.Func == nil {
-		i.Func = f
-		i.Async = async
-		return
-	}
-	cb := i.Func
-	i.Func = func(r Result) {
-		callback(cb, f, async, r)
-	}
-}
+func (i *Invocation) setCallback(f CallbackFunc, async bool) { _ = "STUB: not implemented"; return }
 
 func callback(prev, next CallbackFunc, async bool, r Result) {
+	_ = "STUB: not implemented"
 	// we make sure the all sync funcs called before the async funcs
-	if async {
-		prev(r)
-	}
-
-	c := Callback{Func: next, Async: async}
-	c.Invoke(r)
-
-	if !async {
-		prev(r)
-	}
+	return
 }
 
-func (i *Invocation) Invoke(last CallbackFunc) {
-	defer func() {
-		itf := recover()
-		if itf == nil {
-			return
-		}
-		log.Panic(itf)
+func (i *Invocation) Invoke(last CallbackFunc) { _ = "STUB: not implemented"; return }
 
-		// this recover only catch the exceptions raised in sync invocations.
-		// The async invocations will be catch by gopool pkg then it never
-		// change the callback results.
-		// i.Fail(discovery.NewError(discovery.ErrInternal, fmt.Sprintf("%v", itf)))
-	}()
-	i.Func = last
-	i.chain.Next(i)
-}
+// this recover only catch the exceptions raised in sync invocations.
+// The async invocations will be catch by gopool pkg then it never
+// change the callback results.
+// i.Fail(discovery.NewError(discovery.ErrInternal, fmt.Sprintf("%v", itf)))
 
 func NewInvocation(ctx context.Context, ch Chain) (inv Invocation) {
-	inv.Init(ctx, ch)
-	return inv
+	_ = "STUB: not implemented"
+	return *new(Invocation)
 }

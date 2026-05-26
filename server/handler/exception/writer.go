@@ -18,12 +18,7 @@
 package exception
 
 import (
-	"fmt"
 	"net/http"
-
-	"github.com/apache/servicecomb-service-center/pkg/log"
-	"github.com/apache/servicecomb-service-center/pkg/rest"
-	"github.com/apache/servicecomb-service-center/pkg/util"
 )
 
 // Writer is the async response writer, it is not thread safe!
@@ -34,44 +29,12 @@ type Writer struct {
 	flushed    bool
 }
 
-func (aw *Writer) Header() http.Header {
-	return aw.w.Header()
-}
+func (aw *Writer) Header() http.Header { _ = "STUB: not implemented"; return *new(http.Header) }
 
-func (aw *Writer) Write(body []byte) (int, error) {
-	aw.Body = body
-	return len(body), nil
-}
+func (aw *Writer) Write(body []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (aw *Writer) WriteHeader(statusCode int) {
-	aw.StatusCode = statusCode
-}
+func (aw *Writer) WriteHeader(statusCode int) { _ = "STUB: not implemented"; return }
 
-func (aw *Writer) Flush() error {
-	if aw.flushed {
-		log.Warn("writer already flushed")
-		return nil
-	}
-	aw.flushed = true
+func (aw *Writer) Flush() error { _ = "STUB: not implemented"; return nil }
 
-	if aw.StatusCode == 0 {
-		err := fmt.Errorf("unknown status code %d", aw.StatusCode)
-		aw.w.Header().Set(rest.HeaderContentType, rest.ContentTypeText)
-		aw.w.WriteHeader(http.StatusInternalServerError)
-		if _, writeErr := aw.w.Write(util.StringToBytesWithNoCopy(err.Error())); writeErr != nil {
-			log.Error("write response failed", writeErr)
-		}
-		return err
-	}
-	aw.w.WriteHeader(aw.StatusCode)
-	if len(aw.Body) == 0 {
-		return nil
-	}
-
-	_, err := aw.w.Write(aw.Body)
-	return err
-}
-
-func NewWriter(w http.ResponseWriter) *Writer {
-	return &Writer{w: w}
-}
+func NewWriter(w http.ResponseWriter) *Writer { _ = "STUB: not implemented"; return nil }

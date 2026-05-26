@@ -19,11 +19,9 @@ package rbac
 
 import (
 	"context"
-	"errors"
 	"net/http"
 
 	"github.com/apache/servicecomb-service-center/pkg/util"
-	"github.com/apache/servicecomb-service-center/server/service/rbac/token"
 	rbacmodel "github.com/go-chassis/cari/rbac"
 )
 
@@ -31,31 +29,11 @@ const (
 	CtxRequestClaims util.CtxKey = "_request_claims"
 )
 
-func UserFromContext(ctx context.Context) string {
-	m, ok := ctx.Value(CtxRequestClaims).(map[string]interface{})
-	if !ok {
-		return ""
-	}
-	user, ok := m[rbacmodel.ClaimsUser].(string)
-	if !ok {
-		return ""
-	}
-	return user
-}
+func UserFromContext(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
 func AccountFromContext(ctx context.Context) (*rbacmodel.Account, error) {
-	m, ok := ctx.Value(CtxRequestClaims).(map[string]interface{})
-	if !ok {
-		return nil, errors.New("no claims from request context")
-	}
-	return rbacmodel.GetAccount(m)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func SignRequest(req *http.Request) error {
-	auth := token.FromContext(req.Context())
-	if auth == "" {
-		return nil
-	}
-	req.Header.Set("Authorization", "Bearer "+auth)
-	return nil
-}
+func SignRequest(req *http.Request) error { _ = "STUB: not implemented"; return nil }

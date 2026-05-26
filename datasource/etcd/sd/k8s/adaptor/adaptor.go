@@ -28,29 +28,13 @@ type K8sAdaptor struct {
 	kvstore.Indexer
 }
 
-func (se *K8sAdaptor) Run() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Run()
-	}
-}
+func (se *K8sAdaptor) Run() { _ = "STUB: not implemented"; return }
 
-func (se *K8sAdaptor) Stop() {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		r.Stop()
-	}
-}
+func (se *K8sAdaptor) Stop() { _ = "STUB: not implemented"; return }
 
-func (se *K8sAdaptor) Ready() <-chan struct{} {
-	if r, ok := se.Cacher.(kvstore.Runnable); ok {
-		return r.Ready()
-	}
-	return closedCh
-}
+func (se *K8sAdaptor) Ready() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
 func NewK8sAdaptor(t kvstore.Type, cfg *kvstore.Options) *K8sAdaptor {
-	cache := kvstore.NewKvCache(t.String(), cfg)
-	return &K8sAdaptor{
-		Indexer: kvstore.NewCacheIndexer(cache),
-		Cacher:  BuildCacher(t, cfg, cache),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

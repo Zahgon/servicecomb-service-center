@@ -41,6 +41,6 @@ func init() {
 		state.WithParser(parser.StringParser))
 }
 
-func SchemaRef() state.State     { return state.Get(TypeSchemaRef) }
-func Schema() state.State        { return state.Get(TypeSchema) }
-func SchemaSummary() state.State { return state.Get(TypeSchemaSummary) }
+func SchemaRef() state.State     { _ = "STUB: not implemented"; return *new(state.State) }
+func Schema() state.State        { _ = "STUB: not implemented"; return *new(state.State) }
+func SchemaSummary() state.State { _ = "STUB: not implemented"; return *new(state.State) }

@@ -19,25 +19,13 @@ package disco
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/servicecomb-service-center/datasource"
-	"github.com/apache/servicecomb-service-center/datasource/schema"
-	"github.com/apache/servicecomb-service-center/pkg/log"
 )
 
 func RetireService(ctx context.Context, plan *datasource.RetirePlan) error {
-	return datasource.GetMetadataManager().RetireService(ctx, plan)
-}
-
-func RetireSchema(ctx context.Context) error {
-	n, err := schema.Instance().DeleteNoRefContents(ctx)
-	if err != nil {
-		log.Error("delete no ref contents failed", err)
-		return err
-	}
-	if n > 0 {
-		log.Warn(fmt.Sprintf("%d schema-contents retired", n))
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+func RetireSchema(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
